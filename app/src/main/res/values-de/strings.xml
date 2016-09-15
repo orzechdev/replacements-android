@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ersatz</string>
+    <string name="action_refresh">Aktualisieren</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="app_author_info">Google+ Account</string>
+    <string name="app_version_info">Ihre aktuelle Version ist 0.0.130</string>
+    <string name="app_version_refresh">Prüfen Sie die Verfügbarkeit einer neuen Version</string>
+    <string name="change_content">Inhalt wechseln</string>
+    <string name="settings">Einstellungen</string>
+    <string name="refresh">Aktualisieren</string>
+    <string name="no_internet_connect">Keine Internetverbindung</string>
+    <string name="pref_app_version">App-Update</string>
+    <string name="minutes_15">15 Minuten</string>
+    <string name="minutes_2">2 Minuten</string>
+    <string name="minutes_30">30 Minuten</string>
+    <string name="minutes_5">5 Minuten</string>
+    <string name="minutes_60">60 Minuten</string>
+    <string name="pref_sync_summ_on">Aktiviert</string>
+    <string name="pref_sync_summ_off">Behindert</string>
+    <string name="loading">Laden...</string>
+    <string name="refreshed_no_repl">Aktualisiert — kein neue Ersatz</string>
+    <string name="refreshed_repl">Aktualisiert — neue Ersatz!</string>
+    <string name="home">Nachrichten</string>
+    <string name="profile">Profil</string>
+    <string name="replacements">Ersatz</string>
+    <string name="schedule">Zeitplan</string>
+    <string name="not_support_home">Leider, Aktualisieren funktioniert noch nicht.</string>
+    <string name="not_support_profile">Leider, Profil funktioniert noch nicht.</string>
+    <string name="not_support_schedule">Leider, Zeitplan funktioniert noch nicht.</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
+    <string name="tab_teacher">Lehrer</string>
+    <string name="tab_class">Klasse</string>
+    <string name="new_replacements">Neue Ersatz</string>
+    <string name="lesson">Stunde</string>
+    <string name="refreshed_error">Aktualisieren Fehler</string>
+    <string name="refreshed_error_part">Teil Aktualisieren Fehler</string>
+    <string name="new_home"></string>
+    <string name="pref_gcm_key_title">FCM Token</string>
+    <string name="pref_fcm_token_title">FCM Token</string>
+</resources>

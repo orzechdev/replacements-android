@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    android:textColor="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:textColor="@color/black"
+        android:id="@+id/action_refresh"
+        android:orderInCategory="100"
+        android:title="@string/action_refresh"
+        app:showAsAction="never"
+        />
+    <item
+        android:textColor="@color/black"
+        android:id="@+id/plans_list"
+        android:orderInCategory="200"
+        android:title="@string/plans_list"
+        app:showAsAction="never"
+        />
+    <item
+        android:textColor="@color/white"
+        android:id="@+id/action_refresh_all"
+        android:orderInCategory="300"
+        android:title="@string/action_refresh_all"
+        app:showAsAction="never"
+        />
+</menu>

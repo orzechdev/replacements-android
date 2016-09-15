@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.replacements.replacements">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" /> -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" /> -->
+    <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
+    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
+    <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activities.ReplacementsMain"
+            android:label="@string/app_name"
+            android:logo="@mipmap/ic_launcher">
+
+            <!-- android:configChanges="orientation|screenSize" -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name_zs_chocianow">
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "http://www.zschocianow.pl/zastepstwa” -->
+                <data
+                    android:host="www.zschocianow.pl"
+                    android:pathPrefix="/zastepstwa"
+                    android:scheme="http" />
+                <!-- note that the leading "/" is required for pathPrefix -->
+                <!-- Accepts URIs that begin with "http://www.zschocianow.pl/” -->
+                <data
+                    android:host="www.zschocianow.pl"
+                    android:scheme="http" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".preferences.SettingsActivity"
+            android:label="@string/settings"
+            android:logo="@mipmap/ic_launcher"
+            android:parentActivityName=".activities.ReplacementsMain"
+            android:theme="@style/SettingsTheme"
+            android:windowSoftInputMode="stateHidden">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ReplacementsMain" />
+        </activity>
+
+        <!-- <service -->
+        <!-- android:name=".sync.GcmUserRegistration" -->
+        <!-- android:exported="false" /> -->
+        <!-- <service -->
+        <!-- android:name=".sync.GcmUserUnregistration" -->
+        <!-- android:exported="false" /> -->
+        <!-- <service -->
+        <!-- android:name=".sync.GcmTopicsRegistration" -->
+        <!-- android:exported="false" /> -->
+        <!-- <service -->
+        <!-- android:name=".sync.GcmTopicsUnregistration" -->
+        <!-- android:exported="false" /> -->
+        <!-- <service -->
+        <!-- android:name=".sync.GcmNotificationIntentService" -->
+        <!-- android:exported="false" /> -->
+        <service
+            android:name=".sync.ProfileRegister"
+            android:exported="false" />
+        <service
+            android:name=".sync.ProfileSetToServer"
+            android:exported="false" />
+        <service
+            android:name=".sync.ScheduleUpdate"
+            android:exported="false" />
+
+        <!-- <receiver -->
+        <!-- android:name=".sync.GcmBroadcastReceiver" -->
+        <!-- android:permission="com.google.android.c2dm.permission.SEND"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.android.c2dm.intent.RECEIVE" /> -->
+        <!-- <action android:name="com.google.android.c2dm.intent.REGISTRATION" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+
+        <service
+            android:name=".sync.FcmListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".sync.InstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".sync.MainReceiver" android:exported="true"><!-- android:debuggable="true" -->
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+    <RelativeLayout
+        android:id="@+id/wrapper_date"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/row_main"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@color/gray_repl"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textSize="15.0sp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            tools:text="Date">
+        </TextView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider_item_decoration"
+            android:layout_below="@id/row_main"/>
+        <!--<View-->
+            <!--android:id="@+id/row_shadow"-->
+            <!--android:layout_below="@+id/row_main"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="5dp"-->
+            <!--android:background="@drawable/toolbar_dropshadow"-->
+            <!--android:visibility="gone"/>-->
+    </RelativeLayout>
+</RelativeLayout>

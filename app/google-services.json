@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "670012122702",
+    "firebase_url": "https://replacements-beta.firebaseio.com",
+    "project_id": "replacements-beta",
+    "storage_bucket": "replacements-beta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:670012122702:android:71484b6ebc3f6643",
+        "android_client_info": {
+          "package_name": "com.replacements.replacements"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "670012122702-8gf0es2i7149g7o90c2f8mbr81v22ite.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.replacements.replacements",
+            "certificate_hash": "FA7C0AC76BB5891B898870F600B4F6D34F3D91E8"
+          }
+        }
+      ],
+      "api_key": [ { "current_key": AIzaSyBXy4FIOkWqhF8ObKx8U8i7HgL632CFgYU } ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

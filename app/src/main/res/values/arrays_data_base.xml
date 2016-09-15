@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Klasy -->
+    <string-array name="class_names">
+        <item>1 A</item>
+        <item>1 B</item>
+        <item>1 TA</item>
+        <item>1 TB</item>
+        <item>1 TT</item>
+        <item>1 TTL</item>
+        <item>2 A</item>
+        <item>2 B</item>
+        <item>2 TA</item>
+        <item>2 TB</item>
+        <item>2 TL</item>
+        <item>2 TT</item>
+        <item>3 A</item>
+        <item>3 B</item>
+        <item>3 TA</item>
+        <item>3 TB</item>
+        <item>3 TT</item>
+        <item>3 TTL</item>
+        <item>4 TA</item>
+        <item>4 TB</item>
+        <item>4 TT</item>
+        <item>4 TTL</item>
+    </string-array>
+    <!-- Klasy -->
+    <string-array name="num_class">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="type_class">
+        <item></item>
+        <item>T</item>
+        <item>TT</item>
+        <item>TTL</item>
+    </string-array>
+    <string-array name="group_class">
+        <item>A</item>
+        <item>B</item>
+    </string-array>
+    <!-- Nauczyciele -->
+    <string-array name="teacher_name">
+        <item>Kowalski Marian</item>
+        <item>Korwin Janusz</item>
+        <item>Braun Grzegorz</item>
+        <item>Komorowski Bronisław</item>
+        <item>Duda Andrzej</item>
+        <item>Paweł Tanajno</item>
+    </string-array>
+</resources>

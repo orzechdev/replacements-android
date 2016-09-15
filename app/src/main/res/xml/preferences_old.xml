@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/pref_notify"
+        android:key="pref_notify">
+        <CheckBoxPreference
+            android:title="@string/pref_notify_switch"
+            android:key="pref_notify_all"
+            android:defaultValue="true"
+            android:summaryOn="@string/pref_sync_summ_on"
+            android:summaryOff="@string/pref_sync_summ_off" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Opcje programistyczne"
+        android:key="pref_app_dev_settings">
+        <EditTextPreference
+            android:title="@string/pref_main_file_name"
+            android:defaultValue="@string/schedule_main_file"
+            android:key="schedule_url"
+            android:imeOptions="actionDone"/>
+        <CheckBoxPreference
+            android:title="Tryb programisty"
+            android:key="pref_dev"
+            android:defaultValue="false"
+            android:summaryOn="Włączony"
+            android:summaryOff="Wyłączony" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_sync_old"
+        android:key="pref_sync_settings">
+        <CheckBoxPreference
+            android:title="@string/pref_sync_old"
+            android:key="pref_sync"
+            android:dependency="pref_dev"
+            android:defaultValue="false"
+            android:summaryOn="@string/pref_sync_summ_on"
+            android:summaryOff="@string/pref_sync_summ_off" />
+        <ListPreference
+            android:entries="@array/freq_list"
+            android:title="@string/pref_freq_data"
+            android:key="pref_freq_data"
+            android:summary="@string/minutes_5"
+            android:dependency="pref_sync"
+            android:defaultValue="5"
+            android:dialogTitle="@string/pref_freq_check"
+            android:entryValues="@array/freq_list_values" />
+        <ListPreference
+            android:entries="@array/freq_list"
+            android:title="@string/pref_freq_wifi"
+            android:key="pref_freq_wifi"
+            android:summary="@string/minutes_2"
+            android:dependency="pref_sync"
+            android:defaultValue="2"
+            android:dialogTitle="@string/pref_freq_check"
+            android:entryValues="@array/freq_list_values" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/pref_author"
+        android:key="pref_author_settings">
+        <Preference
+			android:title="@string/app_author_get"
+			android:summary="@string/app_author_info"
+			android:key="author_info">
+			<intent
+				android:action="android.intent.action.VIEW"
+				android:data="@string/pref_url_author" />
+		</Preference>
+    </PreferenceCategory>
+</PreferenceScreen>
