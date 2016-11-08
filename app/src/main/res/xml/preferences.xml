@@ -44,6 +44,19 @@
 		</Preference>
     </PreferenceCategory>
     <PreferenceCategory
+        android:title="@string/pref_school"
+        android:key="pref_school">
+        <Preference
+            android:title="@string/pref_school_title"
+            android:summary="@string/pref_school_summary"
+            android:key="pref_school_pref">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/pref_url_author" />
+            <intent android:action="com.replacements.replacements.activities.ChooseSchool"/>
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory
         android:title="Opcje programistyczne"
         android:key="pref_app_dev_settings">
         <EditTextPreference

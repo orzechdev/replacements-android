@@ -106,4 +106,10 @@
     <string name="pref_fcm_token_title">FCM Token</string>
     <string name="pref_schedule_offline_switch">Offline schedule</string>
 
+    <!-- USTAWIENIA DODANE DLA GIMNAZJUM -->
+    <string name="pref_school">Chosen school</string>
+    <string name="pref_school_title">Name of school</string>
+    <string name="pref_school_summary">Desc</string>
+
+
 </resources>
