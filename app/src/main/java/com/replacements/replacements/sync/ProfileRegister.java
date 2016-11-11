@@ -75,9 +75,11 @@ public class ProfileRegister extends IntentService {
         localEditor.apply();
         params.put("regId", regId);
         System.out.println("Reg Id = " + regId);
+        //TODO Change automatically bellows SCHOOL_SERVER_1 to SCHOOL_SERVER_2 and vice versa
+        String urlServer = ApplicationConstants.SCHOOL_SERVER_2 + ApplicationConstants.APP_SERVER_URL_INSERT_USER;
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(ApplicationConstants.APP_SERVER_URL_INSERT_USER, params,
+        client.post(urlServer, params,
                 new AsyncHttpResponseHandler() {
                     // When the response returned by REST has Http
                     // response code '200'
@@ -124,9 +126,11 @@ public class ProfileRegister extends IntentService {
         Log.i("GcmUserUnregistration","removeRegIdfromServer");
         params.put("regId", regId);
         System.out.println("To remove Reg Id = " + regId);
+        //TODO Change automatically bellows SCHOOL_SERVER_1 to SCHOOL_SERVER_2 and vice versa
+        String urlServer = ApplicationConstants.SCHOOL_SERVER_2 + ApplicationConstants.APP_SERVER_URL_REMOVE_USER;
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(ApplicationConstants.APP_SERVER_URL_REMOVE_USER, params,
+        client.post(urlServer, params,
                 new AsyncHttpResponseHandler() {
                     // When the response returned by REST has Http
                     // response code '200'

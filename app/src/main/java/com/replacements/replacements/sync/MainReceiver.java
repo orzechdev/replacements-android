@@ -47,10 +47,23 @@ public class MainReceiver extends BroadcastReceiver {
                     newIntent.putExtra("networkIsOn", true);
                     LocalBroadcastManager.getInstance(context).sendBroadcast(newIntent);
                 }
+
+                if(sharedPref.getBoolean("schoolToChange", false)) {
+                    Intent newIntent = new Intent("messageLoader");
+                    newIntent.putExtra("networkIsOn", true);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(newIntent);
+                }
             }
         } else {
             // not connected to the internet
             Log.i(CLASS_NAME, "onReceive activeNetwork: no connection");
+
+            SharedPreferences sharedPref = context.getSharedPreferences("dane", 0);
+            if(sharedPref.getBoolean("schoolToChange", false)) {
+                Intent newIntent = new Intent("messageLoader");
+                newIntent.putExtra("networkIsOn", false);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(newIntent);
+            }
         }
     }
 

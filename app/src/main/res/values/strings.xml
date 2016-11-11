@@ -108,8 +108,12 @@
 
     <!-- USTAWIENIA DODANE DLA GIMNAZJUM -->
     <string name="pref_school">Chosen school</string>
-    <string name="pref_school_title">Name of school</string>
-    <string name="pref_school_summary">Desc</string>
+    <string name="pref_school_summary">Name of school</string>
+    <string name="loading_school_data">Loading school data in progres&#8230;</string>
+    <string name="school_name_0">No school selected</string>
+    <string name="school_name_1">Gimnazjum im. Odkrywców Polskiej Miedzi w Chocianowie</string>
+    <string name="school_name_2">Zespół Szkół w Chocianowie</string>
+    <string name="loading">Loading&#8230;</string>
 
 
 </resources>

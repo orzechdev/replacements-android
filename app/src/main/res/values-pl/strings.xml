@@ -25,7 +25,7 @@
     <string name="refresh">Odśwież</string>
     <string name="settings">Ustawienia</string>
     <string name="no_internet_connect">Brak połączenia internetowego</string>
-    <string name="loading">Ładowanie...</string>
+    <string name="loading">Ładowanie&#8230;</string>
     <string name="refreshed_no_repl">Odświeżono — brak nowych zastępstw</string>
     <string name="refreshed_repl">Odświeżono — nowe zastępstwa!</string>
     <string name="new_replacements">Nowe zastępstwa</string>
@@ -81,4 +81,7 @@
     <string name="pref_schedule_offline_switch">Plan offline</string>
     <string name="pref_main_file_name">Nazwa głównego pliku planów</string>
     <string name="refreshed_all_schedules">Odświeżanie wszystkich planów zakończone.</string>
+    <string name="pref_school">Wybrana uczelnia</string>
+    <string name="pref_school_summary">Nazwa uczelni</string>
+    <string name="loading_school_data">Trwa ładowanie danych uczelni&#8230;</string>
 </resources>

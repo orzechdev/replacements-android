@@ -70,9 +70,11 @@ public class ProfileSetToServer extends IntentService {
             Log.i(CLASS_NAME, "storeDataIds regId = " + regId);
             params.put("dataIds", dataIds);
             Log.i(CLASS_NAME, "storeDataIds = " + dataIds);
+            //TODO Change automatically bellows SCHOOL_SERVER_1 to SCHOOL_SERVER_2 and vice versa
+            String urlServer = ApplicationConstants.SCHOOL_SERVER_2 + ApplicationConstants.APP_SERVER_URL_INSERT_USER_DATA_IDS;
             // Make RESTful webservice call using AsyncHttpClient object
             AsyncHttpClient client = new SyncHttpClient();
-            client.post(ApplicationConstants.APP_SERVER_URL_INSERT_USER_DATA_IDS, params,
+            client.post(urlServer, params,
                     new AsyncHttpResponseHandler() {
                         // When the response returned by REST has Http
                         // response code '200'
@@ -119,9 +121,11 @@ public class ProfileSetToServer extends IntentService {
             Log.i(CLASS_NAME, "storeModules regId = " + regId);
             params.put("modules", modules);
             Log.i(CLASS_NAME, "storeModules = " + modules);
+            //TODO Change automatically bellows SCHOOL_SERVER_1 to SCHOOL_SERVER_2 and vice versa
+            String urlServer = ApplicationConstants.SCHOOL_SERVER_2 + ApplicationConstants.APP_SERVER_URL_INSERT_USER_MODULES;
             // Make RESTful webservice call using AsyncHttpClient object
             AsyncHttpClient client = new SyncHttpClient();
-            client.post(ApplicationConstants.APP_SERVER_URL_INSERT_USER_MODULES, params,
+            client.post(urlServer, params,
                     new AsyncHttpResponseHandler() {
                         // When the response returned by REST has Http
                         // response code '200'

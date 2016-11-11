@@ -72,18 +72,35 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 	    	if (paramPreference.getKey().equalsIgnoreCase("editKey")) {
 	    		paramPreference.setSummary("I am not going to display a password!");
 	    	}
-		} else {
-			return;
-	    }
-	    paramPreference.setSummary(localEditTextPreference.getText());
 
-		//Wyswietlenie w opisie tokenu FCM
-		Log.i(CLASS_NAME, "PREF 3");
-		if ((paramPreference.getKey().equals("pref_fcm_token"))) {
-			Log.i(CLASS_NAME, "PREF 4");
-			String FCMToken = FirebaseInstanceId.getInstance().getToken();
-			((EditTextPreference) paramPreference).setText(FCMToken);
-			paramPreference.setSummary(FCMToken);
+			paramPreference.setSummary(localEditTextPreference.getText());
+
+			//Wyswietlenie w opisie tokenu FCM
+			Log.i(CLASS_NAME, "PREF 3");
+			if ((paramPreference.getKey().equals("pref_fcm_token"))) {
+				Log.i(CLASS_NAME, "PREF 4");
+				String FCMToken = FirebaseInstanceId.getInstance().getToken();
+				((EditTextPreference) paramPreference).setText(FCMToken);
+				paramPreference.setSummary(FCMToken);
+			}
+		} else {
+			if(paramPreference.getKey().equals("pref_school_pref")){
+				Log.i(CLASS_NAME, "PREF 5");
+				SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+				String schoolName;
+				switch (prefs.getInt("chosenSchool", 0)){
+					case 1:
+						schoolName = getString(R.string.school_name_1);
+						break;
+					case 2:
+						schoolName = getString(R.string.school_name_2);
+						break;
+					default:
+						schoolName = getString(R.string.school_name_0);
+						break;
+				}
+				paramPreference.setSummary(schoolName);
+			}
 		}
 	}
     
