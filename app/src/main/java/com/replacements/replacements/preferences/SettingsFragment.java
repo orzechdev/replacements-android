@@ -20,6 +20,7 @@ import com.google.android.gms.common.ConnectionResult;
 //import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.replacements.replacements.R;
+import com.replacements.replacements.activities.ChooseSchool;
 import com.replacements.replacements.data.ClassDbAdapter;
 import com.replacements.replacements.data.TeacherDbAdapter;
 //import com.replacements.replacements.sync.GcmUserRegistration;
@@ -116,6 +117,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 			Preference devPreference = findPreference("pref_app_dev_settings");
 			getPreferenceScreen().removePreference(devPreference);
 		}
+		Preference prefSchoolPref = findPreference("pref_school_pref");
+		prefSchoolPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference arg0) {
+				Intent intent = new Intent(getActivity(), ChooseSchool.class);
+				intent.putExtra("activityParentExists", true);
+				startActivity(intent);
+				return true;
+			}
+		});
 		for (int i = 0;; i++){
 			if (i >= getPreferenceScreen().getPreferenceCount()) {
 				return;

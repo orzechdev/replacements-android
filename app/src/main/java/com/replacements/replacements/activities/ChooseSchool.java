@@ -127,4 +127,29 @@ public class ChooseSchool extends Activity {
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        Bundle intentExtra = getIntent().getExtras();
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        Log.i(CLASS_NAME,"onBackPressed 0");
+        if (!prefs.getBoolean("schoolToChange", false)) {
+            Log.i(CLASS_NAME,"onBackPressed 1 0");
+            super.onBackPressed();
+        }else{
+            Log.i(CLASS_NAME,"onBackPressed 1 1");
+            if(intentExtra != null) {
+                Log.i(CLASS_NAME,"onBackPressed 1 1 0");
+                boolean activityParentExists = intentExtra.getBoolean("activityParentExists", false);
+                if (!activityParentExists) {
+                    Log.i(CLASS_NAME,"onBackPressed 1 1 0 0");
+                    super.onBackPressed();
+                }
+            }else{
+                Log.i(CLASS_NAME,"onBackPressed 1 1 1");
+                super.onBackPressed();
+            }
+        }
+        Log.i(CLASS_NAME,"onBackPressed 2");
+    }
 }

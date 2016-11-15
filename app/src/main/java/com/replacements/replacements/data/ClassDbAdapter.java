@@ -112,6 +112,10 @@ public class ClassDbAdapter {
         Log.i("ClassDbAdapter", "1");
         return db.delete(DB_TABLE, where, null) > 0;
     }
+    public boolean deleteAllClasses(){
+        Log.i("ClassDbAdapter", "1 2");
+        return db.delete(DB_TABLE, null, null) > 0;
+    }
 
     public Cursor getAllClasses() {
         String[] columns = {KEY_ID, KEY_CLASS, KEY_SELECTED};

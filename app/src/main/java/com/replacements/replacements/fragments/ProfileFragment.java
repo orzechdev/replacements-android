@@ -1,6 +1,7 @@
 package com.replacements.replacements.fragments;
 
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import com.replacements.replacements.activities.ReplacementsMain;
 import com.replacements.replacements.data.ClassDbAdapter;
 import com.replacements.replacements.data.ReplacementDbAdapter;
 import com.replacements.replacements.data.TeacherDbAdapter;
+import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.models.ClassTask;
 import com.replacements.replacements.models.JsonData;
 import com.replacements.replacements.sync.GsonRequest;
@@ -176,7 +178,9 @@ public class ProfileFragment extends Fragment {
     public void startRequest() {
         String url_data;
         String url_data_update;
-        url_data = getString(R.string.url_repl_data);
+        SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+        url_data = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+        url_data = url_data + ApplicationConstants.APP_SERVER_URL_REPL_DATA;
         String replDateLast = getActivity().getSharedPreferences("dane", 0).getString("repl_data_date_last", "0");
 
         //Ustalenie url dla danych i ich ostatniej aktualizacji

@@ -1,6 +1,7 @@
 package com.replacements.replacements.sync;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -28,6 +29,7 @@ public class ProfileRegister extends IntentService {
     private RequestParams params = new RequestParams();
     private ArrayList<Integer> myDataSetAll = new ArrayList<>();
     private String token;
+    private String url;
 
     public ProfileRegister(){
         super(CLASS_NAME);
@@ -39,6 +41,7 @@ public class ProfileRegister extends IntentService {
         if(intentExtra != null) {
             int serverAction = intentExtra.getInt("serverAction", 0);
             token = intentExtra.getString("token", "");
+            url = intentExtra.getString("url", "");
             Log.i(CLASS_NAME, "onHandleIntent serverAction = " + Integer.toString(serverAction));
             Log.i(CLASS_NAME, "onHandleIntent token = " + token);
             Handler handler = new Handler(Looper.getMainLooper());
@@ -49,7 +52,7 @@ public class ProfileRegister extends IntentService {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            registerUser(token);
+                            registerUser(token, url);
                         }
                     });
                     break;
@@ -57,7 +60,7 @@ public class ProfileRegister extends IntentService {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            unregisterUser(token);
+                            unregisterUser(token, url);
                         }
                     });
                     break;
@@ -68,15 +71,21 @@ public class ProfileRegister extends IntentService {
     }
 
     //Insert User to Server
-    private void registerUser(String regId){
-        SharedPreferences.Editor localEditor = getSharedPreferences("dane", 0).edit();
+    private void registerUser(String regId, String url){
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        SharedPreferences.Editor localEditor = prefs.edit();
         localEditor.putBoolean("toDoRegisterUser", true);
         localEditor.putBoolean("toDoUnregisterUser", false);
         localEditor.apply();
         params.put("regId", regId);
         System.out.println("Reg Id = " + regId);
-        //TODO Change automatically bellows SCHOOL_SERVER_1 to SCHOOL_SERVER_2 and vice versa
-        String urlServer = ApplicationConstants.SCHOOL_SERVER_2 + ApplicationConstants.APP_SERVER_URL_INSERT_USER;
+        String urlServer;
+        if(!url.equals("")) {
+            urlServer = url + ApplicationConstants.APP_SERVER_URL_INSERT_USER;
+        }else{
+            urlServer = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+            urlServer = urlServer + ApplicationConstants.APP_SERVER_URL_INSERT_USER;
+        }
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(urlServer, params,
@@ -90,6 +99,7 @@ public class ProfileRegister extends IntentService {
                         changeSetInServer();
                         SharedPreferences.Editor localEditor = getSharedPreferences("dane", 0).edit();
                         localEditor.putBoolean("toDoRegisterUser", false);
+                        localEditor.putBoolean("registerOnServerExists", true);
                         localEditor.apply();
                     }
 
@@ -118,16 +128,22 @@ public class ProfileRegister extends IntentService {
     }
 
     //Remove User from Server
-    private void unregisterUser(String regId){
-        SharedPreferences.Editor localEditor = getSharedPreferences("dane", 0).edit();
+    private void unregisterUser(String regId, String url){
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        SharedPreferences.Editor localEditor = prefs.edit();
         localEditor.putBoolean("toDoUnregisterUser", true);
         localEditor.putBoolean("toDoRegisterUser", false);
         localEditor.apply();
         Log.i("GcmUserUnregistration","removeRegIdfromServer");
         params.put("regId", regId);
         System.out.println("To remove Reg Id = " + regId);
-        //TODO Change automatically bellows SCHOOL_SERVER_1 to SCHOOL_SERVER_2 and vice versa
-        String urlServer = ApplicationConstants.SCHOOL_SERVER_2 + ApplicationConstants.APP_SERVER_URL_REMOVE_USER;
+        String urlServer;
+        if(!url.equals("")) {
+            urlServer = url + ApplicationConstants.APP_SERVER_URL_REMOVE_USER;
+        }else{
+            urlServer = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+            urlServer = urlServer + ApplicationConstants.APP_SERVER_URL_REMOVE_USER;
+        }
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
         client.post(urlServer, params,

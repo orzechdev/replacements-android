@@ -114,6 +114,11 @@ public class TeacherDbAdapter {
         Log.i("TeacherDbAdapter", "1");
         return db.delete(DB_TABLE, where, null) > 0;
     }
+    public boolean deleteAllTeachers(){
+        Log.i("TeacherDbAdapter", "1 2");
+        return db.delete(DB_TABLE, null, null) > 0;
+    }
+
 
     public Cursor getAllTeachers() {
         String[] columns = {KEY_ID, KEY_TEACHER, KEY_SELECTED};

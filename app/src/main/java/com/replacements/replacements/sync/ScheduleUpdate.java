@@ -29,6 +29,7 @@ import com.replacements.replacements.R;
 import com.replacements.replacements.activities.ReplacementsMain;
 import com.replacements.replacements.data.DbAdapter;
 import com.replacements.replacements.data.ScheduleUrlFilesDbAdapter;
+import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.models.JsonSchedule;
 import com.replacements.replacements.models.JsonScheduleFiles;
 import com.replacements.replacements.models.JsonScheduleFilesDeserialize;
@@ -102,7 +103,9 @@ public class ScheduleUpdate extends IntentService {
 
     private void downloadFileList(){
         String url_data;
-        url_data = getApplicationContext().getString(R.string.url_schedule_json);
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        url_data = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+        url_data = url_data + ApplicationConstants.APP_SERVER_URL_LESSON_PLAN;
         GsonRequest<JsonSchedule> jsObjRequest = new GsonRequest<>(
                 Request.Method.GET,
                 url_data,

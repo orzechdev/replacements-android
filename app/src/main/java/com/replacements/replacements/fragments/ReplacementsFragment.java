@@ -30,6 +30,7 @@ import com.replacements.replacements.data.ClassDbAdapter;
 import com.replacements.replacements.data.DbAdapter;
 import com.replacements.replacements.data.TeacherDbAdapter;
 import com.replacements.replacements.helpers.StickyHeaderDecoration;
+import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.models.ClassTask;
 import com.replacements.replacements.models.JsonData;
 import com.replacements.replacements.models.JsonReplacements;
@@ -190,7 +191,9 @@ public class ReplacementsFragment extends DialogFragment {
         String url_repl;
         String url_repl_today;
         String url_repl_tomorrow;
-        url_repl = getString(R.string.url_repl);
+        SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+        url_repl = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+        url_repl = url_repl + ApplicationConstants.APP_SERVER_URL_REPL;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
@@ -487,7 +490,9 @@ public class ReplacementsFragment extends DialogFragment {
     public void startRequest2() {
         String url_data;
         String url_data_update;
-        url_data = getActivity().getString(R.string.url_repl_data);
+        SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+        url_data = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+        url_data = url_data + ApplicationConstants.APP_SERVER_URL_REPL_DATA;
         String replDateLast = getActivity().getSharedPreferences("dane", 0).getString("repl_data_date_last", "0");
 
         //Ustalenie url dla danych i ich ostatniej aktualizacji

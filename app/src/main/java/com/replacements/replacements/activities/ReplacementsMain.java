@@ -30,6 +30,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 //import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -116,6 +117,16 @@ public class ReplacementsMain extends AppCompatActivity {
 
         Bundle intentExtra = getIntent().getExtras();
         boolean isNotified;
+
+        //TODO
+//        SharedPreferences mSharedPreferences2 = getSharedPreferences("dane", 0);
+//        SharedPreferences.Editor localEditor2 = mSharedPreferences2.edit();
+//        localEditor2.putInt("chosenSchool", 1);
+//        localEditor2.putBoolean("schoolToChange", false);
+//        localEditor2.putBoolean("schoolChangeStarted", false);
+//        localEditor2.apply();
+        //TODO
+
 
         if (savedInstanceState != null) {
             Log.i("QQQQQQQQQ", "4");
@@ -371,10 +382,21 @@ public class ReplacementsMain extends AppCompatActivity {
     public int getCurrentProfileTab(){
         return currentProfileTab;
     }
+
+    @SuppressWarnings("deprecation")
     private void initNavigationDrawer() {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        View hView =  mNavigationView.getHeaderView(0);
+        LinearLayout drawerHeader = (LinearLayout) hView.findViewById(R.id.drawer_header);
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            drawerHeader.setBackgroundDrawable(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 1) == 1)? R.drawable.header_image_old : R.drawable.header_image));
+        } else {
+            drawerHeader.setBackground(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 1) == 1)? R.drawable.header_image_old : R.drawable.header_image));
+        }
 
     //    setupActionBarDrawerToogle();
         if (mNavigationView != null) {
