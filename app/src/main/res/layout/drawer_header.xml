@@ -10,8 +10,9 @@
     android:gravity="bottom">
 
     <TextView
+        android:id="@+id/drawer_header_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Zespół Szkół w Chocianowie"
+        android:text="@string/school_name_0"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 </LinearLayout>

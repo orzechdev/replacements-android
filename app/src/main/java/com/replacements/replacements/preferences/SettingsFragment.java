@@ -25,6 +25,7 @@ import com.replacements.replacements.data.ClassDbAdapter;
 import com.replacements.replacements.data.TeacherDbAdapter;
 //import com.replacements.replacements.sync.GcmUserRegistration;
 //import com.replacements.replacements.sync.GcmUserUnregistration;
+import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.sync.ProfileRegister;
 import com.replacements.replacements.sync.ProfileSetToServer;
 
@@ -159,18 +160,44 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 			String FCMToken = FirebaseInstanceId.getInstance().getToken();
 			if (!notifyCheckbox) {
 			    // Unregister Device from Server by IntentService
-				Log.i("oSPC pref_notify_switch", "on");
-				Intent profileRegister = new Intent(getActivity(), ProfileRegister.class);
-				profileRegister.putExtra("serverAction", 2);
-				profileRegister.putExtra("token", FCMToken);
-				getActivity().getApplicationContext().startService(profileRegister);
+
+				SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+				SharedPreferences.Editor localEditor = prefs.edit();
+
+				if(prefs.getBoolean("toDoUnregisterUser1", false) || (prefs.getInt("chosenSchool", 1) == 1 && !prefs.getBoolean("toDoRegisterUser1", false))){
+					localEditor.putBoolean("toDoUnregisterUser1", true);
+					String url = ApplicationConstants.SCHOOL_SERVER_1;
+					Intent profileRegister = new Intent(getActivity(), ProfileRegister.class);
+					profileRegister.putExtra("serverAction", 2);
+					profileRegister.putExtra("token", FCMToken);
+					profileRegister.putExtra("url", url);
+					getActivity().getApplicationContext().startService(profileRegister);
+				}
+				if(prefs.getBoolean("toDoUnregisterUser2", false) || (prefs.getInt("chosenSchool", 1) == 2 && !prefs.getBoolean("toDoRegisterUser2", false))){
+					localEditor.putBoolean("toDoUnregisterUser2", true);
+					String url = ApplicationConstants.SCHOOL_SERVER_2;
+					Intent profileRegister = new Intent(getActivity(), ProfileRegister.class);
+					profileRegister.putExtra("serverAction", 2);
+					profileRegister.putExtra("token", FCMToken);
+					profileRegister.putExtra("url", url);
+					getActivity().getApplicationContext().startService(profileRegister);
+				}
+				localEditor.apply();
+
+				Log.i("oSPC pref_notify_switch", "off");
 			}else{
 				// Register Device in Server by IntentService
-				Log.i("oSPC pref_notify_switch", "off");
+
+				SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+
+				String url = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
 				Intent profileRegister = new Intent(getActivity(), ProfileRegister.class);
 				profileRegister.putExtra("serverAction", 1);
 				profileRegister.putExtra("token", FCMToken);
+				profileRegister.putExtra("url", url);
 				getActivity().getApplicationContext().startService(profileRegister);
+
+				Log.i("oSPC pref_notify_switch", "on");
 			}
 		}
 		if ((paramString.equals("pref_notify_repl"))) {

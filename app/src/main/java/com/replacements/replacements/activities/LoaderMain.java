@@ -56,6 +56,7 @@ public class LoaderMain extends AppCompatActivity {
     private String data_last;
     private ScheduleUrlFilesDbAdapter scheduleUrlFilesDbAdapter;
     private ReplacementDbAdapter replacementDbAdapter;
+    private boolean allTasksDone = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,13 +127,14 @@ public class LoaderMain extends AppCompatActivity {
                 }
             }
             if(intent.hasExtra("finishService")){
-                //TODO check whether services is finished in loadData() and then run main activity, optionally add handle "step by step" running services/task in loadData()
-                runMainActivity();
+                finishLoadData();
             }
         }
     };
 
     private void loadData(){
+        allTasksDone = false;
+
         SharedPreferences localSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
         SharedPreferences.Editor localEditor = prefs.edit();
@@ -150,7 +152,7 @@ public class LoaderMain extends AppCompatActivity {
         teacherDbAdapter.close();
 
         Log.i(CLASS_NAME, "loadData unregisterUser");
-        if((localSharedPreferences.getBoolean("pref_notify_switch", true) || prefs.getBoolean("toDoUnregisterUser", false)) && !prefs.getBoolean("toDoRegisterUser", true)) {
+        if(localSharedPreferences.getBoolean("pref_notify_switch", true)) {
             String FCMToken = FirebaseInstanceId.getInstance().getToken();
             //Choosing school url to delete
             String url = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_2 : ApplicationConstants.SCHOOL_SERVER_1;
@@ -159,6 +161,25 @@ public class LoaderMain extends AppCompatActivity {
             profileRegister.putExtra("token", FCMToken);
             profileRegister.putExtra("url", url);
             this.startService(profileRegister);
+        }else{
+            if(prefs.getBoolean("toDoUnregisterUser1", false)){
+                String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                String url = ApplicationConstants.SCHOOL_SERVER_1;
+                Intent profileRegister = new Intent(this, ProfileRegister.class);
+                profileRegister.putExtra("serverAction", 2);
+                profileRegister.putExtra("token", FCMToken);
+                profileRegister.putExtra("url", url);
+                this.startService(profileRegister);
+            }
+            if(prefs.getBoolean("toDoUnregisterUser2", false)){
+                String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                String url = ApplicationConstants.SCHOOL_SERVER_2;
+                Intent profileRegister = new Intent(this, ProfileRegister.class);
+                profileRegister.putExtra("serverAction", 2);
+                profileRegister.putExtra("token", FCMToken);
+                profileRegister.putExtra("url", url);
+                this.startService(profileRegister);
+            }
         }
 
         Log.i(CLASS_NAME, "loadData classesTeachersData get new");
@@ -206,15 +227,36 @@ public class LoaderMain extends AppCompatActivity {
         replacementDbAdapter.deleteAllReplacements(false);
         replacementDbAdapter.close();
 
+        //Reset other variable from application
+        localEditor.putString("repl_data_date_last", "0");
+        localEditor.putString("repl_date_today", "0");
+        localEditor.putString("repl_date_last", "0");
+        localEditor.putString("repl_date_tomorrow", "0");
+        localEditor.apply();
+
+        //Main variable using in loading data
         localEditor.putBoolean("schoolToChange", false);
         localEditor.putBoolean("schoolChangeStarted", false);
         localEditor.apply();
 
-        //TODO Change variables
-        //TODO Change header in drawer menu
-        //TODO Change profile
-        //TODO Change schedule
-        //TODO Change replacements
+        allTasksDone = true;
+
+        finishLoadData();
+    }
+
+    //check whether services is finished in loadData() and then run main activity (but without unregister service, because if previous school site doesn't work, user can't wait until it'll work)
+    private void finishLoadData(){
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        boolean toDoRegisterUser;
+        if(prefs.getInt("chosenSchool", 1) == 1){
+            toDoRegisterUser = prefs.getBoolean("toDoRegisterUser1", false);
+        }else{
+            toDoRegisterUser = prefs.getBoolean("toDoRegisterUser2", false);
+        }
+        boolean scheduleUpdateToDo = prefs.getBoolean("scheduleUpdateToDo",false);
+        if(allTasksDone && !toDoRegisterUser && !scheduleUpdateToDo){
+            runMainActivity();
+        }
     }
 
     private void runMainActivity(){

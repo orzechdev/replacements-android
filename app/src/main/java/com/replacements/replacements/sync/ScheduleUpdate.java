@@ -457,6 +457,11 @@ public class ScheduleUpdate extends IntentService {
             SharedPreferences.Editor sharedPrefEditor = sharedPref.edit();
             sharedPrefEditor.putBoolean("scheduleUpdateToNotify",false);
             sharedPrefEditor.apply();
+
+
+            Intent newIntent = new Intent("messageLoader");
+            newIntent.putExtra("finishService", true);
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
         }
     }
 }

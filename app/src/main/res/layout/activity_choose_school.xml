@@ -49,12 +49,12 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="0.7"
                 android:background="@color/blue_light"
-                android:src="@drawable/head_temp_gim"
+                android:src="@drawable/header_image_1"
                 android:id="@+id/schoolImage1"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"/>
             <TextView
-                android:text="Gimnazjum im. Odkrywców Polskiej Miedzi w Chocianowie"
+                android:text="@string/school_name_1"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:paddingTop="0dp"
@@ -88,12 +88,12 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="0.7"
                 android:background="@color/blue_light"
-                android:src="@drawable/header_image"
+                android:src="@drawable/header_image_2"
                 android:id="@+id/schoolImage3"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"/>
             <TextView
-                android:text="Zespół Szkół w Chocianowie"
+                android:text="@string/school_name_2"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:paddingTop="0dp"

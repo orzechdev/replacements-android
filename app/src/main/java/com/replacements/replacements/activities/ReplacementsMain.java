@@ -31,6 +31,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 //import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -46,6 +47,7 @@ import com.replacements.replacements.fragments.ProfileFragmentTeacher;
 import com.replacements.replacements.R;
 import com.replacements.replacements.fragments.ReplacementsFragment;
 import com.replacements.replacements.fragments.ScheduleFragment;
+import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.preferences.SettingsActivity;
 //import com.replacements.replacements.sync.GcmUserRegistration;
 //import com.replacements.replacements.sync.GcmUserUnregistration;
@@ -249,10 +251,12 @@ public class ReplacementsMain extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
         connManager = ((ConnectivityManager)getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE));
         if ((connManager != null) && (connManager.getActiveNetworkInfo() != null)) {
-            boolean toDoRegisterUser = prefs.getBoolean("toDoRegisterUser", false);
-            boolean toDoUnregisterUser = prefs.getBoolean("toDoUnregisterUser", false);
+            boolean toDoRegisterUser1 = prefs.getBoolean("toDoRegisterUser1", false);
+            boolean toDoUnregisterUser1 = prefs.getBoolean("toDoUnregisterUser1", false);
+            boolean toDoRegisterUser2 = prefs.getBoolean("toDoRegisterUser2", false);
+            boolean toDoUnregisterUser2 = prefs.getBoolean("toDoUnregisterUser2", false);
             SharedPreferences localSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            if (localSharedPreferences.getBoolean("pref_notify_switch", true) && !toDoRegisterUser && !toDoUnregisterUser) {
+            if (localSharedPreferences.getBoolean("pref_notify_switch", true) && !toDoRegisterUser1 && !toDoRegisterUser1 && !toDoUnregisterUser1 && !toDoUnregisterUser2) {
                 boolean isDataToChange = prefs.getBoolean("dataToChange", false);
                 boolean isModulesToChange = prefs.getBoolean("modulesToChange", false);
                 if (isDataToChange && !isModulesToChange) {
@@ -265,20 +269,40 @@ public class ReplacementsMain extends AppCompatActivity {
                     changeSetInServer(3);
                 }
             } else {
-                if (toDoRegisterUser) {
+                String urlUnregister;
+                String urlRegister;
+                if(prefs.getInt("chosenSchool", 1) == 1){
+                    urlRegister = ApplicationConstants.SCHOOL_SERVER_1;
+                }else{
+                    urlRegister = ApplicationConstants.SCHOOL_SERVER_2;
+                }
+                if (toDoRegisterUser1 || toDoRegisterUser2) {
                     Log.i(CLASS_NAME, "onResume toDoRegisterUser");
                     String FCMToken = FirebaseInstanceId.getInstance().getToken();
                     Intent profileRegister = new Intent(this, ProfileRegister.class);
                     profileRegister.putExtra("serverAction", 1);
                     profileRegister.putExtra("token", FCMToken);
+                    profileRegister.putExtra("url", urlRegister);
                     this.startService(profileRegister);
                 }
-                if (toDoUnregisterUser) {
-                    Log.i(CLASS_NAME, "onResume toDoUnregisterUser");
+                if (toDoUnregisterUser1) {
+                    urlUnregister = ApplicationConstants.SCHOOL_SERVER_1;
+                    Log.i(CLASS_NAME, "onResume toDoUnregisterUser1");
                     String FCMToken = FirebaseInstanceId.getInstance().getToken();
                     Intent profileRegister = new Intent(this, ProfileRegister.class);
                     profileRegister.putExtra("serverAction", 2);
                     profileRegister.putExtra("token", FCMToken);
+                    profileRegister.putExtra("url", urlUnregister);
+                    this.startService(profileRegister);
+                }
+                if (toDoUnregisterUser2) {
+                    urlUnregister = ApplicationConstants.SCHOOL_SERVER_2;
+                    Log.i(CLASS_NAME, "onResume toDoUnregisterUser2");
+                    String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                    Intent profileRegister = new Intent(this, ProfileRegister.class);
+                    profileRegister.putExtra("serverAction", 2);
+                    profileRegister.putExtra("token", FCMToken);
+                    profileRegister.putExtra("url", urlUnregister);
                     this.startService(profileRegister);
                 }
             }
@@ -391,12 +415,14 @@ public class ReplacementsMain extends AppCompatActivity {
 
         View hView =  mNavigationView.getHeaderView(0);
         LinearLayout drawerHeader = (LinearLayout) hView.findViewById(R.id.drawer_header);
+        TextView textHeader = (TextView)drawerHeader.findViewById(R.id.drawer_header_text);
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
         if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            drawerHeader.setBackgroundDrawable(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 1) == 1)? R.drawable.header_image_old : R.drawable.header_image));
+            drawerHeader.setBackgroundDrawable(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 1) == 1)? R.drawable.header_image_1 : R.drawable.header_image_2));
         } else {
-            drawerHeader.setBackground(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 1) == 1)? R.drawable.header_image_old : R.drawable.header_image));
+            drawerHeader.setBackground(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 1) == 1)? R.drawable.header_image_1 : R.drawable.header_image_2));
         }
+        textHeader.setText((prefs.getInt("chosenSchool", 1) == 1)? R.string.school_name_1 : R.string.school_name_2);
 
     //    setupActionBarDrawerToogle();
         if (mNavigationView != null) {
