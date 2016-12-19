@@ -58,6 +58,7 @@ public class ScheduleUpdate extends IntentService {
     private String prefixMain;
     private DbAdapter dbAdapter;
     private ScheduleUrlFilesDbAdapter scheduleUrlFilesDbAdapter;
+    private boolean checkServicePossible = true;
 
     public ScheduleUpdate(){
         super(CLASS_NAME);
@@ -74,6 +75,7 @@ public class ScheduleUpdate extends IntentService {
         //Zapisz w pamieci, ze do pobrania jest lista plikow w json dla planu jesli przyszlo dopiero co powiadomienie
         Bundle intentExtra = intent.getExtras();
         if(intentExtra != null) {
+            checkServicePossible = intentExtra.getBoolean("checkServicePossible", true);
             boolean jsonUpdate = intentExtra.getBoolean("jsonUpdate", false);
             if(jsonUpdate) {
                 sharedPrefEditor.putBoolean("scheduleUpdateJson", true);
@@ -348,15 +350,21 @@ public class ScheduleUpdate extends IntentService {
     }
 
     private void startCheckingService(){
-        Log.i(CLASS_NAME, "startCheckingService");
-        Intent serviceIntent = new Intent(this, ScheduleUpdate.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        am.setInexactRepeating (
-                AlarmManager.RTC,
-                System.currentTimeMillis(),
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-                pendingIntent);
+        if(checkServicePossible) {
+            Log.i(CLASS_NAME, "startCheckingService");
+            Intent serviceIntent = new Intent(this, ScheduleUpdate.class);
+            PendingIntent pendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+            am.setInexactRepeating(
+                    AlarmManager.RTC,
+                    System.currentTimeMillis(),
+                    AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                    pendingIntent);
+        }else{
+            Intent newIntent = new Intent("messageLoader");
+            newIntent.putExtra("finishService", "ScheduleUpdateFailure");
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
+        }
     }
 
     private void stopCheckingService(){
@@ -460,7 +468,7 @@ public class ScheduleUpdate extends IntentService {
 
 
             Intent newIntent = new Intent("messageLoader");
-            newIntent.putExtra("finishService", true);
+            newIntent.putExtra("finishService", "ScheduleUpdated");
             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
         }
     }

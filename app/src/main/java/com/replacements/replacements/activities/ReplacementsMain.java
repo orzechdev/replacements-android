@@ -82,7 +82,20 @@ public class ReplacementsMain extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_replacements_main);
+
+
+
+
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        SharedPreferences.Editor localEditor = prefs.edit();
+
+        //TODO - MOST IMPORTANT - CHANGING PREVIOUS VERSION TO CURRENT (DO NOT DELETE THIS TODO IN ORDER TO REMEMBER TO CHANGE IT ALWAYS BEFORE APP RELEASE!!!)
+        localEditor.putInt("appPreviousVersion", 8);
+        localEditor.apply();
+
+
+
+
 
         dbAdapter = new DbAdapter(this);
         dbAdapter.open();
@@ -114,55 +127,67 @@ public class ReplacementsMain extends AppCompatActivity {
         classDbAdapter = new ClassDbAdapter(this);
         teacherDbAdapter = new TeacherDbAdapter(this);
 
-        setupToolbar();
-        initNavigationDrawer();
 
-        Bundle intentExtra = getIntent().getExtras();
-        boolean isNotified;
 
-        //TODO
+        boolean first_run_db = prefs.getBoolean("first_run_db", true);
+        boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", true);
+        if(!first_run_db && !schoolChangeStarted){
+
+
+            setContentView(R.layout.activity_replacements_main);
+
+
+            setupToolbar();
+            initNavigationDrawer();
+
+            Bundle intentExtra = getIntent().getExtras();
+            boolean isNotified;
+
+            //TODO
 //        SharedPreferences mSharedPreferences2 = getSharedPreferences("dane", 0);
 //        SharedPreferences.Editor localEditor2 = mSharedPreferences2.edit();
 //        localEditor2.putInt("chosenSchool", 1);
 //        localEditor2.putBoolean("schoolToChange", false);
 //        localEditor2.putBoolean("schoolChangeStarted", false);
 //        localEditor2.apply();
-        //TODO
+            //TODO
 
 
-        if (savedInstanceState != null) {
-            Log.i("QQQQQQQQQ", "4");
-            mCurrentSelectedPosition = savedInstanceState.getInt("STATE_SELECTED_POSITION");
-            Menu menu = mNavigationView.getMenu();
-            menu.getItem(mCurrentSelectedPosition).setChecked(true);
-            menuItems(menu.getItem(mCurrentSelectedPosition));
-        } else if (intentExtra != null) {
-            Log.i("QQQQQQQQQ", "1");
-            isNotified = intentExtra.getBoolean("isNotified", false);
-            Log.i("resume", "2");
-            if (isNotified) {
-                Log.i("resume", "3");
-                int extraMenuItem = intentExtra.getInt("menuItem", 2);
+            if (savedInstanceState != null) {
+                Log.i("QQQQQQQQQ", "4");
+                mCurrentSelectedPosition = savedInstanceState.getInt("STATE_SELECTED_POSITION");
                 Menu menu = mNavigationView.getMenu();
-                menu.getItem(extraMenuItem).setChecked(true);
-                menuItems(menu.getItem(extraMenuItem));
-                if(extraMenuItem == 2){
-                    SharedPreferences mSharedPreferences = getSharedPreferences("dane", 0);
-                    SharedPreferences.Editor localEditor = mSharedPreferences.edit();
-                    localEditor.putLong("savedTime", 0);
-                    localEditor.apply();
+                menu.getItem(mCurrentSelectedPosition).setChecked(true);
+                menuItems(menu.getItem(mCurrentSelectedPosition));
+            } else if (intentExtra != null) {
+                Log.i("QQQQQQQQQ", "1");
+                isNotified = intentExtra.getBoolean("isNotified", false);
+                Log.i("resume", "2");
+                if (isNotified) {
+                    Log.i("resume", "3");
+                    int extraMenuItem = intentExtra.getInt("menuItem", 2);
+                    Menu menu = mNavigationView.getMenu();
+                    menu.getItem(extraMenuItem).setChecked(true);
+                    menuItems(menu.getItem(extraMenuItem));
+                    if (extraMenuItem == 2) {
+                        SharedPreferences mSharedPreferences = getSharedPreferences("dane", 0);
+                        SharedPreferences.Editor mLocalEditor = mSharedPreferences.edit();
+                        mLocalEditor.putLong("savedTime", 0);
+                        mLocalEditor.apply();
+                    }
+                } else {
+                    Log.i("QQQQQQQQQ", "5-1");
+                    Menu menu = mNavigationView.getMenu();
+                    menu.getItem(2).setChecked(true);
+                    menuItems(menu.getItem(2));
                 }
             } else {
-                Log.i("QQQQQQQQQ", "5-1");
+                Log.i("QQQQQQQQQ", "5-2");
                 Menu menu = mNavigationView.getMenu();
                 menu.getItem(2).setChecked(true);
                 menuItems(menu.getItem(2));
             }
-        } else {
-            Log.i("QQQQQQQQQ", "5-2");
-            Menu menu = mNavigationView.getMenu();
-            menu.getItem(2).setChecked(true);
-            menuItems(menu.getItem(2));
+
         }
 
 
@@ -249,71 +274,83 @@ public class ReplacementsMain extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
-        connManager = ((ConnectivityManager)getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE));
-        if ((connManager != null) && (connManager.getActiveNetworkInfo() != null)) {
-            boolean toDoRegisterUser1 = prefs.getBoolean("toDoRegisterUser1", false);
-            boolean toDoUnregisterUser1 = prefs.getBoolean("toDoUnregisterUser1", false);
-            boolean toDoRegisterUser2 = prefs.getBoolean("toDoRegisterUser2", false);
-            boolean toDoUnregisterUser2 = prefs.getBoolean("toDoUnregisterUser2", false);
-            SharedPreferences localSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            if (localSharedPreferences.getBoolean("pref_notify_switch", true) && !toDoRegisterUser1 && !toDoRegisterUser1 && !toDoUnregisterUser1 && !toDoUnregisterUser2) {
-                boolean isDataToChange = prefs.getBoolean("dataToChange", false);
-                boolean isModulesToChange = prefs.getBoolean("modulesToChange", false);
-                if (isDataToChange && !isModulesToChange) {
-                    changeSetInServer(1);
-                }
-                if (!isDataToChange && isModulesToChange) {
-                    changeSetInServer(2);
-                }
-                if (isDataToChange && isModulesToChange) {
-                    changeSetInServer(3);
-                }
-            } else {
-                String urlUnregister;
-                String urlRegister;
-                if(prefs.getInt("chosenSchool", 1) == 1){
-                    urlRegister = ApplicationConstants.SCHOOL_SERVER_1;
-                }else{
-                    urlRegister = ApplicationConstants.SCHOOL_SERVER_2;
-                }
-                if (toDoRegisterUser1 || toDoRegisterUser2) {
-                    Log.i(CLASS_NAME, "onResume toDoRegisterUser");
-                    String FCMToken = FirebaseInstanceId.getInstance().getToken();
-                    Intent profileRegister = new Intent(this, ProfileRegister.class);
-                    profileRegister.putExtra("serverAction", 1);
-                    profileRegister.putExtra("token", FCMToken);
-                    profileRegister.putExtra("url", urlRegister);
-                    this.startService(profileRegister);
-                }
-                if (toDoUnregisterUser1) {
-                    urlUnregister = ApplicationConstants.SCHOOL_SERVER_1;
-                    Log.i(CLASS_NAME, "onResume toDoUnregisterUser1");
-                    String FCMToken = FirebaseInstanceId.getInstance().getToken();
-                    Intent profileRegister = new Intent(this, ProfileRegister.class);
-                    profileRegister.putExtra("serverAction", 2);
-                    profileRegister.putExtra("token", FCMToken);
-                    profileRegister.putExtra("url", urlUnregister);
-                    this.startService(profileRegister);
-                }
-                if (toDoUnregisterUser2) {
-                    urlUnregister = ApplicationConstants.SCHOOL_SERVER_2;
-                    Log.i(CLASS_NAME, "onResume toDoUnregisterUser2");
-                    String FCMToken = FirebaseInstanceId.getInstance().getToken();
-                    Intent profileRegister = new Intent(this, ProfileRegister.class);
-                    profileRegister.putExtra("serverAction", 2);
-                    profileRegister.putExtra("token", FCMToken);
-                    profileRegister.putExtra("url", urlUnregister);
-                    this.startService(profileRegister);
+
+        boolean first_run_db = prefs.getBoolean("first_run_db", true);
+        boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", true);
+        if(first_run_db || schoolChangeStarted){
+            Intent intent = new Intent(this, ChooseSchool.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.putExtra("activityParentExists", true);
+            startActivity(intent);
+        }else {
+
+            connManager = ((ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE));
+            if ((connManager != null) && (connManager.getActiveNetworkInfo() != null)) {
+                boolean toDoRegisterUser1 = prefs.getBoolean("toDoRegisterUser1", false);
+                boolean toDoUnregisterUser1 = prefs.getBoolean("toDoUnregisterUser1", false);
+                boolean toDoRegisterUser2 = prefs.getBoolean("toDoRegisterUser2", false);
+                boolean toDoUnregisterUser2 = prefs.getBoolean("toDoUnregisterUser2", false);
+                SharedPreferences localSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                if (localSharedPreferences.getBoolean("pref_notify_switch", true) && !toDoRegisterUser1 && !toDoRegisterUser1 && !toDoUnregisterUser1 && !toDoUnregisterUser2) {
+                    boolean isDataToChange = prefs.getBoolean("dataToChange", false);
+                    boolean isModulesToChange = prefs.getBoolean("modulesToChange", false);
+                    if (isDataToChange && !isModulesToChange) {
+                        changeSetInServer(1);
+                    }
+                    if (!isDataToChange && isModulesToChange) {
+                        changeSetInServer(2);
+                    }
+                    if (isDataToChange && isModulesToChange) {
+                        changeSetInServer(3);
+                    }
+                } else {
+                    String urlUnregister;
+                    String urlRegister;
+                    if (prefs.getInt("chosenSchool", 1) == 1) {
+                        urlRegister = ApplicationConstants.SCHOOL_SERVER_1;
+                    } else {
+                        urlRegister = ApplicationConstants.SCHOOL_SERVER_2;
+                    }
+                    if (toDoRegisterUser1 || toDoRegisterUser2) {
+                        Log.i(CLASS_NAME, "onResume toDoRegisterUser");
+                        String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                        Intent profileRegister = new Intent(this, ProfileRegister.class);
+                        profileRegister.putExtra("serverAction", 1);
+                        profileRegister.putExtra("token", FCMToken);
+                        profileRegister.putExtra("url", urlRegister);
+                        this.startService(profileRegister);
+                    }
+                    if (toDoUnregisterUser1) {
+                        urlUnregister = ApplicationConstants.SCHOOL_SERVER_1;
+                        Log.i(CLASS_NAME, "onResume toDoUnregisterUser1");
+                        String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                        Intent profileRegister = new Intent(this, ProfileRegister.class);
+                        profileRegister.putExtra("serverAction", 2);
+                        profileRegister.putExtra("token", FCMToken);
+                        profileRegister.putExtra("url", urlUnregister);
+                        this.startService(profileRegister);
+                    }
+                    if (toDoUnregisterUser2) {
+                        urlUnregister = ApplicationConstants.SCHOOL_SERVER_2;
+                        Log.i(CLASS_NAME, "onResume toDoUnregisterUser2");
+                        String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                        Intent profileRegister = new Intent(this, ProfileRegister.class);
+                        profileRegister.putExtra("serverAction", 2);
+                        profileRegister.putExtra("token", FCMToken);
+                        profileRegister.putExtra("url", urlUnregister);
+                        this.startService(profileRegister);
+                    }
                 }
             }
-        }
-        String dirScheduleName = prefs.getString("scheduleFilesDirNameCurrent", "");
-        if (dirScheduleName.equals("")){
-            if (!prefs.getBoolean("scheduleUpdateToDo", false)) {
-                Intent scheduleIntent = new Intent(getBaseContext(), ScheduleUpdate.class);
-                scheduleIntent.putExtra("jsonUpdate", true);
-                startService(scheduleIntent);
+            String dirScheduleName = prefs.getString("scheduleFilesDirNameCurrent", "");
+            if (dirScheduleName.equals("")) {
+                if (!prefs.getBoolean("scheduleUpdateToDo", false)) {
+                    Intent scheduleIntent = new Intent(getBaseContext(), ScheduleUpdate.class);
+                    scheduleIntent.putExtra("jsonUpdate", true);
+                    startService(scheduleIntent);
+                }
             }
+
         }
     }
 

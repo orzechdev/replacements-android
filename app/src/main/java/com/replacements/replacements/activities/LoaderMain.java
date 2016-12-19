@@ -47,7 +47,10 @@ public class LoaderMain extends AppCompatActivity {
     private TextView textViewMainLoader;
     private Button buttonMainLoader;
     private String loadingSchoolData;
+    private String loadingSchoolDataError;
     private String noInternet;
+    private String schoolName1;
+    private String schoolName2;
     private boolean loadingInProgress;
     private ClassDbAdapter classDbAdapter;
     private TeacherDbAdapter teacherDbAdapter;
@@ -57,10 +60,12 @@ public class LoaderMain extends AppCompatActivity {
     private ScheduleUrlFilesDbAdapter scheduleUrlFilesDbAdapter;
     private ReplacementDbAdapter replacementDbAdapter;
     private boolean allTasksDone = true;
+    private boolean isBackPressPossible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_loader);
         if (Build.VERSION.SDK_INT >= 21)
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.blue_and_semi_transparent));
@@ -69,16 +74,19 @@ public class LoaderMain extends AppCompatActivity {
         textViewMainLoader = (TextView) findViewById(R.id.textViewMainLoader);
         buttonMainLoader = (Button) findViewById(R.id.buttonMainLoader);
         loadingSchoolData = getString(R.string.loading_school_data);
+        loadingSchoolDataError = getString(R.string.loading_school_data_error);
         noInternet = getString(R.string.no_internet_connect);
+        schoolName1 = getString(R.string.school_name_1);
+        schoolName2 = getString(R.string.school_name_2);
 
         ConnectivityManager connManager = ((ConnectivityManager)getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE));
         if ((connManager != null) && (connManager.getActiveNetworkInfo() != null)) {
-            textViewMainLoader.setText((loadingSchoolData + " - " + Integer.toString(getSharedPreferences("dane", Context.MODE_PRIVATE).getInt("chosenSchool", 0))));
+            textViewMainLoader.setText((((getSharedPreferences("dane", Context.MODE_PRIVATE).getInt("chosenSchool", 0) == 1)? schoolName1 : schoolName2) + "\n\n\n" + loadingSchoolData));
             buttonMainLoader.setVisibility(View.GONE);
 
-            loadData();
+        //    loadData();
         }else{
-            textViewMainLoader.setText((noInternet + " - " + Integer.toString(getSharedPreferences("dane", Context.MODE_PRIVATE).getInt("chosenSchool", 0))));
+            textViewMainLoader.setText((((getSharedPreferences("dane", Context.MODE_PRIVATE).getInt("chosenSchool", 0) == 1)? schoolName1 : schoolName2) + "\n\n\n" + noInternet));
             SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
             if(!prefs.getBoolean("schoolChangeStarted", false))
                 buttonMainLoader.setVisibility(View.VISIBLE);
@@ -95,39 +103,91 @@ public class LoaderMain extends AppCompatActivity {
         });
     }
 
+    private BroadcastReceiver mainBroadcast = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context arg0, Intent arg1) {
+            ConnectivityManager connManager = ((ConnectivityManager)getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE));
+            if ((connManager != null) && (connManager.getActiveNetworkInfo() != null)) {
+                textViewMainLoader.setText((((getSharedPreferences("dane", Context.MODE_PRIVATE).getInt("chosenSchool", 0) == 1)? schoolName1 : schoolName2) + "\n\n\n" + loadingSchoolData));
+                buttonMainLoader.setVisibility(View.GONE);
+
+                loadData();
+            }else{
+                textViewMainLoader.setText((((getSharedPreferences("dane", Context.MODE_PRIVATE).getInt("chosenSchool", 0) == 1)? schoolName1 : schoolName2) + "\n\n\n" + noInternet));
+                SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+                if(!prefs.getBoolean("schoolChangeStarted", false))
+                    buttonMainLoader.setVisibility(View.VISIBLE);
+            }
+        }
+    };
 
     @Override
     public void onResume() {
         super.onResume();
+
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mainBroadcast, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        //}
+        //LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("messageLoader"));
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, new IntentFilter("messageLoader"));
     }
 
     @Override
     public void onPause() {
         super.onPause();
+
+        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            unregisterReceiver(mainBroadcast);
+        //}
+        //LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
     }
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.hasExtra("networkIsOn")){
-                if(intent.getBooleanExtra("networkIsOn",false)) {
-//                    if (!isMyServiceRunning(ScheduleUpdate.class))
-//                        refreshAll();
-                    textViewMainLoader.setText(loadingSchoolData);
-                    buttonMainLoader.setVisibility(View.GONE);
-
-                    loadData();
-                }else{
-                    textViewMainLoader.setText(noInternet);
-                    SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
-                    if(!prefs.getBoolean("schoolChangeStarted", false))
-                        buttonMainLoader.setVisibility(View.VISIBLE);
-                }
-            }
             if(intent.hasExtra("finishService")){
-                finishLoadData();
+                //finishLoadData();
+                SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+                SharedPreferences.Editor localEditor = prefs.edit();
+                switch (intent.getExtras().getString("finishService","none")) {
+                    case "DataFetched":
+                        Log.e(CLASS_NAME, "mainBroadcast onReceive finishService DataFetched");
+                        localEditor.putInt("schoolChangeStep", 2);
+                        localEditor.apply();
+                        loadData();
+                        break;
+                    case "DataFetchedError":
+                        Log.e(CLASS_NAME, "mainBroadcast onReceive finishService DataFetchedError");
+                        localEditor.putInt("schoolChangeStep", 2);
+                        localEditor.apply();
+                        loadData();
+                        break;
+                    case "UserRegistered":
+                        Log.e(CLASS_NAME, "mainBroadcast onReceive finishService UserRegistered");
+                        localEditor.putInt("schoolChangeStep", 3);
+                        localEditor.apply();
+                        loadData();
+                        break;
+                    case "UserRegisterFailure":
+                        Log.e(CLASS_NAME, "mainBroadcast onReceive finishService UserRegisterFailure");
+                        textViewMainLoader.setText((((getSharedPreferences("dane", Context.MODE_PRIVATE).getInt("chosenSchool", 0) == 1)? schoolName1 : schoolName2) + "\n\n\n" + loadingSchoolDataError));
+                        buttonMainLoader.setVisibility(View.VISIBLE);
+                        isBackPressPossible = true;
+                        break;
+                    case "ScheduleUpdated":
+                        Log.e(CLASS_NAME, "mainBroadcast onReceive finishService ScheduleUpdated");
+                        localEditor.putInt("schoolChangeStep", 5);
+                        localEditor.apply();
+                        loadData();
+                        break;
+                    case "ScheduleUpdateFailure":
+                        Log.e(CLASS_NAME, "mainBroadcast onReceive finishService ScheduleUpdateFailure");
+                        textViewMainLoader.setText((((getSharedPreferences("dane", Context.MODE_PRIVATE).getInt("chosenSchool", 0) == 1)? schoolName1 : schoolName2) + "\n\n\n" + loadingSchoolDataError));
+                        buttonMainLoader.setVisibility(View.VISIBLE);
+                        isBackPressPossible = true;
+                        break;
+                }
             }
         }
     };
@@ -141,122 +201,176 @@ public class LoaderMain extends AppCompatActivity {
         localEditor.putBoolean("schoolChangeStarted", true);
         localEditor.apply();
 
-        Log.i(CLASS_NAME, "loadData classesTeachersData delete");
-        classDbAdapter = new ClassDbAdapter(getApplicationContext());
-        classDbAdapter.open();
-        classDbAdapter.deleteAllClasses();
-        classDbAdapter.close();
-        teacherDbAdapter = new TeacherDbAdapter(getApplicationContext());
-        teacherDbAdapter.open();
-        teacherDbAdapter.deleteAllTeachers();
-        teacherDbAdapter.close();
+        boolean jsonUpdate = false;
 
-        Log.i(CLASS_NAME, "loadData unregisterUser");
-        if(localSharedPreferences.getBoolean("pref_notify_switch", true)) {
-            String FCMToken = FirebaseInstanceId.getInstance().getToken();
-            //Choosing school url to delete
-            String url = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_2 : ApplicationConstants.SCHOOL_SERVER_1;
-            Intent profileRegister = new Intent(this, ProfileRegister.class);
-            profileRegister.putExtra("serverAction", 2);
-            profileRegister.putExtra("token", FCMToken);
-            profileRegister.putExtra("url", url);
-            this.startService(profileRegister);
-        }else{
-            if(prefs.getBoolean("toDoUnregisterUser1", false)){
+        int schoolChangeStep = prefs.getInt("schoolChangeStep", 0);
+
+        if(schoolChangeStep == 0) {
+
+            Log.i(CLASS_NAME, "loadData classesTeachersData delete");
+            classDbAdapter = new ClassDbAdapter(getApplicationContext());
+            classDbAdapter.open();
+            classDbAdapter.deleteAllClasses();
+            classDbAdapter.close();
+            teacherDbAdapter = new TeacherDbAdapter(getApplicationContext());
+            teacherDbAdapter.open();
+            teacherDbAdapter.deleteAllTeachers();
+            teacherDbAdapter.close();
+
+            Log.i(CLASS_NAME, "loadData unregisterUser");
+            if (localSharedPreferences.getBoolean("pref_notify_switch", true)) {
                 String FCMToken = FirebaseInstanceId.getInstance().getToken();
-                String url = ApplicationConstants.SCHOOL_SERVER_1;
+                //Choosing school url to delete
+                String url = (prefs.getInt("chosenSchool", 1) == 1) ? ApplicationConstants.SCHOOL_SERVER_2 : ApplicationConstants.SCHOOL_SERVER_1;
                 Intent profileRegister = new Intent(this, ProfileRegister.class);
                 profileRegister.putExtra("serverAction", 2);
                 profileRegister.putExtra("token", FCMToken);
                 profileRegister.putExtra("url", url);
                 this.startService(profileRegister);
+            } else {
+                if (prefs.getBoolean("toDoUnregisterUser1", false)) {
+                    String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                    String url = ApplicationConstants.SCHOOL_SERVER_1;
+                    Intent profileRegister = new Intent(this, ProfileRegister.class);
+                    profileRegister.putExtra("serverAction", 2);
+                    profileRegister.putExtra("token", FCMToken);
+                    profileRegister.putExtra("url", url);
+                    this.startService(profileRegister);
+                }
+                if (prefs.getBoolean("toDoUnregisterUser2", false)) {
+                    String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                    String url = ApplicationConstants.SCHOOL_SERVER_2;
+                    Intent profileRegister = new Intent(this, ProfileRegister.class);
+                    profileRegister.putExtra("serverAction", 2);
+                    profileRegister.putExtra("token", FCMToken);
+                    profileRegister.putExtra("url", url);
+                    this.startService(profileRegister);
+                }
             }
-            if(prefs.getBoolean("toDoUnregisterUser2", false)){
-                String FCMToken = FirebaseInstanceId.getInstance().getToken();
-                String url = ApplicationConstants.SCHOOL_SERVER_2;
-                Intent profileRegister = new Intent(this, ProfileRegister.class);
-                profileRegister.putExtra("serverAction", 2);
-                profileRegister.putExtra("token", FCMToken);
-                profileRegister.putExtra("url", url);
-                this.startService(profileRegister);
-            }
-        }
 
-        Log.i(CLASS_NAME, "loadData classesTeachersData get new");
-        startRequest();
-
-        Log.i(CLASS_NAME, "loadData registerUser");
-        if(localSharedPreferences.getBoolean("pref_notify_switch", true)) {
-            String FCMToken = FirebaseInstanceId.getInstance().getToken();
-            //Choosing school url to get
-            String url = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
-            Intent profileRegister = new Intent(this, ProfileRegister.class);
-            profileRegister.putExtra("serverAction", 1);
-            profileRegister.putExtra("token", FCMToken);
-            profileRegister.putExtra("url", url);
-            this.startService(profileRegister);
-        }
-
-        Log.i(CLASS_NAME, "loadData scheduleUpdate");
-        String dirCurrent = prefs.getString("scheduleFilesDirNameCurrent","");
-        if(!dirCurrent.equals("")) {
-            scheduleUrlFilesDbAdapter = new ScheduleUrlFilesDbAdapter(getApplicationContext());
-            scheduleUrlFilesDbAdapter.open();
-            scheduleUrlFilesDbAdapter.deleteAllUrls();
-            scheduleUrlFilesDbAdapter.close();
-            //Delete old files if exist
-            File dir = new File(getApplicationContext().getFilesDir() + File.separator + dirCurrent);
-            if (dir.isDirectory()) {
-                deleteOldFiles(dir);
-            }
-            localEditor.putString("scheduleFilesDirNameCurrent", "");
-            localEditor.putBoolean("scheduleUpdateToNotify", false);
+            localEditor.putInt("schoolChangeStep", 1);
             localEditor.apply();
+            schoolChangeStep = 1;
+            //loadData();
         }
-        Intent scheduleIntent = new Intent(getBaseContext(), ScheduleUpdate.class);
-        scheduleIntent.putExtra("jsonUpdate", true);
-        startService(scheduleIntent);
 
-        Log.i(CLASS_NAME, "loadData replacements delete");
-        localEditor.putString("repl_date_today", "0");
-        localEditor.putString("repl_date_tomorrow", "0");
-        localEditor.putString("repl_date_last", "0");
-        replacementDbAdapter = new ReplacementDbAdapter(getApplicationContext());
-        replacementDbAdapter.open();
-        replacementDbAdapter.deleteAllReplacements(true);
-        replacementDbAdapter.deleteAllReplacements(false);
-        replacementDbAdapter.close();
+        if(schoolChangeStep == 1){
 
-        //Reset other variable from application
-        localEditor.putString("repl_data_date_last", "0");
-        localEditor.putString("repl_date_today", "0");
-        localEditor.putString("repl_date_last", "0");
-        localEditor.putString("repl_date_tomorrow", "0");
-        localEditor.apply();
+            Log.i(CLASS_NAME, "loadData classesTeachersData get new");
+            startRequest();
 
-        //Main variable using in loading data
-        localEditor.putBoolean("schoolToChange", false);
-        localEditor.putBoolean("schoolChangeStarted", false);
-        localEditor.apply();
+            //Log.e(CLASS_NAME, "mainBroadcast onReceive finishService DataFetched / DataFetchedError");
+            //localEditor.putInt("schoolChangeStep", 2);
+            //localEditor.apply();
 
-        allTasksDone = true;
+        }else if(schoolChangeStep == 2){
 
-        finishLoadData();
+            Log.i(CLASS_NAME, "loadData registerUser");
+            if(localSharedPreferences.getBoolean("pref_notify_switch", true)) {
+                String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                //Choosing school url to get
+                String url = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+                Intent profileRegister = new Intent(this, ProfileRegister.class);
+                profileRegister.putExtra("serverAction", 1);
+                profileRegister.putExtra("token", FCMToken);
+                profileRegister.putExtra("url", url);
+                this.startService(profileRegister);
+            }
+
+            //Log.e(CLASS_NAME, "mainBroadcast onReceive finishService UserRegistered");
+            //localEditor.putInt("schoolChangeStep", 3);
+            //localEditor.apply();
+
+        }else if(schoolChangeStep == 3){
+
+            Log.i(CLASS_NAME, "loadData scheduleUpdate");
+            String dirCurrent = prefs.getString("scheduleFilesDirNameCurrent","");
+            if(!dirCurrent.equals("")) {
+                scheduleUrlFilesDbAdapter = new ScheduleUrlFilesDbAdapter(getApplicationContext());
+                scheduleUrlFilesDbAdapter.open();
+                scheduleUrlFilesDbAdapter.deleteAllUrls();
+                scheduleUrlFilesDbAdapter.close();
+                //Delete old files if exist
+                File dir = new File(getApplicationContext().getFilesDir() + File.separator + dirCurrent);
+                if (dir.isDirectory()) {
+                    deleteOldFiles(dir);
+                }
+                localEditor.putString("scheduleFilesDirNameCurrent", "");
+                localEditor.putBoolean("scheduleUpdateToNotify", false);
+                localEditor.apply();
+            }
+
+            localEditor.putInt("schoolChangeStep", 4);
+            localEditor.apply();
+            schoolChangeStep = 4;
+
+            jsonUpdate = true;
+
+        }
+
+        if(schoolChangeStep == 4){
+
+            Intent scheduleIntent = new Intent(getBaseContext(), ScheduleUpdate.class);
+            if(jsonUpdate)
+                scheduleIntent.putExtra("jsonUpdate", true);
+            scheduleIntent.putExtra("checkServicePossible", false);
+            startService(scheduleIntent);
+
+            //Log.e(CLASS_NAME, "mainBroadcast onReceive finishService ScheduleUpdated");
+            //localEditor.putInt("schoolChangeStep", 5);
+            //localEditor.apply();
+
+        }else if(schoolChangeStep == 5) {
+
+            Log.i(CLASS_NAME, "loadData replacements delete");
+            localEditor.putString("repl_date_today", "0");
+            localEditor.putString("repl_date_tomorrow", "0");
+            localEditor.putString("repl_date_last", "0");
+            replacementDbAdapter = new ReplacementDbAdapter(getApplicationContext());
+            replacementDbAdapter.open();
+            replacementDbAdapter.deleteAllReplacements(true);
+            replacementDbAdapter.deleteAllReplacements(false);
+            replacementDbAdapter.close();
+
+            //Reset other variable from application
+            localEditor.putString("repl_data_date_last", "0");
+            localEditor.putString("repl_date_today", "0");
+            localEditor.putString("repl_date_last", "0");
+            localEditor.putString("repl_date_tomorrow", "0");
+            localEditor.apply();
+
+            //Main variable using in loading data
+            localEditor.putBoolean("schoolToChange", false);
+            localEditor.putBoolean("schoolChangeStarted", false);
+            localEditor.apply();
+
+            allTasksDone = true;
+
+            localEditor.putInt("schoolChangeStep", 0);
+            localEditor.apply();
+
+            finishLoadData();
+
+        }
     }
 
     //check whether services is finished in loadData() and then run main activity (but without unregister service, because if previous school site doesn't work, user can't wait until it'll work)
     private void finishLoadData(){
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
-        boolean toDoRegisterUser;
-        if(prefs.getInt("chosenSchool", 1) == 1){
-            toDoRegisterUser = prefs.getBoolean("toDoRegisterUser1", false);
-        }else{
-            toDoRegisterUser = prefs.getBoolean("toDoRegisterUser2", false);
-        }
-        boolean scheduleUpdateToDo = prefs.getBoolean("scheduleUpdateToDo",false);
-        if(allTasksDone && !toDoRegisterUser && !scheduleUpdateToDo){
+//        boolean toDoRegisterUser;
+//        if(prefs.getInt("chosenSchool", 1) == 1){
+//            toDoRegisterUser = prefs.getBoolean("toDoRegisterUser1", false);
+//        }else{
+//            toDoRegisterUser = prefs.getBoolean("toDoRegisterUser2", false);
+//        }
+//        boolean scheduleUpdateToDo = prefs.getBoolean("scheduleUpdateToDo",false);
+        //if(allTasksDone && !toDoRegisterUser && !scheduleUpdateToDo){
+            SharedPreferences.Editor localEditor = prefs.edit();
+            localEditor.putBoolean("first_run_db", false);
+            localEditor.apply();
+
             runMainActivity();
-        }
+        //}
     }
 
     private void runMainActivity(){
@@ -269,7 +383,7 @@ public class LoaderMain extends AppCompatActivity {
     public void onBackPressed() {
         Log.i(CLASS_NAME,"onBackPressed 0");
         ConnectivityManager connManager = ((ConnectivityManager)getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE));
-        if (!((connManager != null) && (connManager.getActiveNetworkInfo() != null))) {
+        if ((!((connManager != null) && (connManager.getActiveNetworkInfo() != null))) || isBackPressPossible) {
             Log.i(CLASS_NAME,"onBackPressed 1");
             super.onBackPressed();
         }
@@ -409,6 +523,11 @@ public class LoaderMain extends AppCompatActivity {
                     Log.i("Profile Request Success", "Delete Data Teacher");
                 }
                 teacherDbAdapter.close();
+
+
+                Intent newIntent = new Intent("messageLoader");
+                newIntent.putExtra("finishService", "DataFetched");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
             }
         };
     }
@@ -417,6 +536,11 @@ public class LoaderMain extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i("Profile Request Error", "Error");
+
+
+                Intent newIntent = new Intent("messageLoader");
+                newIntent.putExtra("finishService", "DataFetchedError");
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
             }
         };
     }

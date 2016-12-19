@@ -18,6 +18,7 @@ import com.replacements.replacements.data.TeacherDbAdapter;
 /**
  * Created by Dawid on 2016-08-14.
  */
+//TODO CHECK WHETHER FIREBASE NOTIFICATIONS WORK PROPERLY UNDER ANDROID NOUGAT IN BroadcastReceiver
 public class MainReceiver extends BroadcastReceiver {
     private static final String CLASS_NAME =  MainReceiver.class.getName();
 
@@ -25,6 +26,7 @@ public class MainReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.i("MainReceiver","onReceive 1");
         //android.net.conn.CONNECTIVITY_CHANGE
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();

@@ -37,6 +37,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:visibility="gone"
-        android:text="Choose other school"/>
+        android:text="@string/choose_other_school"/>
 
 </RelativeLayout>

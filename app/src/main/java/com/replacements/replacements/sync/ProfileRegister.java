@@ -111,7 +111,7 @@ public class ProfileRegister extends IntentService {
                         localEditor.apply();
 
                         Intent newIntent = new Intent("messageLoader");
-                        newIntent.putExtra("finishService", true);
+                        newIntent.putExtra("finishService", "UserRegistered");
                         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
                     }
 
@@ -135,6 +135,10 @@ public class ProfileRegister extends IntentService {
                             //Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running], check for other errors as well
                             Log.i("GcmUserRegistration", "storeRegIdinServer 4");
                         }
+
+                        Intent newIntent = new Intent("messageLoader");
+                        newIntent.putExtra("finishService", "UserRegisterFailure");
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
                     }
                 });
     }

@@ -83,5 +83,7 @@
     <string name="refreshed_all_schedules">Odświeżanie wszystkich planów zakończone.</string>
     <string name="pref_school">Wybrana uczelnia</string>
     <string name="pref_school_summary">Nazwa uczelni</string>
-    <string name="loading_school_data">Trwa ładowanie danych uczelni&#8230;</string>
+    <string name="loading_school_data">Trwa pobieranie danych uczelni&#8230;</string>
+    <string name="choose_other_school">Wybierz inną uczelnię</string>
+    <string name="loading_school_data_error">Nie udało się pobrać danych uczelni. Spróbuj ponownie później.</string>
 </resources>
