@@ -142,7 +142,7 @@
             android:name=".sync.MainReceiver"
             android:exported="true"> <!-- android:debuggable="true" -->
             <intent-filter>
-                <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> -->
+                <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> TODO SHOULD IT BE COMMENT OF SHOULD IT WORKS?-->
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>

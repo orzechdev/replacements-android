@@ -49,7 +49,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="0.7"
                 android:background="@color/blue_light"
-                android:src="@drawable/header_image_1"
+                android:src="@drawable/header_image_1_c"
                 android:id="@+id/schoolImage1"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"/>
@@ -88,7 +88,7 @@
                 android:layout_height="fill_parent"
                 android:layout_weight="0.7"
                 android:background="@color/blue_light"
-                android:src="@drawable/header_image_2"
+                android:src="@drawable/header_image_2_c"
                 android:id="@+id/schoolImage3"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"/>
