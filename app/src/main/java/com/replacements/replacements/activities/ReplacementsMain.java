@@ -508,7 +508,7 @@ public class ReplacementsMain extends AppCompatActivity {
                     FragmentTransaction ftProfile = fmProfile.beginTransaction();
                     //        ftProfile.remove(fmProfile.findFragmentById(R.id.content_frame));
                     ftProfile.replace(R.id.content_frame, fragmentProfile);
-                    ftProfile.commit();
+                    ftProfile.commitAllowingStateLoss();
                     Log.i("WYBRANO", "1a");
 
                     // Insert pages into viewPager and tabs from viewPager to tabLayout and set visibility
@@ -580,7 +580,7 @@ public class ReplacementsMain extends AppCompatActivity {
                 FragmentManager fmHome = getSupportFragmentManager();
                 FragmentTransaction ftHome = fmHome.beginTransaction();
                 ftHome.replace(R.id.content_frame, fragmentHome);
-                ftHome.commit();
+                ftHome.commitAllowingStateLoss();
                 configChanged = false;
                 break;
             // Wybranie zastepstw i podmiana odpowiedniego fragmentu
@@ -613,7 +613,7 @@ public class ReplacementsMain extends AppCompatActivity {
                 FragmentManager fmReplacements = getSupportFragmentManager();
                 FragmentTransaction ftReplacements = fmReplacements.beginTransaction();
                 ftReplacements.replace(R.id.content_frame, fragmentReplacements);
-                ftReplacements.commit();
+                ftReplacements.commitAllowingStateLoss();
                 configChanged = false;
                 break;
             // Wybranie planu i podmiana odpowiedniego fragmentu
@@ -642,7 +642,7 @@ public class ReplacementsMain extends AppCompatActivity {
                 FragmentManager fmSchedule = getSupportFragmentManager();
                 FragmentTransaction ftSchedule = fmSchedule.beginTransaction();
                 ftSchedule.replace(R.id.content_frame, fragmentSchedule);
-                ftSchedule.commit();
+                ftSchedule.commitAllowingStateLoss();
                 configChanged = false;
 //                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 //                String urlIntent = prefs.getString("schedule_url", "http://zschocianow.pl/plan/");

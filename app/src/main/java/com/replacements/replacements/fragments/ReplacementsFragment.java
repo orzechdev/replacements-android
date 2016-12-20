@@ -60,6 +60,7 @@ public class ReplacementsFragment extends DialogFragment {
     private ArrayList<Long> myTeachersNum = new ArrayList<>();
     private ArrayList<Long> myClassesSelect = new ArrayList<>();
     private ArrayList<Long> myTeachersSelect = new ArrayList<>();
+    private ArrayList<String> myTeachersSelectNames = new ArrayList<>();
     private ArrayList<ReplacementTask> myReplacements = new ArrayList<>();
     private int todayReplCount;
     private int tomorrowReplCount;
@@ -471,7 +472,7 @@ public class ReplacementsFragment extends DialogFragment {
         }else if(!isRefreshed && !isError){
 //            readReplacementsFromSQLite();
 //            mAdapter.notifyDataSetChanged();
-            ((ReplacementsMain)getActivity()).selectMenuItem(2);
+            ((ReplacementsMain) getActivity()).selectMenuItem(2);
             Snackbar.make(getActivity().findViewById(R.id.drawer_layout), refreshed_no_repl, Snackbar.LENGTH_LONG).show();
             Log.i("Request Finish", "No replacements");
         }else if(!isRefreshed && isError){
@@ -728,6 +729,7 @@ public class ReplacementsFragment extends DialogFragment {
                     newTeacherTask = new TeacherTask(id, name);
                     if(selected) {
                         myTeachersSelect.add(id);
+                        myTeachersSelectNames.add(name);
                     }
                     myTeachersNum.add(id);
                     myTeachers.add(newTeacherTask);
@@ -992,7 +994,7 @@ public class ReplacementsFragment extends DialogFragment {
                 }
                 long newClassNumber = replTask.getClassNumber();
                 long newDefaultInteger = replTask.getDefaultInteger();
-                if (mClassesSelect.contains(newClassNumber) || (mTeachersSelect.contains(newDefaultInteger))) {
+                if (mClassesSelect.contains(newClassNumber) || mTeachersSelect.contains(newDefaultInteger) || myTeachersSelectNames.contains(Html.fromHtml(replTask.getReplacement()).toString())) {
                     holder.rowHighlight.setVisibility(View.VISIBLE);
                 } else {
                     holder.rowHighlight.setVisibility(View.INVISIBLE);
