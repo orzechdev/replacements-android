@@ -357,6 +357,19 @@ public class ReplacementsMain extends AppCompatActivity {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("STATE_SELECTED_POSITION", mCurrentSelectedPosition);
+
+//        if (mCurrentSelectedPosition == 0) {
+//            getSupportFragmentManager().putFragment(outState, "profileFragmentClass", profileFragmentClass);
+//            getSupportFragmentManager().putFragment(outState, "profileFragmentTeacher", profileFragmentTeacher);
+//        }
+        if (profileFragmentClass != null) {
+            Log.i("asdfghjk", "PROBLEM 2 - 100");
+            getSupportFragmentManager().putFragment(outState, "profileFragmentClass", profileFragmentClass);
+        }
+        if (profileFragmentTeacher != null) {
+            Log.i("asdfghjk", "PROBLEM 2 - 200");
+            getSupportFragmentManager().putFragment(outState, "profileFragmentTeacher", profileFragmentTeacher);
+        }
     }
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -364,6 +377,19 @@ public class ReplacementsMain extends AppCompatActivity {
         Menu menu = mNavigationView.getMenu();
         menu.getItem(mCurrentSelectedPosition).setChecked(true);
         menuItems(menu.getItem(mCurrentSelectedPosition));
+
+//        if(mCurrentSelectedPosition == 0) {
+//            profileFragmentClass = (ProfileFragmentClass) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass");
+//            profileFragmentTeacher = (ProfileFragmentTeacher) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher");
+//        }
+        if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass") != null){
+            Log.i("asdfghjk", "PROBLEM 3 - 100");
+            profileFragmentClass = (ProfileFragmentClass) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass");
+        }
+        if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher") != null){
+            Log.i("asdfghjk", "PROBLEM 3 - 200");
+            profileFragmentTeacher = (ProfileFragmentTeacher) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher");
+        }
     }
 
     private void setupToolbar() {
@@ -378,20 +404,21 @@ public class ReplacementsMain extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
     }
     public void setupViewPager(ViewPager viewPager) {
-        if(adapter == null) {
+        //if(adapter == null) {
             adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        }
+        //}
         if(profileFragmentClass == null) {
             profileFragmentClass = new ProfileFragmentClass();
-            adapter.addFrag(profileFragmentClass, getString(R.string.tab_class));
         }
+        adapter.addFrag(profileFragmentClass, getString(R.string.tab_class));
         if(profileFragmentTeacher == null) {
             profileFragmentTeacher = new ProfileFragmentTeacher();
-            adapter.addFrag(profileFragmentTeacher, getString(R.string.tab_teacher));
         }
+        adapter.addFrag(profileFragmentTeacher, getString(R.string.tab_teacher));
         viewPager.setAdapter(adapter);
         Log.i("WYBRANO", "Add");
     }
+
 //    public ViewPagerAdapter getCurrentViewPage(){
 //        return adapter;
 //    }
