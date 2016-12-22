@@ -39,7 +39,13 @@
 #-keep class sun.misc.Unsafe { *; }
 
 # Add any classes the interact with gson
--keep class com.replacements.replacements.** { *; }
+########################    -keep class com.replacements.replacements.** { *; }
+
+# Models cannot be change, becouse it has be the same as in message in json
+-keep class com.replacements.replacements.models.** { *; }
+#-keep class com.replacements.replacements.sync.** { *; }
+#-keep class com.replacements.replacements.interfaces.** { *; }
+#-keep class com.replacements.replacements.data.** { *; }
 
 -keepattributes *Annotation*
 -keepattributes Signature
