@@ -139,6 +139,8 @@ public class ReplacementsMain extends AppCompatActivity {
             //In first version of app default school was ZS Chocianow, so it should be selected if app was then installed (when app had just ZS Chocianow school)
             if(prefs.getInt("chosenSchool", 0) == 0) {
                 localEditor.putInt("chosenSchool", 2);
+                localEditor.putBoolean("schoolToChange", false);
+                localEditor.putBoolean("schoolChangeStarted", false);
                 localEditor.apply();
             }
 
