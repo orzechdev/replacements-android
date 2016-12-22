@@ -18,7 +18,6 @@ import com.replacements.replacements.data.TeacherDbAdapter;
 /**
  * Created by Dawid on 2016-08-14.
  */
-//TODO CHECK WHETHER FIREBASE NOTIFICATIONS WORK PROPERLY UNDER ANDROID NOUGAT IN BroadcastReceiver
 public class MainReceiver extends BroadcastReceiver {
     private static final String CLASS_NAME =  MainReceiver.class.getName();
 

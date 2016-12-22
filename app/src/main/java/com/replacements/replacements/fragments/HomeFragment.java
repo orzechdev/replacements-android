@@ -57,6 +57,10 @@ public class HomeFragment extends Fragment {
     private ArrayList<HomeCardView> myCardViews = new ArrayList<HomeCardView>();
     private TextView mTextView;
 
+    public HomeFragment() {
+        // Required empty public constructor
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

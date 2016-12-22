@@ -67,6 +67,10 @@ public class ReplacementsMain extends AppCompatActivity {
     public boolean rotationChanged;
     private int currentProfileTab;
     private ViewPagerAdapter adapter;
+    public ProfileFragment profileFragment;
+    public HomeFragment homeFragment;
+    public ScheduleFragment scheduleFragment;
+    public ReplacementsFragment replacementsFragment;
     public ProfileFragmentClass profileFragmentClass;
     public ProfileFragmentTeacher profileFragmentTeacher;
     private DbAdapter dbAdapter;
@@ -92,7 +96,6 @@ public class ReplacementsMain extends AppCompatActivity {
         //TODO - MOST IMPORTANT - CHANGING PREVIOUS VERSION TO CURRENT (DO NOT DELETE THIS TODO IN ORDER TO REMEMBER TO CHANGE IT ALWAYS BEFORE APP RELEASE!!!)
         localEditor.putInt("appPreviousVersion", 8);
         localEditor.apply();
-
 
 
 
@@ -130,9 +133,14 @@ public class ReplacementsMain extends AppCompatActivity {
 
 
         boolean first_run_db = prefs.getBoolean("first_run_db", true);
-        boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", true);
+        boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", false);
         if(!first_run_db && !schoolChangeStarted){
 
+            //In first version of app default school was ZS Chocianow, so it should be selected if app was then installed (when app had just ZS Chocianow school)
+            if(prefs.getInt("chosenSchool", 0) == 0) {
+                localEditor.putInt("chosenSchool", 2);
+                localEditor.apply();
+            }
 
             setContentView(R.layout.activity_replacements_main);
 
@@ -142,15 +150,6 @@ public class ReplacementsMain extends AppCompatActivity {
 
             Bundle intentExtra = getIntent().getExtras();
             boolean isNotified;
-
-            //TODO
-//        SharedPreferences mSharedPreferences2 = getSharedPreferences("dane", 0);
-//        SharedPreferences.Editor localEditor2 = mSharedPreferences2.edit();
-//        localEditor2.putInt("chosenSchool", 1);
-//        localEditor2.putBoolean("schoolToChange", false);
-//        localEditor2.putBoolean("schoolChangeStarted", false);
-//        localEditor2.apply();
-            //TODO
 
 
             if (savedInstanceState != null) {
@@ -276,7 +275,7 @@ public class ReplacementsMain extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
 
         boolean first_run_db = prefs.getBoolean("first_run_db", true);
-        boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", true);
+        boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", false);
         if(first_run_db || schoolChangeStarted){
             Intent intent = new Intent(this, ChooseSchool.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -356,6 +355,7 @@ public class ReplacementsMain extends AppCompatActivity {
 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.i(CLASS_NAME, "onSaveInstanceState 1");
         outState.putInt("STATE_SELECTED_POSITION", mCurrentSelectedPosition);
 
 //        if (mCurrentSelectedPosition == 0) {
@@ -363,33 +363,75 @@ public class ReplacementsMain extends AppCompatActivity {
 //            getSupportFragmentManager().putFragment(outState, "profileFragmentTeacher", profileFragmentTeacher);
 //        }
         if (profileFragmentClass != null) {
-            Log.i("asdfghjk", "PROBLEM 2 - 100");
+            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 100");
             getSupportFragmentManager().putFragment(outState, "profileFragmentClass", profileFragmentClass);
         }
         if (profileFragmentTeacher != null) {
-            Log.i("asdfghjk", "PROBLEM 2 - 200");
+            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 200");
             getSupportFragmentManager().putFragment(outState, "profileFragmentTeacher", profileFragmentTeacher);
         }
+//        if (profileFragment != null) {
+//            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 300");
+//            getSupportFragmentManager().putFragment(outState, "profileFragment", profileFragment);
+//        }
+//        if (homeFragment != null) {
+//            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 400");
+//            getSupportFragmentManager().putFragment(outState, "homeFragment", homeFragment);
+//        }
+//        if (scheduleFragment != null) {
+//            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 500");
+//            getSupportFragmentManager().putFragment(outState, "scheduleFragment", scheduleFragment);
+//        }
+//        if (replacementsFragment != null) {
+//            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 600");
+//            getSupportFragmentManager().putFragment(outState, "replacementsFragment", replacementsFragment);
+//        }
+        Log.i(CLASS_NAME, "onSaveInstanceState 3");
+//    public ProfileFragment profileFragment;
+//    public HomeFragment homeFragment;
+//    public ScheduleFragment scheduleFragment;
+//    public ReplacementsFragment replacementsFragment;
+//    public ProfileFragmentClass profileFragmentClass;
+//    public ProfileFragmentTeacher profileFragmentTeacher;
     }
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        Log.i(CLASS_NAME, "onRestoreInstanceState 1");
         mCurrentSelectedPosition = savedInstanceState.getInt("STATE_SELECTED_POSITION", 0);
         Menu menu = mNavigationView.getMenu();
         menu.getItem(mCurrentSelectedPosition).setChecked(true);
         menuItems(menu.getItem(mCurrentSelectedPosition));
+        Log.i(CLASS_NAME, "onRestoreInstanceState 2");
 
 //        if(mCurrentSelectedPosition == 0) {
 //            profileFragmentClass = (ProfileFragmentClass) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass");
 //            profileFragmentTeacher = (ProfileFragmentTeacher) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher");
 //        }
         if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass") != null){
-            Log.i("asdfghjk", "PROBLEM 3 - 100");
+            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 100");
             profileFragmentClass = (ProfileFragmentClass) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass");
         }
         if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher") != null){
-            Log.i("asdfghjk", "PROBLEM 3 - 200");
+            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 200");
             profileFragmentTeacher = (ProfileFragmentTeacher) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher");
         }
+//        if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragment") != null){
+//            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 300");
+//            profileFragment = (ProfileFragment) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragment");
+//        }
+//        if(getSupportFragmentManager().getFragment(savedInstanceState, "homeFragment") != null){
+//            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 400");
+//            homeFragment = (HomeFragment) getSupportFragmentManager().getFragment(savedInstanceState, "homeFragment");
+//        }
+//        if(getSupportFragmentManager().getFragment(savedInstanceState, "scheduleFragment") != null){
+//            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 500");
+//            scheduleFragment = (ScheduleFragment) getSupportFragmentManager().getFragment(savedInstanceState, "scheduleFragment");
+//        }
+//        if(getSupportFragmentManager().getFragment(savedInstanceState, "replacementsFragment") != null){
+//            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 600");
+//            replacementsFragment = (ReplacementsFragment) getSupportFragmentManager().getFragment(savedInstanceState, "replacementsFragment");
+//        }
+        Log.i(CLASS_NAME, "onRestoreInstanceState 4");
     }
 
     private void setupToolbar() {
@@ -482,11 +524,11 @@ public class ReplacementsMain extends AppCompatActivity {
         TextView textHeader = (TextView)drawerHeader.findViewById(R.id.drawer_header_text);
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
         if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            drawerHeader.setBackgroundDrawable(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 1) == 1)? R.drawable.header_image_1 : R.drawable.header_image_2));
+            drawerHeader.setBackgroundDrawable(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 0) == 1)? R.drawable.header_image_1 : R.drawable.header_image_2));
         } else {
-            drawerHeader.setBackground(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 1) == 1)? R.drawable.header_image_1 : R.drawable.header_image_2));
+            drawerHeader.setBackground(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 0) == 1)? R.drawable.header_image_1 : R.drawable.header_image_2));
         }
-        textHeader.setText((prefs.getInt("chosenSchool", 1) == 1)? R.string.school_name_1 : R.string.school_name_2);
+        textHeader.setText((prefs.getInt("chosenSchool", 0) == 1)? R.string.school_name_1 : R.string.school_name_2);
 
     //    setupActionBarDrawerToogle();
         if (mNavigationView != null) {
@@ -529,12 +571,14 @@ public class ReplacementsMain extends AppCompatActivity {
 
                 viewPager = (ViewPager) findViewById(R.id.viewpager);
                 if(!configChanged || rotationChanged) {
-                    Fragment fragmentProfile = new ProfileFragment();
+                    //if(profileFragment == null) {
+                        profileFragment = new ProfileFragment();
+                    //}
                     // Insert the fragment by replacing any existing fragment
                     FragmentManager fmProfile = getSupportFragmentManager();
                     FragmentTransaction ftProfile = fmProfile.beginTransaction();
                     //        ftProfile.remove(fmProfile.findFragmentById(R.id.content_frame));
-                    ftProfile.replace(R.id.content_frame, fragmentProfile);
+                    ftProfile.replace(R.id.content_frame, profileFragment);
                     ftProfile.commitAllowingStateLoss();
                     Log.i("WYBRANO", "1a");
 
@@ -602,11 +646,13 @@ public class ReplacementsMain extends AppCompatActivity {
                 }
                 visibilityTabLayout(tabLayout);
 
-                Fragment fragmentHome = new HomeFragment();
+                //if(homeFragment == null) {
+                    homeFragment = new HomeFragment();
+                //}
                 // Insert the fragment by replacing any existing fragment
                 FragmentManager fmHome = getSupportFragmentManager();
                 FragmentTransaction ftHome = fmHome.beginTransaction();
-                ftHome.replace(R.id.content_frame, fragmentHome);
+                ftHome.replace(R.id.content_frame, homeFragment);
                 ftHome.commitAllowingStateLoss();
                 configChanged = false;
                 break;
@@ -631,7 +677,9 @@ public class ReplacementsMain extends AppCompatActivity {
                 }
                 visibilityTabLayout(tabLayout);
 
-                Fragment fragmentReplacements = new ReplacementsFragment();
+                //if(replacementsFragment == null) {
+                    replacementsFragment = new ReplacementsFragment();
+                //}
                 //Bundle args = new Bundle();
                 //args.putInt(ReplacementsFragment.ARG_PLANET_NUMBER, position);
                 //fragment.setArguments(args);
@@ -639,7 +687,7 @@ public class ReplacementsMain extends AppCompatActivity {
                 // Insert the fragment by replacing any existing fragment
                 FragmentManager fmReplacements = getSupportFragmentManager();
                 FragmentTransaction ftReplacements = fmReplacements.beginTransaction();
-                ftReplacements.replace(R.id.content_frame, fragmentReplacements);
+                ftReplacements.replace(R.id.content_frame, replacementsFragment);
                 ftReplacements.commitAllowingStateLoss();
                 configChanged = false;
                 break;
@@ -665,10 +713,12 @@ public class ReplacementsMain extends AppCompatActivity {
                 }
                 visibilityTabLayout(tabLayout);
 
-                Fragment fragmentSchedule = new ScheduleFragment();
+                //if(scheduleFragment == null) {
+                    scheduleFragment = new ScheduleFragment();
+                //}
                 FragmentManager fmSchedule = getSupportFragmentManager();
                 FragmentTransaction ftSchedule = fmSchedule.beginTransaction();
-                ftSchedule.replace(R.id.content_frame, fragmentSchedule);
+                ftSchedule.replace(R.id.content_frame, scheduleFragment);
                 ftSchedule.commitAllowingStateLoss();
                 configChanged = false;
 //                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -688,6 +738,30 @@ public class ReplacementsMain extends AppCompatActivity {
             default:
         }
     }
+
+//    private Fragment saveLastFragment(int positionInMenu){
+//        switch (positionInMenu) {
+//            // Profil
+//            case 0:
+//                if (profileFragmentClass != null) {
+//                    Log.i("asdfghjk", "PROBLEM 2 - 100");
+//                    getSupportFragmentManager().putFragment(outState, "profileFragment", profileFragment);
+//                }
+//                break;
+//            // Aktualnosci
+//            case 1:
+//
+//                break;
+//            // Zastepstwa
+//            case 2:
+//
+//                break;
+//            // Plan
+//            case 3:
+//
+//                break;
+//        }
+//    }
 
 
     public ArrayList<Long> readAllFromSQLite() {

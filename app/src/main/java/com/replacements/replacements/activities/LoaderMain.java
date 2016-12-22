@@ -70,7 +70,6 @@ public class LoaderMain extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 21)
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.blue_and_semi_transparent));
 
-        //TODO
         textViewMainLoader = (TextView) findViewById(R.id.textViewMainLoader);
         buttonMainLoader = (Button) findViewById(R.id.buttonMainLoader);
         loadingSchoolData = getString(R.string.loading_school_data);

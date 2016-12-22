@@ -227,8 +227,20 @@ public class ScheduleFragment extends Fragment implements Observer {
 
         htmlJSInterface.addObserver(this);
         webView.addJavascriptInterface(htmlJSInterface, "HTMLOUT");
+
+        //TODO bellow to delete if doesn't solve problem
+        if (savedInstanceState != null)
+            webView.restoreState(savedInstanceState);
+
         return fragment_view;
     }
+
+    //TODO bellow to delete if doesn't solve problem
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        webView.saveState(outState);
+    }
+
 
     // Called when our JavaScript Interface Observables are updated.
     @Override
