@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -187,13 +188,22 @@ public class ScheduleUpdate extends IntentService {
                     urlStr += ".html";
                 fileUrls.add(prefix + "scripts/" + urlStr);
             }
+        SharedPreferences localSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor sharedPrefEditor = localSharedPreferences.edit();
+        sharedPrefEditor.putString("schedule_main_file", "index.html");
         if(jsf.getMainFiles() != null)
             for (JsonElement url : jsf.getMainFiles()) {
                 String urlStr = url.getAsString();
                 if(!urlStr.contains("."))
                     urlStr += ".html";
                 fileUrls.add(prefix + urlStr);
+                String urlStrSave;
+                if(urlStr.equals("lista.html")) {
+                    urlStrSave = urlStr;
+                    sharedPrefEditor.putString("schedule_main_file", urlStrSave);
+                }
             }
+        sharedPrefEditor.apply();
 
         Log.i(CLASS_NAME, "saveFileUrlsInDB filesQuantity: " + fileUrls.size());
 
