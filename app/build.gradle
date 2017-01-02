@@ -7,8 +7,8 @@ android {
         applicationId "com.replacements.replacements"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 8
-        versionName '0.2.200'
+        versionCode 9
+        versionName '0.2.201'
         //generatedDensities = []
     }
     buildTypes {
@@ -49,15 +49,12 @@ dependencies {
     compile 'com.android.support:cardview-v7:25.0.0'
     compile 'com.android.support:recyclerview-v7:25.0.0'
     compile 'com.android.support:design:25.0.0'
-
     // ^^^^^
     // Google jak zwykle miesza z bibliotekami.
     // Na nowych "fragmenttransaction" ma problem z "SwipeRefreshLayout" jak się zamieni fragmenty,
     // ale jeden na ten sam, tylko że nowy. W zakładce zastępstwa jak się odświeży raz,
     // to fragment się zamienia na ten sam ale nowy i po tym SwipeRefreshLayout jest źle skonfigurowany
     // i nie działa przez to odświeżanie. Dlatego na razie są stare biblioteki - 25.0.0.
-
-
     compile 'ca.barrenechea.header-decor:header-decor:0.2.5'
     compile 'com.github.afollestad.material-dialogs:core:0.8.5.6@aar'
     compile 'com.google.code.gson:gson:2.4'
