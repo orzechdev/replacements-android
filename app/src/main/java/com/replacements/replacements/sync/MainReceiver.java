@@ -25,6 +25,7 @@ public class MainReceiver extends BroadcastReceiver {
     
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.i("MainReceiver","onReceive 1");
         //android.net.conn.CONNECTIVITY_CHANGE
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -47,10 +48,23 @@ public class MainReceiver extends BroadcastReceiver {
                     newIntent.putExtra("networkIsOn", true);
                     LocalBroadcastManager.getInstance(context).sendBroadcast(newIntent);
                 }
+
+                if(sharedPref.getBoolean("schoolToChange", false)) {
+                    Intent newIntent = new Intent("messageLoader");
+                    newIntent.putExtra("networkIsOn", true);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(newIntent);
+                }
             }
         } else {
             // not connected to the internet
             Log.i(CLASS_NAME, "onReceive activeNetwork: no connection");
+
+            SharedPreferences sharedPref = context.getSharedPreferences("dane", 0);
+            if(sharedPref.getBoolean("schoolToChange", false)) {
+                Intent newIntent = new Intent("messageLoader");
+                newIntent.putExtra("networkIsOn", false);
+                LocalBroadcastManager.getInstance(context).sendBroadcast(newIntent);
+            }
         }
     }
 

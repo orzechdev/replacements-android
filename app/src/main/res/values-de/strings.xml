@@ -18,7 +18,7 @@
     <string name="minutes_60">60 Minuten</string>
     <string name="pref_sync_summ_on">Aktiviert</string>
     <string name="pref_sync_summ_off">Behindert</string>
-    <string name="loading">Laden...</string>
+    <string name="loading">Laden&#8230;</string>
     <string name="refreshed_no_repl">Aktualisiert — kein neue Ersatz</string>
     <string name="refreshed_repl">Aktualisiert — neue Ersatz!</string>
     <string name="home">Nachrichten</string>

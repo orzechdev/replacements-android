@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -29,6 +30,7 @@ import com.replacements.replacements.R;
 import com.replacements.replacements.activities.ReplacementsMain;
 import com.replacements.replacements.data.DbAdapter;
 import com.replacements.replacements.data.ScheduleUrlFilesDbAdapter;
+import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.models.JsonSchedule;
 import com.replacements.replacements.models.JsonScheduleFiles;
 import com.replacements.replacements.models.JsonScheduleFilesDeserialize;
@@ -57,6 +59,7 @@ public class ScheduleUpdate extends IntentService {
     private String prefixMain;
     private DbAdapter dbAdapter;
     private ScheduleUrlFilesDbAdapter scheduleUrlFilesDbAdapter;
+    private boolean checkServicePossible = true;
 
     public ScheduleUpdate(){
         super(CLASS_NAME);
@@ -73,6 +76,7 @@ public class ScheduleUpdate extends IntentService {
         //Zapisz w pamieci, ze do pobrania jest lista plikow w json dla planu jesli przyszlo dopiero co powiadomienie
         Bundle intentExtra = intent.getExtras();
         if(intentExtra != null) {
+            checkServicePossible = intentExtra.getBoolean("checkServicePossible", true);
             boolean jsonUpdate = intentExtra.getBoolean("jsonUpdate", false);
             if(jsonUpdate) {
                 sharedPrefEditor.putBoolean("scheduleUpdateJson", true);
@@ -102,7 +106,9 @@ public class ScheduleUpdate extends IntentService {
 
     private void downloadFileList(){
         String url_data;
-        url_data = getApplicationContext().getString(R.string.url_schedule_json);
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        url_data = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+        url_data = url_data + ApplicationConstants.APP_SERVER_URL_LESSON_PLAN;
         GsonRequest<JsonSchedule> jsObjRequest = new GsonRequest<>(
                 Request.Method.GET,
                 url_data,
@@ -182,13 +188,22 @@ public class ScheduleUpdate extends IntentService {
                     urlStr += ".html";
                 fileUrls.add(prefix + "scripts/" + urlStr);
             }
+        SharedPreferences localSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor sharedPrefEditor = localSharedPreferences.edit();
+        sharedPrefEditor.putString("schedule_main_file", "index.html");
         if(jsf.getMainFiles() != null)
             for (JsonElement url : jsf.getMainFiles()) {
                 String urlStr = url.getAsString();
                 if(!urlStr.contains("."))
                     urlStr += ".html";
                 fileUrls.add(prefix + urlStr);
+                String urlStrSave;
+                if(urlStr.equals("lista.html")) {
+                    urlStrSave = urlStr;
+                    sharedPrefEditor.putString("schedule_main_file", urlStrSave);
+                }
             }
+        sharedPrefEditor.apply();
 
         Log.i(CLASS_NAME, "saveFileUrlsInDB filesQuantity: " + fileUrls.size());
 
@@ -345,15 +360,21 @@ public class ScheduleUpdate extends IntentService {
     }
 
     private void startCheckingService(){
-        Log.i(CLASS_NAME, "startCheckingService");
-        Intent serviceIntent = new Intent(this, ScheduleUpdate.class);
-        PendingIntent pendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
-        am.setInexactRepeating (
-                AlarmManager.RTC,
-                System.currentTimeMillis(),
-                AlarmManager.INTERVAL_FIFTEEN_MINUTES,
-                pendingIntent);
+        if(checkServicePossible) {
+            Log.i(CLASS_NAME, "startCheckingService");
+            Intent serviceIntent = new Intent(this, ScheduleUpdate.class);
+            PendingIntent pendingIntent = PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+            am.setInexactRepeating(
+                    AlarmManager.RTC,
+                    System.currentTimeMillis(),
+                    AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+                    pendingIntent);
+        }else{
+            Intent newIntent = new Intent("messageLoader");
+            newIntent.putExtra("finishService", "ScheduleUpdateFailure");
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
+        }
     }
 
     private void stopCheckingService(){
@@ -454,6 +475,11 @@ public class ScheduleUpdate extends IntentService {
             SharedPreferences.Editor sharedPrefEditor = sharedPref.edit();
             sharedPrefEditor.putBoolean("scheduleUpdateToNotify",false);
             sharedPrefEditor.apply();
+
+
+            Intent newIntent = new Intent("messageLoader");
+            newIntent.putExtra("finishService", "ScheduleUpdated");
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
         }
     }
 }

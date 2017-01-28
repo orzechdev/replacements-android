@@ -106,4 +106,16 @@
     <string name="pref_fcm_token_title">FCM Token</string>
     <string name="pref_schedule_offline_switch">Offline schedule</string>
 
+    <!-- USTAWIENIA DODANE DLA GIMNAZJUM -->
+    <string name="pref_school">Chosen school</string>
+    <string name="pref_school_summary">Name of school</string>
+    <string name="loading_school_data">Downloading school data in progress&#8230;</string>
+    <string name="school_name_0">No school selected</string>
+    <string name="school_name_1">Gimnazjum im. Odkrywców Polskiej Miedzi w Chocianowie</string>
+    <string name="school_name_2">Zespół Szkół w Chocianowie</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="choose_other_school">Choose other school</string>
+    <string name="loading_school_data_error">Failed to fetch school data. Please try again later.</string>
+
+
 </resources>

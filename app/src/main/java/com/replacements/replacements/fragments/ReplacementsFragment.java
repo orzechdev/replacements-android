@@ -30,6 +30,7 @@ import com.replacements.replacements.data.ClassDbAdapter;
 import com.replacements.replacements.data.DbAdapter;
 import com.replacements.replacements.data.TeacherDbAdapter;
 import com.replacements.replacements.helpers.StickyHeaderDecoration;
+import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.models.ClassTask;
 import com.replacements.replacements.models.JsonData;
 import com.replacements.replacements.models.JsonReplacements;
@@ -51,6 +52,7 @@ import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderAdapter;
 
 
 public class ReplacementsFragment extends DialogFragment {
+    private static final String CLASS_NAME = ReplacementsFragment.class.getName();
     private final int menuItemFragmentNumber = 2;
     private ArrayList<ClassTask> myClasses = new ArrayList<>();
     private ArrayList<TeacherTask> myTeachers = new ArrayList<>();
@@ -58,6 +60,7 @@ public class ReplacementsFragment extends DialogFragment {
     private ArrayList<Long> myTeachersNum = new ArrayList<>();
     private ArrayList<Long> myClassesSelect = new ArrayList<>();
     private ArrayList<Long> myTeachersSelect = new ArrayList<>();
+    private ArrayList<String> myTeachersSelectNames = new ArrayList<>();
     private ArrayList<ReplacementTask> myReplacements = new ArrayList<>();
     private int todayReplCount;
     private int tomorrowReplCount;
@@ -92,6 +95,8 @@ public class ReplacementsFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.i(CLASS_NAME, "1000");
 
         refreshed = 0;
         refreshed_none = 0;
@@ -135,6 +140,7 @@ public class ReplacementsFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.i(CLASS_NAME, "2000");
         // Ustalenie widoku dla fragmentu (Inflate the layout for this fragment)
         View fragment_view = inflater.inflate(R.layout.fragment_replacements, container, false);
         //Toast.makeText(getActivity().getApplicationContext(), "dziala onCreateView", Toast.LENGTH_SHORT).show();
@@ -187,10 +193,13 @@ public class ReplacementsFragment extends DialogFragment {
     }
 
     private void startRequest(boolean isOnline) {
+        Log.i(CLASS_NAME, "3000");
         String url_repl;
         String url_repl_today;
         String url_repl_tomorrow;
-        url_repl = getString(R.string.url_repl);
+        SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+        url_repl = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+        url_repl = url_repl + ApplicationConstants.APP_SERVER_URL_REPL;
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
@@ -446,6 +455,7 @@ public class ReplacementsFragment extends DialogFragment {
     }
 
     private void finishRefresh(boolean isRefreshed, boolean isError){
+        Log.i(CLASS_NAME, "4000");
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         if(isRefreshed && !isError) {
 //            ProfileRequest profileRequest = new ProfileRequest(getActivity());
@@ -462,7 +472,7 @@ public class ReplacementsFragment extends DialogFragment {
         }else if(!isRefreshed && !isError){
 //            readReplacementsFromSQLite();
 //            mAdapter.notifyDataSetChanged();
-            ((ReplacementsMain)getActivity()).selectMenuItem(2);
+            ((ReplacementsMain) getActivity()).selectMenuItem(2);
             Snackbar.make(getActivity().findViewById(R.id.drawer_layout), refreshed_no_repl, Snackbar.LENGTH_LONG).show();
             Log.i("Request Finish", "No replacements");
         }else if(!isRefreshed && isError){
@@ -479,15 +489,19 @@ public class ReplacementsFragment extends DialogFragment {
     }
 
     public void changedProfile() {
+        Log.i(CLASS_NAME, "5000");
 //        readReplacementsFromSQLite();
 //        mAdapter.notifyDataSetChanged();
 //        onCreate(null);
         ((ReplacementsMain)getActivity()).selectMenuItem(menuItemFragmentNumber);
     }
     public void startRequest2() {
+        Log.i(CLASS_NAME, "6000");
         String url_data;
         String url_data_update;
-        url_data = getActivity().getString(R.string.url_repl_data);
+        SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+        url_data = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+        url_data = url_data + ApplicationConstants.APP_SERVER_URL_REPL_DATA;
         String replDateLast = getActivity().getSharedPreferences("dane", 0).getString("repl_data_date_last", "0");
 
         //Ustalenie url dla danych i ich ostatniej aktualizacji
@@ -715,6 +729,7 @@ public class ReplacementsFragment extends DialogFragment {
                     newTeacherTask = new TeacherTask(id, name);
                     if(selected) {
                         myTeachersSelect.add(id);
+                        myTeachersSelectNames.add(name);
                     }
                     myTeachersNum.add(id);
                     myTeachers.add(newTeacherTask);
@@ -979,7 +994,7 @@ public class ReplacementsFragment extends DialogFragment {
                 }
                 long newClassNumber = replTask.getClassNumber();
                 long newDefaultInteger = replTask.getDefaultInteger();
-                if (mClassesSelect.contains(newClassNumber) || (mTeachersSelect.contains(newDefaultInteger))) {
+                if (mClassesSelect.contains(newClassNumber) || mTeachersSelect.contains(newDefaultInteger) || myTeachersSelectNames.contains(Html.fromHtml(replTask.getReplacement()).toString())) {
                     holder.rowHighlight.setVisibility(View.VISIBLE);
                 } else {
                     holder.rowHighlight.setVisibility(View.INVISIBLE);
@@ -1183,9 +1198,9 @@ public class ReplacementsFragment extends DialogFragment {
 //        }
     }
 
-
     public void onStart() {
         super.onStart();
+        Log.i(CLASS_NAME, "7000");
         setHasOptionsMenu(true);
         no_internet_connect = getString(R.string.no_internet_connect);
         refreshed_no_repl = getString(R.string.refreshed_no_repl);
@@ -1245,6 +1260,7 @@ public class ReplacementsFragment extends DialogFragment {
 //        }
     }
     private void refreshContent(boolean swipeDone){
+        Log.i(CLASS_NAME, "8000");
         ConnectivityManager connManager = ((ConnectivityManager) getActivity().getSystemService(networkService));
         if ((connManager != null) && (connManager.getActiveNetworkInfo() != null)) {
             if(swipeDone) {
@@ -1298,6 +1314,7 @@ public class ReplacementsFragment extends DialogFragment {
 
     @Override
     public void onDestroy() {
+        Log.i(CLASS_NAME, "9000");
         super.onDestroy();
         if(classDbAdapter != null)
             classDbAdapter.close();

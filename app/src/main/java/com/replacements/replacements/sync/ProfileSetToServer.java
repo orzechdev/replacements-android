@@ -64,15 +64,19 @@ public class ProfileSetToServer extends IntentService {
     private void storeDataIds(String dataIds){
 //        SharedPreferences prefsGCM = getSharedPreferences("gcm", Context.MODE_PRIVATE);
 //        String regId = prefsGCM.getString(REG_ID, "");
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
         String regId = FirebaseInstanceId.getInstance().getToken();
         if(!TextUtils.isEmpty(regId)) {
             params.put("regId", regId);
             Log.i(CLASS_NAME, "storeDataIds regId = " + regId);
             params.put("dataIds", dataIds);
             Log.i(CLASS_NAME, "storeDataIds = " + dataIds);
+            //Change automatically SCHOOL_SERVER_1 to SCHOOL_SERVER_2 and vice versa
+            String urlServer = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+            urlServer = urlServer + ApplicationConstants.APP_SERVER_URL_INSERT_USER_DATA_IDS;
             // Make RESTful webservice call using AsyncHttpClient object
             AsyncHttpClient client = new SyncHttpClient();
-            client.post(ApplicationConstants.APP_SERVER_URL_INSERT_USER_DATA_IDS, params,
+            client.post(urlServer, params,
                     new AsyncHttpResponseHandler() {
                         // When the response returned by REST has Http
                         // response code '200'
@@ -113,15 +117,19 @@ public class ProfileSetToServer extends IntentService {
     private void storeModules(String modules){
 //        SharedPreferences prefsGCM = getSharedPreferences("gcm", Context.MODE_PRIVATE);
 //        String regId = prefsGCM.getString(REG_ID, "");
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
         String regId = FirebaseInstanceId.getInstance().getToken();
         if(!TextUtils.isEmpty(regId)) {
             params.put("regId", regId);
             Log.i(CLASS_NAME, "storeModules regId = " + regId);
             params.put("modules", modules);
             Log.i(CLASS_NAME, "storeModules = " + modules);
+            //Change automatically SCHOOL_SERVER_1 to SCHOOL_SERVER_2 and vice versa
+            String urlServer = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+            urlServer = urlServer + ApplicationConstants.APP_SERVER_URL_INSERT_USER_MODULES;
             // Make RESTful webservice call using AsyncHttpClient object
             AsyncHttpClient client = new SyncHttpClient();
-            client.post(ApplicationConstants.APP_SERVER_URL_INSERT_USER_MODULES, params,
+            client.post(urlServer, params,
                     new AsyncHttpResponseHandler() {
                         // When the response returned by REST has Http
                         // response code '200'

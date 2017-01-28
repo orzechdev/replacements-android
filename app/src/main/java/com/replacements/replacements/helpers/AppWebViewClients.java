@@ -19,7 +19,6 @@ public class AppWebViewClients extends WebViewClient {
     }
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
-        // TODO Auto-generated method stub
         view.loadUrl(url);
         progressBar.setVisibility(View.VISIBLE);
         Log.i("eeeeeee","nnnnnnnnnn");
@@ -28,7 +27,6 @@ public class AppWebViewClients extends WebViewClient {
 
     @Override
     public void onPageFinished(WebView view, String url) {
-        // TODO Auto-generated method stub
         super.onPageFinished(view, url);
         progressBar.setVisibility(View.GONE);
         Log.i("fffffff", "nnnnnnnnnn");

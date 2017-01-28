@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen
   xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--<PreferenceCategory-->
+        <!--android:title="@string/pref_school"-->
+        <!--android:key="pref_school">-->
+        <Preference
+            android:title="@string/pref_school"
+            android:summary="@string/pref_school_summary"
+            android:key="pref_school_pref">
+            <!--<intent android:action="com.replacements.replacements.activities.ChooseSchool"/>-->
+        </Preference>
+    <!--</PreferenceCategory>-->
     <PreferenceCategory
         android:title="@string/pref_notify"
         android:key="pref_notify">

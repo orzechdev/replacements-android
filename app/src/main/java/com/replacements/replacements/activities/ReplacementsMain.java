@@ -30,6 +30,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 //import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -45,6 +47,7 @@ import com.replacements.replacements.fragments.ProfileFragmentTeacher;
 import com.replacements.replacements.R;
 import com.replacements.replacements.fragments.ReplacementsFragment;
 import com.replacements.replacements.fragments.ScheduleFragment;
+import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.preferences.SettingsActivity;
 //import com.replacements.replacements.sync.GcmUserRegistration;
 //import com.replacements.replacements.sync.GcmUserUnregistration;
@@ -64,6 +67,10 @@ public class ReplacementsMain extends AppCompatActivity {
     public boolean rotationChanged;
     private int currentProfileTab;
     private ViewPagerAdapter adapter;
+    public ProfileFragment profileFragment;
+    public HomeFragment homeFragment;
+    public ScheduleFragment scheduleFragment;
+    public ReplacementsFragment replacementsFragment;
     public ProfileFragmentClass profileFragmentClass;
     public ProfileFragmentTeacher profileFragmentTeacher;
     private DbAdapter dbAdapter;
@@ -79,7 +86,19 @@ public class ReplacementsMain extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_replacements_main);
+
+
+
+
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        SharedPreferences.Editor localEditor = prefs.edit();
+
+        //TODO - MOST IMPORTANT - CHANGING PREVIOUS VERSION TO CURRENT (DO NOT DELETE THIS TODO IN ORDER TO REMEMBER TO CHANGE IT ALWAYS BEFORE APP RELEASE!!!)
+        localEditor.putInt("appPreviousVersion", 8);
+        localEditor.apply();
+
+
+
 
         dbAdapter = new DbAdapter(this);
         dbAdapter.open();
@@ -111,45 +130,65 @@ public class ReplacementsMain extends AppCompatActivity {
         classDbAdapter = new ClassDbAdapter(this);
         teacherDbAdapter = new TeacherDbAdapter(this);
 
-        setupToolbar();
-        initNavigationDrawer();
 
-        Bundle intentExtra = getIntent().getExtras();
-        boolean isNotified;
 
-        if (savedInstanceState != null) {
-            Log.i("QQQQQQQQQ", "4");
-            mCurrentSelectedPosition = savedInstanceState.getInt("STATE_SELECTED_POSITION");
-            Menu menu = mNavigationView.getMenu();
-            menu.getItem(mCurrentSelectedPosition).setChecked(true);
-            menuItems(menu.getItem(mCurrentSelectedPosition));
-        } else if (intentExtra != null) {
-            Log.i("QQQQQQQQQ", "1");
-            isNotified = intentExtra.getBoolean("isNotified", false);
-            Log.i("resume", "2");
-            if (isNotified) {
-                Log.i("resume", "3");
-                int extraMenuItem = intentExtra.getInt("menuItem", 2);
+        boolean first_run_db = prefs.getBoolean("first_run_db", true);
+        boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", false);
+        if(!first_run_db && !schoolChangeStarted){
+
+            //In first version of app default school was ZS Chocianow, so it should be selected if app was then installed (when app had just ZS Chocianow school)
+            if(prefs.getInt("chosenSchool", 0) == 0) {
+                localEditor.putInt("chosenSchool", 2);
+                localEditor.putBoolean("schoolToChange", false);
+                localEditor.putBoolean("schoolChangeStarted", false);
+                localEditor.apply();
+            }
+
+            setContentView(R.layout.activity_replacements_main);
+
+
+            setupToolbar();
+            initNavigationDrawer();
+
+            Bundle intentExtra = getIntent().getExtras();
+            boolean isNotified;
+
+
+            if (savedInstanceState != null) {
+                Log.i("QQQQQQQQQ", "4");
+                mCurrentSelectedPosition = savedInstanceState.getInt("STATE_SELECTED_POSITION");
                 Menu menu = mNavigationView.getMenu();
-                menu.getItem(extraMenuItem).setChecked(true);
-                menuItems(menu.getItem(extraMenuItem));
-                if(extraMenuItem == 2){
-                    SharedPreferences mSharedPreferences = getSharedPreferences("dane", 0);
-                    SharedPreferences.Editor localEditor = mSharedPreferences.edit();
-                    localEditor.putLong("savedTime", 0);
-                    localEditor.apply();
+                menu.getItem(mCurrentSelectedPosition).setChecked(true);
+                menuItems(menu.getItem(mCurrentSelectedPosition));
+            } else if (intentExtra != null) {
+                Log.i("QQQQQQQQQ", "1");
+                isNotified = intentExtra.getBoolean("isNotified", false);
+                Log.i("resume", "2");
+                if (isNotified) {
+                    Log.i("resume", "3");
+                    int extraMenuItem = intentExtra.getInt("menuItem", 2);
+                    Menu menu = mNavigationView.getMenu();
+                    menu.getItem(extraMenuItem).setChecked(true);
+                    menuItems(menu.getItem(extraMenuItem));
+                    if (extraMenuItem == 2) {
+                        SharedPreferences mSharedPreferences = getSharedPreferences("dane", 0);
+                        SharedPreferences.Editor mLocalEditor = mSharedPreferences.edit();
+                        mLocalEditor.putLong("savedTime", 0);
+                        mLocalEditor.apply();
+                    }
+                } else {
+                    Log.i("QQQQQQQQQ", "5-1");
+                    Menu menu = mNavigationView.getMenu();
+                    menu.getItem(2).setChecked(true);
+                    menuItems(menu.getItem(2));
                 }
             } else {
-                Log.i("QQQQQQQQQ", "5-1");
+                Log.i("QQQQQQQQQ", "5-2");
                 Menu menu = mNavigationView.getMenu();
                 menu.getItem(2).setChecked(true);
                 menuItems(menu.getItem(2));
             }
-        } else {
-            Log.i("QQQQQQQQQ", "5-2");
-            Menu menu = mNavigationView.getMenu();
-            menu.getItem(2).setChecked(true);
-            menuItems(menu.getItem(2));
+
         }
 
 
@@ -236,62 +275,165 @@ public class ReplacementsMain extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
-        connManager = ((ConnectivityManager)getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE));
-        if ((connManager != null) && (connManager.getActiveNetworkInfo() != null)) {
-            boolean toDoRegisterUser = prefs.getBoolean("toDoRegisterUser", false);
-            boolean toDoUnregisterUser = prefs.getBoolean("toDoUnregisterUser", false);
-            SharedPreferences localSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-            if (localSharedPreferences.getBoolean("pref_notify_switch", true) && !toDoRegisterUser && !toDoUnregisterUser) {
-                boolean isDataToChange = prefs.getBoolean("dataToChange", false);
-                boolean isModulesToChange = prefs.getBoolean("modulesToChange", false);
-                if (isDataToChange && !isModulesToChange) {
-                    changeSetInServer(1);
-                }
-                if (!isDataToChange && isModulesToChange) {
-                    changeSetInServer(2);
-                }
-                if (isDataToChange && isModulesToChange) {
-                    changeSetInServer(3);
-                }
-            } else {
-                if (toDoRegisterUser) {
-                    Log.i(CLASS_NAME, "onResume toDoRegisterUser");
-                    String FCMToken = FirebaseInstanceId.getInstance().getToken();
-                    Intent profileRegister = new Intent(this, ProfileRegister.class);
-                    profileRegister.putExtra("serverAction", 1);
-                    profileRegister.putExtra("token", FCMToken);
-                    this.startService(profileRegister);
-                }
-                if (toDoUnregisterUser) {
-                    Log.i(CLASS_NAME, "onResume toDoUnregisterUser");
-                    String FCMToken = FirebaseInstanceId.getInstance().getToken();
-                    Intent profileRegister = new Intent(this, ProfileRegister.class);
-                    profileRegister.putExtra("serverAction", 2);
-                    profileRegister.putExtra("token", FCMToken);
-                    this.startService(profileRegister);
+
+        boolean first_run_db = prefs.getBoolean("first_run_db", true);
+        boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", false);
+        if(first_run_db || schoolChangeStarted){
+            Intent intent = new Intent(this, ChooseSchool.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            //intent.putExtra("activityParentExists", true);
+            startActivity(intent);
+        }else {
+
+            connManager = ((ConnectivityManager) getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE));
+            if ((connManager != null) && (connManager.getActiveNetworkInfo() != null)) {
+                boolean toDoRegisterUser1 = prefs.getBoolean("toDoRegisterUser1", false);
+                boolean toDoUnregisterUser1 = prefs.getBoolean("toDoUnregisterUser1", false);
+                boolean toDoRegisterUser2 = prefs.getBoolean("toDoRegisterUser2", false);
+                boolean toDoUnregisterUser2 = prefs.getBoolean("toDoUnregisterUser2", false);
+                SharedPreferences localSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+                if (localSharedPreferences.getBoolean("pref_notify_switch", true) && !toDoRegisterUser1 && !toDoRegisterUser1 && !toDoUnregisterUser1 && !toDoUnregisterUser2) {
+                    boolean isDataToChange = prefs.getBoolean("dataToChange", false);
+                    boolean isModulesToChange = prefs.getBoolean("modulesToChange", false);
+                    if (isDataToChange && !isModulesToChange) {
+                        changeSetInServer(1);
+                    }
+                    if (!isDataToChange && isModulesToChange) {
+                        changeSetInServer(2);
+                    }
+                    if (isDataToChange && isModulesToChange) {
+                        changeSetInServer(3);
+                    }
+                } else {
+                    String urlUnregister;
+                    String urlRegister;
+                    if (prefs.getInt("chosenSchool", 1) == 1) {
+                        urlRegister = ApplicationConstants.SCHOOL_SERVER_1;
+                    } else {
+                        urlRegister = ApplicationConstants.SCHOOL_SERVER_2;
+                    }
+                    if (toDoRegisterUser1 || toDoRegisterUser2) {
+                        Log.i(CLASS_NAME, "onResume toDoRegisterUser");
+                        String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                        Intent profileRegister = new Intent(this, ProfileRegister.class);
+                        profileRegister.putExtra("serverAction", 1);
+                        profileRegister.putExtra("token", FCMToken);
+                        profileRegister.putExtra("url", urlRegister);
+                        this.startService(profileRegister);
+                    }
+                    if (toDoUnregisterUser1) {
+                        urlUnregister = ApplicationConstants.SCHOOL_SERVER_1;
+                        Log.i(CLASS_NAME, "onResume toDoUnregisterUser1");
+                        String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                        Intent profileRegister = new Intent(this, ProfileRegister.class);
+                        profileRegister.putExtra("serverAction", 2);
+                        profileRegister.putExtra("token", FCMToken);
+                        profileRegister.putExtra("url", urlUnregister);
+                        this.startService(profileRegister);
+                    }
+                    if (toDoUnregisterUser2) {
+                        urlUnregister = ApplicationConstants.SCHOOL_SERVER_2;
+                        Log.i(CLASS_NAME, "onResume toDoUnregisterUser2");
+                        String FCMToken = FirebaseInstanceId.getInstance().getToken();
+                        Intent profileRegister = new Intent(this, ProfileRegister.class);
+                        profileRegister.putExtra("serverAction", 2);
+                        profileRegister.putExtra("token", FCMToken);
+                        profileRegister.putExtra("url", urlUnregister);
+                        this.startService(profileRegister);
+                    }
                 }
             }
-        }
-        String dirScheduleName = prefs.getString("scheduleFilesDirNameCurrent", "");
-        if (dirScheduleName.equals("")){
-            if (!prefs.getBoolean("scheduleUpdateToDo", false)) {
-                Intent scheduleIntent = new Intent(getBaseContext(), ScheduleUpdate.class);
-                scheduleIntent.putExtra("jsonUpdate", true);
-                startService(scheduleIntent);
+            String dirScheduleName = prefs.getString("scheduleFilesDirNameCurrent", "");
+            if (dirScheduleName.equals("")) {
+                if (!prefs.getBoolean("scheduleUpdateToDo", false)) {
+                    Intent scheduleIntent = new Intent(getBaseContext(), ScheduleUpdate.class);
+                    scheduleIntent.putExtra("jsonUpdate", true);
+                    startService(scheduleIntent);
+                }
             }
+
         }
     }
 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        Log.i(CLASS_NAME, "onSaveInstanceState 1");
         outState.putInt("STATE_SELECTED_POSITION", mCurrentSelectedPosition);
+
+//        if (mCurrentSelectedPosition == 0) {
+//            getSupportFragmentManager().putFragment(outState, "profileFragmentClass", profileFragmentClass);
+//            getSupportFragmentManager().putFragment(outState, "profileFragmentTeacher", profileFragmentTeacher);
+//        }
+        if (profileFragmentClass != null) {
+            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 100");
+            getSupportFragmentManager().putFragment(outState, "profileFragmentClass", profileFragmentClass);
+        }
+        if (profileFragmentTeacher != null) {
+            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 200");
+            getSupportFragmentManager().putFragment(outState, "profileFragmentTeacher", profileFragmentTeacher);
+        }
+//        if (profileFragment != null) {
+//            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 300");
+//            getSupportFragmentManager().putFragment(outState, "profileFragment", profileFragment);
+//        }
+//        if (homeFragment != null) {
+//            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 400");
+//            getSupportFragmentManager().putFragment(outState, "homeFragment", homeFragment);
+//        }
+//        if (scheduleFragment != null) {
+//            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 500");
+//            getSupportFragmentManager().putFragment(outState, "scheduleFragment", scheduleFragment);
+//        }
+//        if (replacementsFragment != null) {
+//            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 600");
+//            getSupportFragmentManager().putFragment(outState, "replacementsFragment", replacementsFragment);
+//        }
+        Log.i(CLASS_NAME, "onSaveInstanceState 3");
+//    public ProfileFragment profileFragment;
+//    public HomeFragment homeFragment;
+//    public ScheduleFragment scheduleFragment;
+//    public ReplacementsFragment replacementsFragment;
+//    public ProfileFragmentClass profileFragmentClass;
+//    public ProfileFragmentTeacher profileFragmentTeacher;
     }
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        Log.i(CLASS_NAME, "onRestoreInstanceState 1");
         mCurrentSelectedPosition = savedInstanceState.getInt("STATE_SELECTED_POSITION", 0);
         Menu menu = mNavigationView.getMenu();
         menu.getItem(mCurrentSelectedPosition).setChecked(true);
         menuItems(menu.getItem(mCurrentSelectedPosition));
+        Log.i(CLASS_NAME, "onRestoreInstanceState 2");
+
+//        if(mCurrentSelectedPosition == 0) {
+//            profileFragmentClass = (ProfileFragmentClass) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass");
+//            profileFragmentTeacher = (ProfileFragmentTeacher) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher");
+//        }
+        if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass") != null){
+            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 100");
+            profileFragmentClass = (ProfileFragmentClass) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass");
+        }
+        if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher") != null){
+            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 200");
+            profileFragmentTeacher = (ProfileFragmentTeacher) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher");
+        }
+//        if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragment") != null){
+//            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 300");
+//            profileFragment = (ProfileFragment) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragment");
+//        }
+//        if(getSupportFragmentManager().getFragment(savedInstanceState, "homeFragment") != null){
+//            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 400");
+//            homeFragment = (HomeFragment) getSupportFragmentManager().getFragment(savedInstanceState, "homeFragment");
+//        }
+//        if(getSupportFragmentManager().getFragment(savedInstanceState, "scheduleFragment") != null){
+//            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 500");
+//            scheduleFragment = (ScheduleFragment) getSupportFragmentManager().getFragment(savedInstanceState, "scheduleFragment");
+//        }
+//        if(getSupportFragmentManager().getFragment(savedInstanceState, "replacementsFragment") != null){
+//            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 600");
+//            replacementsFragment = (ReplacementsFragment) getSupportFragmentManager().getFragment(savedInstanceState, "replacementsFragment");
+//        }
+        Log.i(CLASS_NAME, "onRestoreInstanceState 4");
     }
 
     private void setupToolbar() {
@@ -306,20 +448,21 @@ public class ReplacementsMain extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
     }
     public void setupViewPager(ViewPager viewPager) {
-        if(adapter == null) {
+        //if(adapter == null) {
             adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        }
+        //}
         if(profileFragmentClass == null) {
             profileFragmentClass = new ProfileFragmentClass();
-            adapter.addFrag(profileFragmentClass, getString(R.string.tab_class));
         }
+        adapter.addFrag(profileFragmentClass, getString(R.string.tab_class));
         if(profileFragmentTeacher == null) {
             profileFragmentTeacher = new ProfileFragmentTeacher();
-            adapter.addFrag(profileFragmentTeacher, getString(R.string.tab_teacher));
         }
+        adapter.addFrag(profileFragmentTeacher, getString(R.string.tab_teacher));
         viewPager.setAdapter(adapter);
         Log.i("WYBRANO", "Add");
     }
+
 //    public ViewPagerAdapter getCurrentViewPage(){
 //        return adapter;
 //    }
@@ -371,10 +514,23 @@ public class ReplacementsMain extends AppCompatActivity {
     public int getCurrentProfileTab(){
         return currentProfileTab;
     }
+
+    @SuppressWarnings("deprecation")
     private void initNavigationDrawer() {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        View hView =  mNavigationView.getHeaderView(0);
+        LinearLayout drawerHeader = (LinearLayout) hView.findViewById(R.id.drawer_header);
+        TextView textHeader = (TextView)drawerHeader.findViewById(R.id.drawer_header_text);
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            drawerHeader.setBackgroundDrawable(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 0) == 1)? R.drawable.header_image_1 : R.drawable.header_image_2));
+        } else {
+            drawerHeader.setBackground(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 0) == 1)? R.drawable.header_image_1 : R.drawable.header_image_2));
+        }
+        textHeader.setText((prefs.getInt("chosenSchool", 0) == 1)? R.string.school_name_1 : R.string.school_name_2);
 
     //    setupActionBarDrawerToogle();
         if (mNavigationView != null) {
@@ -417,13 +573,15 @@ public class ReplacementsMain extends AppCompatActivity {
 
                 viewPager = (ViewPager) findViewById(R.id.viewpager);
                 if(!configChanged || rotationChanged) {
-                    Fragment fragmentProfile = new ProfileFragment();
+                    //if(profileFragment == null) {
+                        profileFragment = new ProfileFragment();
+                    //}
                     // Insert the fragment by replacing any existing fragment
                     FragmentManager fmProfile = getSupportFragmentManager();
                     FragmentTransaction ftProfile = fmProfile.beginTransaction();
                     //        ftProfile.remove(fmProfile.findFragmentById(R.id.content_frame));
-                    ftProfile.replace(R.id.content_frame, fragmentProfile);
-                    ftProfile.commit();
+                    ftProfile.replace(R.id.content_frame, profileFragment);
+                    ftProfile.commitAllowingStateLoss();
                     Log.i("WYBRANO", "1a");
 
                     // Insert pages into viewPager and tabs from viewPager to tabLayout and set visibility
@@ -490,12 +648,14 @@ public class ReplacementsMain extends AppCompatActivity {
                 }
                 visibilityTabLayout(tabLayout);
 
-                Fragment fragmentHome = new HomeFragment();
+                //if(homeFragment == null) {
+                    homeFragment = new HomeFragment();
+                //}
                 // Insert the fragment by replacing any existing fragment
                 FragmentManager fmHome = getSupportFragmentManager();
                 FragmentTransaction ftHome = fmHome.beginTransaction();
-                ftHome.replace(R.id.content_frame, fragmentHome);
-                ftHome.commit();
+                ftHome.replace(R.id.content_frame, homeFragment);
+                ftHome.commitAllowingStateLoss();
                 configChanged = false;
                 break;
             // Wybranie zastepstw i podmiana odpowiedniego fragmentu
@@ -519,7 +679,9 @@ public class ReplacementsMain extends AppCompatActivity {
                 }
                 visibilityTabLayout(tabLayout);
 
-                Fragment fragmentReplacements = new ReplacementsFragment();
+                //if(replacementsFragment == null) {
+                    replacementsFragment = new ReplacementsFragment();
+                //}
                 //Bundle args = new Bundle();
                 //args.putInt(ReplacementsFragment.ARG_PLANET_NUMBER, position);
                 //fragment.setArguments(args);
@@ -527,8 +689,8 @@ public class ReplacementsMain extends AppCompatActivity {
                 // Insert the fragment by replacing any existing fragment
                 FragmentManager fmReplacements = getSupportFragmentManager();
                 FragmentTransaction ftReplacements = fmReplacements.beginTransaction();
-                ftReplacements.replace(R.id.content_frame, fragmentReplacements);
-                ftReplacements.commit();
+                ftReplacements.replace(R.id.content_frame, replacementsFragment);
+                ftReplacements.commitAllowingStateLoss();
                 configChanged = false;
                 break;
             // Wybranie planu i podmiana odpowiedniego fragmentu
@@ -553,11 +715,13 @@ public class ReplacementsMain extends AppCompatActivity {
                 }
                 visibilityTabLayout(tabLayout);
 
-                Fragment fragmentSchedule = new ScheduleFragment();
+                //if(scheduleFragment == null) {
+                    scheduleFragment = new ScheduleFragment();
+                //}
                 FragmentManager fmSchedule = getSupportFragmentManager();
                 FragmentTransaction ftSchedule = fmSchedule.beginTransaction();
-                ftSchedule.replace(R.id.content_frame, fragmentSchedule);
-                ftSchedule.commit();
+                ftSchedule.replace(R.id.content_frame, scheduleFragment);
+                ftSchedule.commitAllowingStateLoss();
                 configChanged = false;
 //                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 //                String urlIntent = prefs.getString("schedule_url", "http://zschocianow.pl/plan/");
@@ -576,6 +740,30 @@ public class ReplacementsMain extends AppCompatActivity {
             default:
         }
     }
+
+//    private Fragment saveLastFragment(int positionInMenu){
+//        switch (positionInMenu) {
+//            // Profil
+//            case 0:
+//                if (profileFragmentClass != null) {
+//                    Log.i("asdfghjk", "PROBLEM 2 - 100");
+//                    getSupportFragmentManager().putFragment(outState, "profileFragment", profileFragment);
+//                }
+//                break;
+//            // Aktualnosci
+//            case 1:
+//
+//                break;
+//            // Zastepstwa
+//            case 2:
+//
+//                break;
+//            // Plan
+//            case 3:
+//
+//                break;
+//        }
+//    }
 
 
     public ArrayList<Long> readAllFromSQLite() {

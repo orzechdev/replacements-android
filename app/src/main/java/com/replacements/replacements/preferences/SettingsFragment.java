@@ -20,10 +20,12 @@ import com.google.android.gms.common.ConnectionResult;
 //import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.replacements.replacements.R;
+import com.replacements.replacements.activities.ChooseSchool;
 import com.replacements.replacements.data.ClassDbAdapter;
 import com.replacements.replacements.data.TeacherDbAdapter;
 //import com.replacements.replacements.sync.GcmUserRegistration;
 //import com.replacements.replacements.sync.GcmUserUnregistration;
+import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.sync.ProfileRegister;
 import com.replacements.replacements.sync.ProfileSetToServer;
 
@@ -72,18 +74,35 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 	    	if (paramPreference.getKey().equalsIgnoreCase("editKey")) {
 	    		paramPreference.setSummary("I am not going to display a password!");
 	    	}
-		} else {
-			return;
-	    }
-	    paramPreference.setSummary(localEditTextPreference.getText());
 
-		//Wyswietlenie w opisie tokenu FCM
-		Log.i(CLASS_NAME, "PREF 3");
-		if ((paramPreference.getKey().equals("pref_fcm_token"))) {
-			Log.i(CLASS_NAME, "PREF 4");
-			String FCMToken = FirebaseInstanceId.getInstance().getToken();
-			((EditTextPreference) paramPreference).setText(FCMToken);
-			paramPreference.setSummary(FCMToken);
+			paramPreference.setSummary(localEditTextPreference.getText());
+
+			//Wyswietlenie w opisie tokenu FCM
+			Log.i(CLASS_NAME, "PREF 3");
+			if ((paramPreference.getKey().equals("pref_fcm_token"))) {
+				Log.i(CLASS_NAME, "PREF 4");
+				String FCMToken = FirebaseInstanceId.getInstance().getToken();
+				((EditTextPreference) paramPreference).setText(FCMToken);
+				paramPreference.setSummary(FCMToken);
+			}
+		} else {
+			if(paramPreference.getKey().equals("pref_school_pref")){
+				Log.i(CLASS_NAME, "PREF 5");
+				SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+				String schoolName;
+				switch (prefs.getInt("chosenSchool", 0)){
+					case 1:
+						schoolName = getString(R.string.school_name_1);
+						break;
+					case 2:
+						schoolName = getString(R.string.school_name_2);
+						break;
+					default:
+						schoolName = getString(R.string.school_name_0);
+						break;
+				}
+				paramPreference.setSummary(schoolName);
+			}
 		}
 	}
     
@@ -99,6 +118,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 			Preference devPreference = findPreference("pref_app_dev_settings");
 			getPreferenceScreen().removePreference(devPreference);
 		}
+		Preference prefSchoolPref = findPreference("pref_school_pref");
+		prefSchoolPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(Preference arg0) {
+				Intent intent = new Intent(getActivity(), ChooseSchool.class);
+				intent.putExtra("activityParentExists", true);
+				startActivity(intent);
+				return true;
+			}
+		});
 		for (int i = 0;; i++){
 			if (i >= getPreferenceScreen().getPreferenceCount()) {
 				return;
@@ -131,18 +160,44 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 			String FCMToken = FirebaseInstanceId.getInstance().getToken();
 			if (!notifyCheckbox) {
 			    // Unregister Device from Server by IntentService
-				Log.i("oSPC pref_notify_switch", "on");
-				Intent profileRegister = new Intent(getActivity(), ProfileRegister.class);
-				profileRegister.putExtra("serverAction", 2);
-				profileRegister.putExtra("token", FCMToken);
-				getActivity().getApplicationContext().startService(profileRegister);
+
+				SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+				SharedPreferences.Editor localEditor = prefs.edit();
+
+				if(prefs.getBoolean("toDoUnregisterUser1", false) || (prefs.getInt("chosenSchool", 1) == 1 && !prefs.getBoolean("toDoRegisterUser1", false))){
+					localEditor.putBoolean("toDoUnregisterUser1", true);
+					String url = ApplicationConstants.SCHOOL_SERVER_1;
+					Intent profileRegister = new Intent(getActivity(), ProfileRegister.class);
+					profileRegister.putExtra("serverAction", 2);
+					profileRegister.putExtra("token", FCMToken);
+					profileRegister.putExtra("url", url);
+					getActivity().getApplicationContext().startService(profileRegister);
+				}
+				if(prefs.getBoolean("toDoUnregisterUser2", false) || (prefs.getInt("chosenSchool", 1) == 2 && !prefs.getBoolean("toDoRegisterUser2", false))){
+					localEditor.putBoolean("toDoUnregisterUser2", true);
+					String url = ApplicationConstants.SCHOOL_SERVER_2;
+					Intent profileRegister = new Intent(getActivity(), ProfileRegister.class);
+					profileRegister.putExtra("serverAction", 2);
+					profileRegister.putExtra("token", FCMToken);
+					profileRegister.putExtra("url", url);
+					getActivity().getApplicationContext().startService(profileRegister);
+				}
+				localEditor.apply();
+
+				Log.i("oSPC pref_notify_switch", "off");
 			}else{
 				// Register Device in Server by IntentService
-				Log.i("oSPC pref_notify_switch", "off");
+
+				SharedPreferences prefs = getActivity().getSharedPreferences("dane", Context.MODE_PRIVATE);
+
+				String url = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
 				Intent profileRegister = new Intent(getActivity(), ProfileRegister.class);
 				profileRegister.putExtra("serverAction", 1);
 				profileRegister.putExtra("token", FCMToken);
+				profileRegister.putExtra("url", url);
 				getActivity().getApplicationContext().startService(profileRegister);
+
+				Log.i("oSPC pref_notify_switch", "on");
 			}
 		}
 		if ((paramString.equals("pref_notify_repl"))) {

@@ -1,6 +1,7 @@
 package com.replacements.replacements.sync;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -28,6 +30,7 @@ public class ProfileRegister extends IntentService {
     private RequestParams params = new RequestParams();
     private ArrayList<Integer> myDataSetAll = new ArrayList<>();
     private String token;
+    private String url;
 
     public ProfileRegister(){
         super(CLASS_NAME);
@@ -39,6 +42,7 @@ public class ProfileRegister extends IntentService {
         if(intentExtra != null) {
             int serverAction = intentExtra.getInt("serverAction", 0);
             token = intentExtra.getString("token", "");
+            url = intentExtra.getString("url", "");
             Log.i(CLASS_NAME, "onHandleIntent serverAction = " + Integer.toString(serverAction));
             Log.i(CLASS_NAME, "onHandleIntent token = " + token);
             Handler handler = new Handler(Looper.getMainLooper());
@@ -49,7 +53,7 @@ public class ProfileRegister extends IntentService {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            registerUser(token);
+                            registerUser(token, url);
                         }
                     });
                     break;
@@ -57,7 +61,7 @@ public class ProfileRegister extends IntentService {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            unregisterUser(token);
+                            unregisterUser(token, url);
                         }
                     });
                     break;
@@ -68,16 +72,29 @@ public class ProfileRegister extends IntentService {
     }
 
     //Insert User to Server
-    private void registerUser(String regId){
-        SharedPreferences.Editor localEditor = getSharedPreferences("dane", 0).edit();
-        localEditor.putBoolean("toDoRegisterUser", true);
-        localEditor.putBoolean("toDoUnregisterUser", false);
+    private void registerUser(String regId, String url){
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        SharedPreferences.Editor localEditor = prefs.edit();
+        if(prefs.getInt("chosenSchool", 1) == 1){
+            localEditor.putBoolean("toDoRegisterUser1", true);
+            localEditor.putBoolean("toDoUnregisterUser1", false);
+        }else{
+            localEditor.putBoolean("toDoRegisterUser2", true);
+            localEditor.putBoolean("toDoUnregisterUser2", false);
+        }
         localEditor.apply();
         params.put("regId", regId);
         System.out.println("Reg Id = " + regId);
+        String urlServer;
+        if(!url.equals("")) {
+            urlServer = url + ApplicationConstants.APP_SERVER_URL_INSERT_USER;
+        }else{
+            urlServer = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_1 : ApplicationConstants.SCHOOL_SERVER_2;
+            urlServer = urlServer + ApplicationConstants.APP_SERVER_URL_INSERT_USER;
+        }
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(ApplicationConstants.APP_SERVER_URL_INSERT_USER, params,
+        client.post(urlServer, params,
                 new AsyncHttpResponseHandler() {
                     // When the response returned by REST has Http
                     // response code '200'
@@ -86,9 +103,16 @@ public class ProfileRegister extends IntentService {
                         //Reg Id shared successfully with Web App
                         Log.i("GcmUserRegistration", "storeRegIdinServer 1");
                         changeSetInServer();
-                        SharedPreferences.Editor localEditor = getSharedPreferences("dane", 0).edit();
-                        localEditor.putBoolean("toDoRegisterUser", false);
+                        SharedPreferences prefs = getSharedPreferences("dane", 0);
+                        SharedPreferences.Editor localEditor = prefs.edit();
+                        localEditor.putBoolean("toDoRegisterUser1", false);
+                        localEditor.putBoolean("toDoRegisterUser2", false);
+                        localEditor.putBoolean("registerOnServerExists", true);
                         localEditor.apply();
+
+                        Intent newIntent = new Intent("messageLoader");
+                        newIntent.putExtra("finishService", "UserRegistered");
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
                     }
 
                     // When the response returned by REST has Http
@@ -111,22 +135,45 @@ public class ProfileRegister extends IntentService {
                             //Unexpected Error occcured! [Most common Error: Device might not be connected to Internet or remote server is not up and running], check for other errors as well
                             Log.i("GcmUserRegistration", "storeRegIdinServer 4");
                         }
+
+                        Intent newIntent = new Intent("messageLoader");
+                        newIntent.putExtra("finishService", "UserRegisterFailure");
+                        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(newIntent);
                     }
                 });
     }
 
     //Remove User from Server
-    private void unregisterUser(String regId){
-        SharedPreferences.Editor localEditor = getSharedPreferences("dane", 0).edit();
-        localEditor.putBoolean("toDoUnregisterUser", true);
-        localEditor.putBoolean("toDoRegisterUser", false);
-        localEditor.apply();
+    private void unregisterUser(String regId, String url){
+        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+        SharedPreferences.Editor localEditor = prefs.edit();
+        SharedPreferences localSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if(localSharedPreferences.getBoolean("pref_notify_switch", true)) {
+            if (prefs.getInt("chosenSchool", 1) == 1) {
+                localEditor.putBoolean("toDoUnregisterUser2", true);
+                localEditor.putBoolean("toDoRegisterUser2", false);
+            } else {
+                localEditor.putBoolean("toDoUnregisterUser1", true);
+                localEditor.putBoolean("toDoRegisterUser1", false);
+            }
+            localEditor.apply();
+        }
         Log.i("GcmUserUnregistration","removeRegIdfromServer");
         params.put("regId", regId);
         System.out.println("To remove Reg Id = " + regId);
+        String urlServer;
+        final String urlDomain;
+        if(!url.equals("")) {
+            urlDomain = url;
+            urlServer = url + ApplicationConstants.APP_SERVER_URL_REMOVE_USER;
+        }else{
+            urlServer = (prefs.getInt("chosenSchool", 1) == 1)? ApplicationConstants.SCHOOL_SERVER_2 : ApplicationConstants.SCHOOL_SERVER_1;
+            urlDomain = urlServer;
+            urlServer = urlServer + ApplicationConstants.APP_SERVER_URL_REMOVE_USER;
+        }
         // Make RESTful webservice call using AsyncHttpClient object
         AsyncHttpClient client = new AsyncHttpClient();
-        client.post(ApplicationConstants.APP_SERVER_URL_REMOVE_USER, params,
+        client.post(urlServer, params,
                 new AsyncHttpResponseHandler() {
                     // When the response returned by REST has Http
                     // response code '200'
@@ -134,8 +181,13 @@ public class ProfileRegister extends IntentService {
                     public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
                         //Reg Id shared successfully with Web App
                         Log.i("GcmUserUnregistration", "removeRegIdfromServer 1");
-                        SharedPreferences.Editor localEditor = getSharedPreferences("dane", 0).edit();
-                        localEditor.putBoolean("toDoUnregisterUser", false);
+                        SharedPreferences prefs = getSharedPreferences("dane", 0);
+                        SharedPreferences.Editor localEditor = prefs.edit();
+                        if(urlDomain.equals(ApplicationConstants.SCHOOL_SERVER_1)){
+                            localEditor.putBoolean("toDoUnregisterUser1", false);
+                        }else{
+                            localEditor.putBoolean("toDoUnregisterUser2", false);
+                        }
                         localEditor.apply();
                     }
 
