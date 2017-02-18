@@ -248,10 +248,10 @@ public class HomeFragment extends Fragment {
             }
             currentOrientation = getResources().getConfiguration().orientation;
             if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
             }
             else {
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             }
             startRequest();
         } else {

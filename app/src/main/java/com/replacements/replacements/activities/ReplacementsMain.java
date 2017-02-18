@@ -62,6 +62,7 @@ public class ReplacementsMain extends AppCompatActivity {
     private NavigationView mNavigationView;
     private int mCurrentSelectedPosition;
     private DrawerLayout mDrawerLayout;
+    private LinearLayout mLinearLayoutOpened;
     public ViewPager viewPager;
     private boolean configChanged;
     public boolean rotationChanged;
@@ -88,6 +89,7 @@ public class ReplacementsMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
+        Log.i(CLASS_NAME, "onCreate 100");
 
 
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
@@ -136,6 +138,8 @@ public class ReplacementsMain extends AppCompatActivity {
         boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", false);
         if(!first_run_db && !schoolChangeStarted){
 
+            Log.i(CLASS_NAME, "onCreate 200");
+
             //In first version of app default school was ZS Chocianow, so it should be selected if app was then installed (when app had just ZS Chocianow school)
             if(prefs.getInt("chosenSchool", 0) == 0) {
                 localEditor.putInt("chosenSchool", 2);
@@ -147,8 +151,8 @@ public class ReplacementsMain extends AppCompatActivity {
             setContentView(R.layout.activity_replacements_main);
 
 
-            setupToolbar();
             initNavigationDrawer();
+            setupToolbar();
 
             Bundle intentExtra = getIntent().getExtras();
             boolean isNotified;
@@ -255,6 +259,8 @@ public class ReplacementsMain extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        Log.i(CLASS_NAME, "onStart 100");
+
         no_internet = getString(R.string.no_internet_connect);
 
 //        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -275,6 +281,8 @@ public class ReplacementsMain extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+
+        Log.i(CLASS_NAME, "onResume 100");
 
         boolean first_run_db = prefs.getBoolean("first_run_db", true);
         boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", false);
@@ -437,17 +445,30 @@ public class ReplacementsMain extends AppCompatActivity {
     }
 
     private void setupToolbar() {
+        Log.i(CLASS_NAME, "setupToolbar 100");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
 
         final ActionBar ab = getSupportActionBar();
         assert ab != null;
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-    //    ab.setHomeButtonEnabled(true);
-        ab.setDisplayHomeAsUpEnabled(true);
+        Log.i(CLASS_NAME, "setupToolbar 200");
+        if(mLinearLayoutOpened == null) {
+            Log.i(CLASS_NAME, "setupToolbar 300");
+            ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+            //    ab.setHomeButtonEnabled(true);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }else{
+            Log.i(CLASS_NAME, "setupToolbar 400");
+            ab.setHomeButtonEnabled(false); // disable the button
+            ab.setDisplayHomeAsUpEnabled(false); // remove the left caret
+            ab.setDisplayShowHomeEnabled(false); // remove the icon
+        }
     }
     public void setupViewPager(ViewPager viewPager) {
+        Log.i(CLASS_NAME, "setupToolbar 100");
+
         //if(adapter == null) {
             adapter = new ViewPagerAdapter(getSupportFragmentManager());
         //}
@@ -467,6 +488,7 @@ public class ReplacementsMain extends AppCompatActivity {
 //        return adapter;
 //    }
     private void clearViewPager(ViewPager viewPager){
+        Log.i(CLASS_NAME, "clearViewPager 100");
         viewPager.removeAllViews();
     //    ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
     //    adapter.clearFrags();
@@ -519,6 +541,7 @@ public class ReplacementsMain extends AppCompatActivity {
     private void initNavigationDrawer() {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mLinearLayoutOpened = (LinearLayout) findViewById(R.id.linear_layout_opened);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         View hView =  mNavigationView.getHeaderView(0);
