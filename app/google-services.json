@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "670012122702-1430quqteuo6pmvmbsmnrtdrg8d31bq4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.replacements.replacements",
+            "certificate_hash": "3C00E0EFB47E1749BE0592C0E5A7D2CB28152AE8"
+          }
+        },
+        {
           "client_id": "670012122702-8gf0es2i7149g7o90c2f8mbr81v22ite.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -23,7 +31,11 @@
           }
         }
       ],
-      "api_key": [ { "current_key": AIzaSyBXy4FIOkWqhF8ObKx8U8i7HgL632CFgYU } ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF8p1qgsiMC4LZ1UJJWugodwdTirw-jZE"
+        }
+      ],
       "services": {
         "analytics_service": {
           "status": 1
