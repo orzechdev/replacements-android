@@ -11,6 +11,8 @@
     <!-- <uses-permission android:name="android.permission.GET_ACCOUNTS" /> -->
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
+    <!-- For Firebase Analytics -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -27,21 +29,41 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <intent-filter android:label="@string/app_name_zs_chocianow">
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter android:label="@string/app_name_zs_chocianow">-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+                <!--&lt;!&ndash; Accepts URIs that begin with "http://www.zschocianow.pl/zastepstwa” &ndash;&gt;-->
+                <!--<data-->
+                    <!--android:host="www.zschocianow.pl"-->
+                    <!--android:pathPrefix="/zastepstwa"-->
+                    <!--android:scheme="http" />-->
+                <!--&lt;!&ndash; note that the leading "/" is required for pathPrefix &ndash;&gt;-->
+                <!--&lt;!&ndash; Accepts URIs that begin with "http://www.zschocianow.pl/” &ndash;&gt;-->
+                <!--<data-->
+                    <!--android:host="www.zschocianow.pl"-->
+                    <!--android:scheme="http" />-->
+            <!--</intent-filter>-->
+
+            <!-- ATTENTION: This intent was auto-generated. Follow instructions at
+  https://g.co/AppIndexing/AndroidStudio to publish your URLs. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "http://www.zschocianow.pl/zastepstwa” -->
-                <data
-                    android:host="www.zschocianow.pl"
-                    android:pathPrefix="/zastepstwa"
-                    android:scheme="http" />
-                <!-- note that the leading "/" is required for pathPrefix -->
-                <!-- Accepts URIs that begin with "http://www.zschocianow.pl/” -->
-                <data
-                    android:host="www.zschocianow.pl"
-                    android:scheme="http" />
+                <!-- Accepts URIs that begin with "http://something.com/something" -->
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="zschocianow.pl" />
+                <data android:host="gimchocianow.pl" />
+                <data android:pathPrefix="/zastepstwa" />
+                <data android:pathPrefix="/plan" />
+                <!--<data-->
+                    <!--android:host="[ENTER-YOUR-HTTP-HOST-HERE]"-->
+                    <!--android:pathPrefix="/replacementsmain"-->
+                    <!--android:scheme="http" />-->
             </intent-filter>
         </activity>
         <activity

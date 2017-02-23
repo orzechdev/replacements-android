@@ -424,7 +424,7 @@ public class ScheduleUpdate extends IntentService {
         if(sharedPref.getBoolean("scheduleUpdateToNotify",false)){
             Log.i(CLASS_NAME, "sendNotification");
             // Sets an ID for the notification, so it can be updated
-            final int notifyID = 9001;
+            final int notifyID = 300;
 
             Intent resultIntent;
             PendingIntent resultPendingIntent;

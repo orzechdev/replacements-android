@@ -7,8 +7,8 @@ android {
         applicationId "com.replacements.replacements"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 9
-        versionName '0.2.201'
+        versionCode 11
+        versionName '0.2.215'
         //generatedDensities = []
     }
     buildTypes {
@@ -60,7 +60,11 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     //compile 'com.google.android.gms:play-services-gcm:9.2.1'
     //compile 'com.google.android.gms:play-services-gcm:8.4.0'
-    compile 'com.google.firebase:firebase-messaging:9.2.1'
+    //compile 'com.google.firebase:firebase-messaging:9.2.1'
+    compile 'com.google.firebase:firebase-messaging:10.2.0'
+    // To avoid errors, use the same Firebase SDK version across your app.
+    compile 'com.google.firebase:firebase-appindexing:10.2.0'
+    compile 'com.google.firebase:firebase-core:10.2.0'
     compile 'com.loopj.android:android-async-http:1.4.9'
 }
 

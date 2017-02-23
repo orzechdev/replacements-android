@@ -59,7 +59,7 @@ public class ReplacementsFragment extends DialogFragment {
     private ArrayList<Long> myClassesNum = new ArrayList<>();
     private ArrayList<Long> myTeachersNum = new ArrayList<>();
     private ArrayList<Long> myClassesSelect = new ArrayList<>();
-    private ArrayList<Long> myTeachersSelect = new ArrayList<>();
+    //private ArrayList<Long> myTeachersSelect = new ArrayList<>();
     private ArrayList<String> myTeachersSelectNames = new ArrayList<>();
     private ArrayList<ReplacementTask> myReplacements = new ArrayList<>();
     private int todayReplCount;
@@ -163,7 +163,7 @@ public class ReplacementsFragment extends DialogFragment {
             myReplacements.add(newReplTask);
         }
         ReplacementsFragment.ReplacementsAdapter mAdapter;
-        mAdapter = new ReplacementsAdapter(myReplacements, myClasses, myTeachers, myClassesNum, myTeachersNum, myClassesSelect, myTeachersSelect, todayReplCount, tomorrowReplCount);
+        mAdapter = new ReplacementsAdapter(myReplacements, myClasses, myTeachers, myClassesNum, myTeachersNum, myClassesSelect, /*myTeachersSelect, */todayReplCount, tomorrowReplCount);
 
 
 
@@ -728,7 +728,7 @@ public class ReplacementsFragment extends DialogFragment {
                     TeacherTask newTeacherTask;
                     newTeacherTask = new TeacherTask(id, name);
                     if(selected) {
-                        myTeachersSelect.add(id);
+                        //myTeachersSelect.add(id);
                         myTeachersSelectNames.add(name);
                     }
                     myTeachersNum.add(id);
@@ -847,7 +847,7 @@ public class ReplacementsFragment extends DialogFragment {
         private ArrayList<Long> mClassesNum;
         private ArrayList<Long> mTeachersNum;
         private ArrayList<Long> mClassesSelect;
-        private ArrayList<Long> mTeachersSelect;
+        //private ArrayList<Long> mTeachersSelect;
         private int mTodayReplCount;
         private int mTomorrowReplCount;
         //private boolean isShadow;
@@ -904,7 +904,7 @@ public class ReplacementsFragment extends DialogFragment {
         // Provide a suitable constructor (depends on the kind of dataset)
         public ReplacementsAdapter(ArrayList<ReplacementTask> myReplacements, ArrayList<ClassTask> myClasses, ArrayList<TeacherTask> myTeachers,
                                    ArrayList<Long> myClassesNum, ArrayList<Long> myTeachersNum,
-                                   ArrayList<Long> myClassesSelect, ArrayList<Long> myTeachersSelect,
+                                   ArrayList<Long> myClassesSelect, /*ArrayList<Long> myTeachersSelect,*/
                                    int myTodayReplCount, int myTomorrowReplCount) {
             mReplacements = myReplacements;
             mClasses = myClasses;
@@ -912,7 +912,7 @@ public class ReplacementsFragment extends DialogFragment {
             mClassesNum = myClassesNum;
             mTeachersNum = myTeachersNum;
             mClassesSelect = myClassesSelect;
-            mTeachersSelect = myTeachersSelect;
+            //mTeachersSelect = myTeachersSelect;
             mTodayReplCount = myTodayReplCount;
             mTomorrowReplCount = myTomorrowReplCount;
             //noRepl = noReplacements;
@@ -994,7 +994,7 @@ public class ReplacementsFragment extends DialogFragment {
                 }
                 long newClassNumber = replTask.getClassNumber();
                 long newDefaultInteger = replTask.getDefaultInteger();
-                if (mClassesSelect.contains(newClassNumber) || mTeachersSelect.contains(newDefaultInteger) || myTeachersSelectNames.contains(Html.fromHtml(replTask.getReplacement()).toString())) {
+                if (mClassesSelect.contains(newClassNumber) || /*mTeachersSelect.contains(newDefaultInteger) || */myTeachersSelectNames.contains(Html.fromHtml(replTask.getReplacement()).toString())) {
                     holder.rowHighlight.setVisibility(View.VISIBLE);
                 } else {
                     holder.rowHighlight.setVisibility(View.INVISIBLE);
@@ -1268,20 +1268,20 @@ public class ReplacementsFragment extends DialogFragment {
             }
             currentOrientation = getResources().getConfiguration().orientation;
             if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
             }
             else {
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             }
             //Snackbar.make(getView(), getActivity().getSharedPreferences("dane", 0).getString("repl_date_today", "0"), Snackbar.LENGTH_LONG).show();
             startRequest(true);//Jest online wiec true
         } else {
             currentOrientation = getResources().getConfiguration().orientation;
             if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
             }
             else {
-                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT);
             }
             startRequest(false);//Nie jest online wiec false
             if(!swipeDone) {

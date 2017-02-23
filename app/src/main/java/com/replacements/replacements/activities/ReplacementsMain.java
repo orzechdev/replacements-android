@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -34,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 //import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.replacements.replacements.data.ClassDbAdapter;
 import com.replacements.replacements.data.DbAdapter;
@@ -58,10 +60,12 @@ import com.replacements.replacements.sync.ScheduleUpdate;
 
 public class ReplacementsMain extends AppCompatActivity {
     private static final String CLASS_NAME = ReplacementsMain.class.getName();
+    private FirebaseAnalytics mFirebaseAnalytics;
     public ConnectivityManager connManager;
     private NavigationView mNavigationView;
     private int mCurrentSelectedPosition;
     private DrawerLayout mDrawerLayout;
+    private LinearLayout mLinearLayoutOpened;
     public ViewPager viewPager;
     private boolean configChanged;
     public boolean rotationChanged;
@@ -87,7 +91,7 @@ public class ReplacementsMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        Log.i(CLASS_NAME, "onCreate 100");
 
 
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
@@ -136,6 +140,8 @@ public class ReplacementsMain extends AppCompatActivity {
         boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", false);
         if(!first_run_db && !schoolChangeStarted){
 
+            Log.i(CLASS_NAME, "onCreate 200");
+
             //In first version of app default school was ZS Chocianow, so it should be selected if app was then installed (when app had just ZS Chocianow school)
             if(prefs.getInt("chosenSchool", 0) == 0) {
                 localEditor.putInt("chosenSchool", 2);
@@ -147,50 +153,75 @@ public class ReplacementsMain extends AppCompatActivity {
             setContentView(R.layout.activity_replacements_main);
 
 
-            setupToolbar();
             initNavigationDrawer();
+            setupToolbar();
 
             Bundle intentExtra = getIntent().getExtras();
             boolean isNotified;
 
 
-            if (savedInstanceState != null) {
-                Log.i("QQQQQQQQQ", "4");
-                mCurrentSelectedPosition = savedInstanceState.getInt("STATE_SELECTED_POSITION");
+
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            final Uri data = intent.getData();
+            //Check whether activity was instantiated from App Indexing Google Search and open appropriate content
+            if (Intent.ACTION_VIEW.equals(action) && data != null) {
+                int mapWebMenuItem = mapWebLink(data);
+                Log.i(CLASS_NAME, "onCreate from internet 100");
+                //Firebase analytics (send just once, therefore "savedInstanceState == null")
+                if (savedInstanceState == null) {
+                    Log.i(CLASS_NAME, "onCreate from internet 200");
+                    mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+                    Bundle params = new Bundle();
+                    params.putString("open_from_internet", (mapWebMenuItem == 2) ? "zastepstwa" : "plan");
+                    mFirebaseAnalytics.logEvent("open_from_internet_event", params);
+                }
+                Log.i(CLASS_NAME, "onCreate from internet 300");
                 Menu menu = mNavigationView.getMenu();
-                menu.getItem(mCurrentSelectedPosition).setChecked(true);
-                menuItems(menu.getItem(mCurrentSelectedPosition));
-            } else if (intentExtra != null) {
-                Log.i("QQQQQQQQQ", "1");
-                isNotified = intentExtra.getBoolean("isNotified", false);
-                Log.i("resume", "2");
-                if (isNotified) {
-                    Log.i("resume", "3");
-                    int extraMenuItem = intentExtra.getInt("menuItem", 2);
+                menu.getItem(mapWebMenuItem).setChecked(true);
+                menuItems(menu.getItem(mapWebMenuItem));
+            }else{
+                Log.i(CLASS_NAME, "onCreate from Android 100");
+                if (savedInstanceState != null) {
+                    Log.i(CLASS_NAME, "onCreate from Android 200");
+                    mCurrentSelectedPosition = savedInstanceState.getInt("STATE_SELECTED_POSITION");
                     Menu menu = mNavigationView.getMenu();
-                    menu.getItem(extraMenuItem).setChecked(true);
-                    menuItems(menu.getItem(extraMenuItem));
-                    if (extraMenuItem == 2) {
-                        SharedPreferences mSharedPreferences = getSharedPreferences("dane", 0);
-                        SharedPreferences.Editor mLocalEditor = mSharedPreferences.edit();
-                        mLocalEditor.putLong("savedTime", 0);
-                        mLocalEditor.apply();
+                    menu.getItem(mCurrentSelectedPosition).setChecked(true);
+                    menuItems(menu.getItem(mCurrentSelectedPosition));
+                } else if (intentExtra != null) {
+                    Log.i(CLASS_NAME, "onCreate from Android 300");
+                    isNotified = intentExtra.getBoolean("isNotified", false);
+                    if (isNotified) {
+                        Log.i(CLASS_NAME, "onCreate from Android 400");
+                        int extraMenuItem = intentExtra.getInt("menuItem", 2);
+                        Menu menu = mNavigationView.getMenu();
+                        menu.getItem(extraMenuItem).setChecked(true);
+                        menuItems(menu.getItem(extraMenuItem));
+                        if (extraMenuItem == 2) {
+                            Log.i(CLASS_NAME, "onCreate from Android 500");
+                            SharedPreferences mSharedPreferences = getSharedPreferences("dane", 0);
+                            SharedPreferences.Editor mLocalEditor = mSharedPreferences.edit();
+                            mLocalEditor.putLong("savedTime", 0);
+                            mLocalEditor.apply();
+                        }
+                    } else {
+                        Log.i(CLASS_NAME, "onCreate from Android 600");
+                        Menu menu = mNavigationView.getMenu();
+                        menu.getItem(2).setChecked(true);
+                        menuItems(menu.getItem(2));
                     }
                 } else {
-                    Log.i("QQQQQQQQQ", "5-1");
+                    Log.i(CLASS_NAME, "onCreate from Android 700");
                     Menu menu = mNavigationView.getMenu();
                     menu.getItem(2).setChecked(true);
                     menuItems(menu.getItem(2));
                 }
-            } else {
-                Log.i("QQQQQQQQQ", "5-2");
-                Menu menu = mNavigationView.getMenu();
-                menu.getItem(2).setChecked(true);
-                menuItems(menu.getItem(2));
+                Log.i(CLASS_NAME, "onCreate from Android 800");
             }
 
         }
 
+        Log.i(CLASS_NAME, "onCreate 300");
 
 //        connManager = ((ConnectivityManager)getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE));
 //        //Sprawdzenie czy w ustawieniach sa wlaczone powiadomienia GCM
@@ -231,6 +262,22 @@ public class ReplacementsMain extends AppCompatActivity {
 //        }
     }
 
+    private int mapWebLink(Uri uri) {
+        final String path = uri.getPath();
+        Log.i(CLASS_NAME, "mapWebLink uri path: " + path);
+        String[] pathSplit = path.split("/");
+        Log.i(CLASS_NAME, "mapWebLink uri pathSplit: " + pathSplit[1]);
+        switch (pathSplit[1]) {
+            case "zastepstwa":
+                Log.i(CLASS_NAME, "mapWebLink 2");
+                return 2;
+            case "plan":
+                Log.i(CLASS_NAME, "mapWebLink 3");
+                return 3;
+        }
+        return 2;
+    }
+
     // Check if Google Playservices is installed in Device or not
 //    private boolean checkPlayServices() {
 //        GoogleApiAvailability googleAPI = GoogleApiAvailability.getInstance();
@@ -255,6 +302,8 @@ public class ReplacementsMain extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        Log.i(CLASS_NAME, "onStart 100");
+
         no_internet = getString(R.string.no_internet_connect);
 
 //        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -275,6 +324,8 @@ public class ReplacementsMain extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
+
+        Log.i(CLASS_NAME, "onResume 100");
 
         boolean first_run_db = prefs.getBoolean("first_run_db", true);
         boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", false);
@@ -437,17 +488,30 @@ public class ReplacementsMain extends AppCompatActivity {
     }
 
     private void setupToolbar() {
+        Log.i(CLASS_NAME, "setupToolbar 100");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         toolbar.setBackgroundColor(ContextCompat.getColor(this, R.color.blue));
 
         final ActionBar ab = getSupportActionBar();
         assert ab != null;
-        ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-    //    ab.setHomeButtonEnabled(true);
-        ab.setDisplayHomeAsUpEnabled(true);
+        Log.i(CLASS_NAME, "setupToolbar 200");
+        if(mLinearLayoutOpened == null) {
+            Log.i(CLASS_NAME, "setupToolbar 300");
+            ab.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
+            //    ab.setHomeButtonEnabled(true);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }else{
+            Log.i(CLASS_NAME, "setupToolbar 400");
+            ab.setHomeButtonEnabled(false); // disable the button
+            ab.setDisplayHomeAsUpEnabled(false); // remove the left caret
+            ab.setDisplayShowHomeEnabled(false); // remove the icon
+        }
     }
     public void setupViewPager(ViewPager viewPager) {
+        Log.i(CLASS_NAME, "setupToolbar 100");
+
         //if(adapter == null) {
             adapter = new ViewPagerAdapter(getSupportFragmentManager());
         //}
@@ -467,6 +531,7 @@ public class ReplacementsMain extends AppCompatActivity {
 //        return adapter;
 //    }
     private void clearViewPager(ViewPager viewPager){
+        Log.i(CLASS_NAME, "clearViewPager 100");
         viewPager.removeAllViews();
     //    ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
     //    adapter.clearFrags();
@@ -519,6 +584,7 @@ public class ReplacementsMain extends AppCompatActivity {
     private void initNavigationDrawer() {
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mLinearLayoutOpened = (LinearLayout) findViewById(R.id.linear_layout_opened);
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         View hView =  mNavigationView.getHeaderView(0);
@@ -878,9 +944,25 @@ public class ReplacementsMain extends AppCompatActivity {
                     //((ScheduleFragment) fragmentWebView).setScaleWebView();
                 }else {
                     Log.i(CLASS_NAME, "onBackPressed not goback");
+                    Intent intent = getIntent();
+                    String action = intent.getAction();
+                    String data = intent.getDataString();
+                    //Check whether activity was instantiated from App Indexing Google Search and on back pressed close current activity task
+                    // without closing but not showing previous activity tasks remaining in memory
+                    if (Intent.ACTION_VIEW.equals(action) && data != null) {
+                        moveTaskToBack(true);
+                    }
                     super.onBackPressed();
                 }
             }else{
+                Intent intent = getIntent();
+                String action = intent.getAction();
+                String data = intent.getDataString();
+                //Check whether activity was instantiated from App Indexing Google Search and on back pressed close current activity task
+                // without closing but not showing previous activity tasks remaining in memory
+                if (Intent.ACTION_VIEW.equals(action) && data != null) {
+                    moveTaskToBack(true);
+                }
                 super.onBackPressed();
             }
         }
