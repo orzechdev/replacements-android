@@ -164,7 +164,7 @@ public class ReplacementsMain extends AppCompatActivity {
             Intent intent = getIntent();
             String action = intent.getAction();
             final Uri data = intent.getData();
-            //Check whether activity was instantiated from App Indexing Google Search and open appropriate content
+            //Check whether activity was instantiated from App Indexing Google SearchActivity and open appropriate content
             if (Intent.ACTION_VIEW.equals(action) && data != null) {
                 int mapWebMenuItem = mapWebLink(data);
                 Log.i(CLASS_NAME, "onCreate from internet 100");
@@ -803,8 +803,48 @@ public class ReplacementsMain extends AppCompatActivity {
                 Log.i("WYBRANO", "4");
                 startActivity(new Intent(this, SettingsActivity.class));
                 break;
+
+            //TODO following is new order of menu drawer tabs:
+            case R.id.nav_schools_new:
+                break;
+            case R.id.nav_home_new:
+                break;
+            case R.id.nav_schedules_new:
+                break;
+            case R.id.nav_replacements_new:
+                navSelectReplacements(menuItem);
+                break;
+            case R.id.nav_info_new:
+                break;
+            case R.id.nav_schools_management_new:
+                break;
+
             default:
         }
+    }
+
+    private void navSelectReplacements(MenuItem menuItem){
+        menuItem.setChecked(true);
+        Log.i("WYBRANO", "2");
+        mCurrentSelectedPosition = 2;
+        setTitle(menuItem.getTitle());
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        if(configChanged) {
+            tabLayout.removeAllTabs();
+            viewPager = (ViewPager) findViewById(R.id.viewpager);
+            clearViewPager(viewPager);
+        }
+        visibilityTabLayout(tabLayout);
+
+        replacementsFragment = new ReplacementsFragment();
+
+        // Insert the fragment by replacing any existing fragment
+        FragmentManager fmReplacements = getSupportFragmentManager();
+        FragmentTransaction ftReplacements = fmReplacements.beginTransaction();
+        ftReplacements.replace(R.id.content_frame, replacementsFragment);
+        ftReplacements.commitAllowingStateLoss();
+        configChanged = false;
     }
 
 //    private Fragment saveLastFragment(int positionInMenu){
@@ -947,7 +987,7 @@ public class ReplacementsMain extends AppCompatActivity {
                     Intent intent = getIntent();
                     String action = intent.getAction();
                     String data = intent.getDataString();
-                    //Check whether activity was instantiated from App Indexing Google Search and on back pressed close current activity task
+                    //Check whether activity was instantiated from App Indexing Google SearchActivity and on back pressed close current activity task
                     // without closing but not showing previous activity tasks remaining in memory
                     if (Intent.ACTION_VIEW.equals(action) && data != null) {
                         moveTaskToBack(true);
@@ -958,7 +998,7 @@ public class ReplacementsMain extends AppCompatActivity {
                 Intent intent = getIntent();
                 String action = intent.getAction();
                 String data = intent.getDataString();
-                //Check whether activity was instantiated from App Indexing Google Search and on back pressed close current activity task
+                //Check whether activity was instantiated from App Indexing Google SearchActivity and on back pressed close current activity task
                 // without closing but not showing previous activity tasks remaining in memory
                 if (Intent.ACTION_VIEW.equals(action) && data != null) {
                     moveTaskToBack(true);
