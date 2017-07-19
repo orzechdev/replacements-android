@@ -69,7 +69,7 @@ public class ScheduleFragment extends Fragment implements Observer {
                              Bundle savedInstanceState) {
         Log.i("ScheduleFragment", "onCreateView");
         // Inflate the layout for this fragment
-        View fragment_view = inflater.inflate(R.layout.fragment_schedule, container, false);
+        View fragment_view = inflater.inflate(R.layout.fragment_schedule_old, container, false);
 
         no_internet = getString(R.string.no_internet_connect);
         downloading_schedule = getString(R.string.downloading_schedule);

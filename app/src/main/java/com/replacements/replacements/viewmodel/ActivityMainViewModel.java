@@ -15,11 +15,28 @@ import com.replacements.replacements.R;
  * Created by Dawid on 15.07.2017.
  */
 
+// Class handled by architecture component called ViewModel
 public class ActivityMainViewModel extends ViewModel {
+
+    private FragmentScheduleViewModel fragmentScheduleViewModel;
+    private FragmentInstitutionViewModel fragmentInstitutionViewModel;
 
     private String scheduleHeader;
     private String replacementsHeader;
     private String institutionsHeader;
+
+    public FragmentScheduleViewModel getFragmentScheduleViewModel() {
+        return fragmentScheduleViewModel;
+    }
+    public void setFragmentScheduleViewModel(FragmentScheduleViewModel viewModel) {
+        fragmentScheduleViewModel = viewModel;
+    }
+    public FragmentInstitutionViewModel getFragmentInstitutionViewModel() {
+        return fragmentInstitutionViewModel;
+    }
+    public void setFragmentInstitutionViewModel(FragmentInstitutionViewModel viewModel) {
+        fragmentInstitutionViewModel = viewModel;
+    }
 
     private MutableLiveData<String> toolbarTitle = new MutableLiveData<>();
 
@@ -51,6 +68,7 @@ public class ActivityMainViewModel extends ViewModel {
             case R.id.navigation_home:
                 this.setToolbarTitle(scheduleHeader);
                 Log.i("ActivityMainViewModel","onObservableChanged onNavigationClick 1: " + getToolbarTitle());
+                //getFragmentScheduleViewModel().setText("inne 123 cos");
                 return true;
             case R.id.navigation_replacement:
                 this.setToolbarTitle(replacementsHeader);
@@ -70,14 +88,15 @@ public class ActivityMainViewModel extends ViewModel {
         institutionsHeader = context.getResources().getQuantityString(R.plurals.institution_header, 2);
     }
 
+    // Class handled by Data Binding library
     public class ActivityMainObservable extends BaseObservable {
 
         public final ObservableField<String> toolbarTitle = new ObservableField<>();
 
         public boolean onNavigationClick(@NonNull MenuItem item) {
             Log.i("ActivityMainObservable","onNavigationClick: " + Integer.toString(item.getItemId()));
-            // Very important - notifies ActivityMainViewModel observer that fields in ActivityMainObservable are changed
-            //this.notifyPropertyChanged(item.getItemId());
+            // Very important - notifies ActivityMainViewModel observer that fields in ActivityMainObservable are changed (for setupObservableCallbacks in ActivityMain)
+            this.notifyPropertyChanged(item.getItemId());
             onNavigationClickViewModel(item.getItemId());
             return true;
         }

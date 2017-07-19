@@ -1,5 +1,6 @@
 package com.replacements.replacements.fragments;
 
+import android.arch.lifecycle.LifecycleFragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -51,7 +52,7 @@ import java.util.Locale;
 import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderAdapter;
 
 
-public class ReplacementsFragment extends DialogFragment {
+public class ReplacementsFragment extends LifecycleFragment {
     private static final String CLASS_NAME = ReplacementsFragment.class.getName();
     private final int menuItemFragmentNumber = 2;
     private ArrayList<ClassTask> myClasses = new ArrayList<>();
@@ -461,25 +462,25 @@ public class ReplacementsFragment extends DialogFragment {
 //            ProfileRequest profileRequest = new ProfileRequest(getActivity());
 //            profileRequest.startRequest();
             startRequest2();
-            Snackbar.make(getActivity().findViewById(R.id.drawer_layout), refreshed_repl, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.main_content_container), refreshed_repl, Snackbar.LENGTH_LONG).show();
             Log.i("Request Finish", "Refresh replacements");
         }else if((isRefreshed && isError)){
 //            ProfileRequest profileRequest = new ProfileRequest(getActivity());
 //            profileRequest.startRequest();
             startRequest2();
-            Snackbar.make(getActivity().findViewById(R.id.drawer_layout), refreshed_error_part, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.main_content_container), refreshed_error_part, Snackbar.LENGTH_LONG).show();
             Log.i("Request Finish", "Refresh replacements and error");
         }else if(!isRefreshed && !isError){
 //            readReplacementsFromSQLite();
 //            mAdapter.notifyDataSetChanged();
-            ((ReplacementsMain) getActivity()).selectMenuItem(2);
-            Snackbar.make(getActivity().findViewById(R.id.drawer_layout), refreshed_no_repl, Snackbar.LENGTH_LONG).show();
+    //        ((ReplacementsMain) getActivity()).selectMenuItem(2);
+            Snackbar.make(getActivity().findViewById(R.id.main_content_container), refreshed_no_repl, Snackbar.LENGTH_LONG).show();
             Log.i("Request Finish", "No replacements");
         }else if(!isRefreshed && isError){
 //            readReplacementsFromSQLite();
 //            mAdapter.notifyDataSetChanged();
-            ((ReplacementsMain)getActivity()).selectMenuItem(2);
-            Snackbar.make(getActivity().findViewById(R.id.drawer_layout), refreshed_error, Snackbar.LENGTH_LONG).show();
+    //        ((ReplacementsMain)getActivity()).selectMenuItem(2);
+            Snackbar.make(getActivity().findViewById(R.id.main_content_container), refreshed_error, Snackbar.LENGTH_LONG).show();
             Log.i("Request Finish", "Error");
         }
         mSwipeRefreshLayout.setRefreshing(false);
@@ -493,7 +494,7 @@ public class ReplacementsFragment extends DialogFragment {
 //        readReplacementsFromSQLite();
 //        mAdapter.notifyDataSetChanged();
 //        onCreate(null);
-        ((ReplacementsMain)getActivity()).selectMenuItem(menuItemFragmentNumber);
+    //    ((ReplacementsMain)getActivity()).selectMenuItem(menuItemFragmentNumber);
     }
     public void startRequest2() {
         Log.i(CLASS_NAME, "6000");
@@ -936,7 +937,7 @@ public class ReplacementsFragment extends DialogFragment {
             if(mTodayReplCount == 0 && mTomorrowReplCount == 0 && position == 0) {
                 holder.rowRepl.setVisibility(View.GONE);
                 holder.rowNone.setVisibility(View.VISIBLE);
-                holder.rowNone.getLayoutParams().height = getActivity().findViewById(R.id.content_frame).getHeight();
+                holder.rowNone.getLayoutParams().height = getActivity().findViewById(R.id.main_content_container).getHeight();
                 holder.rowNoneInside.setVisibility(View.VISIBLE);
                 holder.rowView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.blue_light));
             }else if(mTodayReplCount == 0 && mTomorrowReplCount == 0 && position == 1) {
@@ -1288,7 +1289,7 @@ public class ReplacementsFragment extends DialogFragment {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
             //Toast.makeText(getActivity().getApplicationContext(), no_internet_connect, Toast.LENGTH_SHORT).show();
-            Snackbar.make(getActivity().findViewById(R.id.drawer_layout), no_internet_connect, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.main_content_container), no_internet_connect, Snackbar.LENGTH_LONG).show();
         }
     }
 
