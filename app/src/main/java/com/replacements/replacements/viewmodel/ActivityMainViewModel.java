@@ -25,6 +25,16 @@ public class ActivityMainViewModel extends ViewModel {
     private String replacementsHeader;
     private String institutionsHeader;
 
+    private int currentNavigationItem;
+
+    public int getCurrentNavigationItem() {
+        return currentNavigationItem;
+    }
+
+    public void setCurrentNavigationItem(int currentNavigationItem) {
+        this.currentNavigationItem = currentNavigationItem;
+    }
+
     public FragmentScheduleViewModel getFragmentScheduleViewModel() {
         return fragmentScheduleViewModel;
     }
@@ -40,9 +50,9 @@ public class ActivityMainViewModel extends ViewModel {
 
     private MutableLiveData<String> toolbarTitle = new MutableLiveData<>();
 
-    private ActivityMainViewModel.ActivityMainObservable observable = new ActivityMainViewModel.ActivityMainObservable();
+    private Observable observable = new Observable();
 
-    public ActivityMainViewModel.ActivityMainObservable getObservable() {
+    public Observable getObservable() {
         return observable;
     }
 
@@ -65,18 +75,21 @@ public class ActivityMainViewModel extends ViewModel {
 
     private boolean onNavigationClickViewModel(int propertyId) {
         switch (propertyId) {
-            case R.id.navigation_home:
+            case R.id.navigation_schedule:
                 this.setToolbarTitle(scheduleHeader);
                 Log.i("ActivityMainViewModel","onObservableChanged onNavigationClick 1: " + getToolbarTitle());
                 //getFragmentScheduleViewModel().setText("inne 123 cos");
+                setCurrentNavigationItem(propertyId);
                 return true;
             case R.id.navigation_replacement:
                 this.setToolbarTitle(replacementsHeader);
                 Log.i("ActivityMainViewModel","onObservableChanged onNavigationClick 2: " + getToolbarTitle());
+                setCurrentNavigationItem(propertyId);
                 return true;
             case R.id.navigation_institution:
                 this.setToolbarTitle(institutionsHeader);
                 Log.i("ActivityMainViewModel","onObservableChanged onNavigationClick 3: " + getToolbarTitle());
+                setCurrentNavigationItem(propertyId);
                 return true;
         }
         return false;
@@ -89,13 +102,13 @@ public class ActivityMainViewModel extends ViewModel {
     }
 
     // Class handled by Data Binding library
-    public class ActivityMainObservable extends BaseObservable {
+    public class Observable extends BaseObservable {
 
         public final ObservableField<String> toolbarTitle = new ObservableField<>();
 
         public boolean onNavigationClick(@NonNull MenuItem item) {
-            Log.i("ActivityMainObservable","onNavigationClick: " + Integer.toString(item.getItemId()));
-            // Very important - notifies ActivityMainViewModel observer that fields in ActivityMainObservable are changed (for setupObservableCallbacks in ActivityMain)
+            Log.i("Observable","onNavigationClick: " + Integer.toString(item.getItemId()));
+            // Very important - notifies ActivityMainViewModel observer that fields in Observable are changed (for setupObservableCallbacks in ActivityMain)
             this.notifyPropertyChanged(item.getItemId());
             onNavigationClickViewModel(item.getItemId());
             return true;

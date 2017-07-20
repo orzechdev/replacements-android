@@ -1,11 +1,12 @@
 package com.replacements.replacements.activities;
 
 import android.arch.lifecycle.LifecycleActivity;
+import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
-import android.databinding.Observable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -22,16 +23,22 @@ import com.replacements.replacements.fragments.ReplacementsFragment;
 import com.replacements.replacements.viewmodel.ActivityMainViewModel;
 
 public class ActivityMain extends LifecycleActivity {
+    private static final String CLASS_NAME = ActivityMain.class.getName();
 
     private ActivityMainViewModel viewModel;
     private ActivityMainBinding binding;
 
-    private TextView mTextMessage;
+    private android.databinding.Observable.OnPropertyChangedCallback observableCallback;
+
     private BottomNavigationView mNavigation;
 
     private String scheduleHeader;
     private String replacementsHeader;
     private String institutionsHeader;
+
+    private FragmentSchedule fragmentSchedule;
+    private ReplacementsFragment fragmentReplacement;
+    private FragmentInstitution fragmentInstitution;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +52,8 @@ public class ActivityMain extends LifecycleActivity {
 
         // Initiating DataBinding for ContentView in Activity
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        final ActivityMainViewModel.ActivityMainObservable observable = viewModel.getObservable();
+        final ActivityMainViewModel.Observable observable = viewModel.getObservable();
         binding.setObservable(observable);
-
-//        setupViewModelObservables();
-//        setupObservableCallbacks();
 
         viewModel.setup(getApplicationContext());
 
@@ -57,21 +61,81 @@ public class ActivityMain extends LifecycleActivity {
         setupNavigation();
         setupToolbar();
 
-//        mTextMessage = (TextView) findViewById(R.id.message);
-//        mTextMessage.setText(scheduleHeader);
+        if(savedInstanceState != null){
+            restoreAllFragments(savedInstanceState);
+        }
 
-
-        FragmentSchedule fragmentSchedule = new FragmentSchedule();
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.main_content, fragmentSchedule);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-        //viewModel.getFragmentScheduleViewModel().setText("test - text");
-        setupObservableCallbacks();
+        int currentNavigationItem = viewModel.getCurrentNavigationItem();
+        setActiveFragment(currentNavigationItem);
     }
 
-//    // Very important - notifies ActivityMainObservable that fields in ActivityMainViewModel are changed
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Every time onStart is called, it is necessary to add observableCallback to binding and remove it in onStop from binding,
+        // because if observableCallback will be delete from activity, it will be still connected with binding
+        // and after recreate activity the new observableCallback will be created and binding will have two the same observableCallbacks
+        setupObservableCallbacks();
+        binding.getObservable().addOnPropertyChangedCallback(observableCallback);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // Every time onStart is called, it is necessary to add observableCallback to binding and remove it in onStop from binding,
+        // because if observableCallback will be delete from activity, it will be still connected with binding
+        // and after recreate activity the new observableCallback will be created and binding will have two the same observableCallbacks
+        binding.getObservable().removeOnPropertyChangedCallback(observableCallback);
+    }
+
+    // Set desirable fragment visible on the screen
+    public void setActiveFragment(int currentNavigationItem) {
+        Log.i(CLASS_NAME,"setActiveFragment 100");
+
+        FragmentTransaction transaction;
+        LifecycleFragment lifecycleFragment;
+        String backStackName;
+
+        switch (currentNavigationItem) {
+            case R.id.navigation_schedule:
+                Log.i(CLASS_NAME,"setActiveFragment 200");
+                if(fragmentSchedule == null)
+                    fragmentSchedule = new FragmentSchedule();
+                lifecycleFragment = fragmentSchedule;
+                backStackName = "fragmentSchedule";
+                break;
+            case R.id.navigation_replacement:
+                Log.i(CLASS_NAME,"setActiveFragment 300");
+                if(fragmentReplacement == null)
+                    fragmentReplacement = new ReplacementsFragment();
+                lifecycleFragment = fragmentReplacement;
+                backStackName = "fragmentReplacement";
+                break;
+            case R.id.navigation_institution:
+                Log.i(CLASS_NAME,"setActiveFragment 400");
+                if(fragmentInstitution == null)
+                    fragmentInstitution = new FragmentInstitution();
+                lifecycleFragment = fragmentInstitution;
+                backStackName = "fragmentInstitution";
+                break;
+            default:
+                Log.i(CLASS_NAME,"setActiveFragment 500");
+                if(fragmentSchedule == null)
+                    fragmentSchedule = new FragmentSchedule();
+                lifecycleFragment = fragmentSchedule;
+                backStackName = "fragmentSchedule";
+                break;
+        }
+
+        transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_content, lifecycleFragment);
+        transaction.addToBackStack(backStackName);
+        transaction.commitAllowingStateLoss();
+
+        Log.i(CLASS_NAME,"setActiveFragment 600");
+    }
+
+    //    // Very important - notifies Observable that fields in ActivityMainViewModel are changed
 //    private void setupViewModelObservables() {
 //        viewModel.getToolbarTitle().observe(this, new Observer<String>() {
 //                    @Override
@@ -84,50 +148,15 @@ public class ActivityMain extends LifecycleActivity {
 //        );
 //    }
 
-    // Very important - notifies ActivityMainViewModel observer that fields in ActivityMainObservable are changed
+    // Very important - notifies ActivityMainViewModel observer that fields in Observable are changed
     private void setupObservableCallbacks() {
-        binding.getObservable().addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
+        observableCallback = new android.databinding.Observable.OnPropertyChangedCallback() {
             @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-
-                FragmentTransaction transaction;
-
-                switch (propertyId) {
-                    case R.id.navigation_home:
-                        Log.i("ActivityMainViewModel","onObservableChanged onNavigationClick 1");
-                        FragmentSchedule fragmentSchedule = new FragmentSchedule();
-                        transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.main_content, fragmentSchedule);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
-                        viewModel.getFragmentScheduleViewModel().setText("test - text - 2");
-                        //getFragmentScheduleViewModel().setText("inne 123 cos");
-                        return;
-                    case R.id.navigation_replacement:
-                        Log.i("ActivityMainViewModel","onObservableChanged onNavigationClick 2");
-                        ReplacementsFragment fragmentReplacements = new ReplacementsFragment();
-                        transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.main_content, fragmentReplacements);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
-                        //viewModel.getFragmentScheduleViewModel().setText("test - text - 2");
-                        return;
-                    case R.id.navigation_institution:
-                        Log.i("ActivityMainViewModel","onObservableChanged onNavigationClick 3");
-                        FragmentInstitution fragmentInstitution = new FragmentInstitution();
-                        transaction = getSupportFragmentManager().beginTransaction();
-                        transaction.replace(R.id.main_content, fragmentInstitution);
-                        transaction.addToBackStack(null);
-                        transaction.commit();
-                        //viewModel.getFragmentScheduleViewModel().setText("test - text - 2");
-                        return;
-                }
-
-
-                Log.i("ActivityMain", "setupObservableCallbacks sender: " + sender.toString() + " propertyId: " + Integer.toString(propertyId));
-        //        viewModel.onObservablePropertyChanged(propertyId);
+            public void onPropertyChanged(android.databinding.Observable sender, int propertyId) {
+                setActiveFragment(propertyId);
+                Log.i(CLASS_NAME, "setupObservableCallbacks sender: " + sender.toString() + " propertyId: " + Integer.toString(propertyId));
             }
-        });
+        };
     }
 
     public ActivityMainViewModel getViewModel() {
@@ -158,4 +187,50 @@ public class ActivityMain extends LifecycleActivity {
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.i(CLASS_NAME, "onSaveInstanceState");
+        saveAllFragments(outState);
+    }
+
+    // Saving all already displayed fragments to the bundle from variables (e.g. in case of screen rotating)
+    private void saveAllFragments(Bundle outState) {
+        Log.i(CLASS_NAME, "saveAllFragments 100");
+
+        if (fragmentSchedule != null) {
+            Log.i(CLASS_NAME, "saveAllFragments 200");
+            getSupportFragmentManager().putFragment(outState, "fragmentSchedule", fragmentSchedule);
+        }
+        if (fragmentReplacement != null) {
+            Log.i(CLASS_NAME, "saveAllFragments 300");
+            getSupportFragmentManager().putFragment(outState, "fragmentReplacement", fragmentReplacement);
+        }
+        if (fragmentInstitution != null) {
+            Log.i(CLASS_NAME, "saveAllFragments 400");
+            getSupportFragmentManager().putFragment(outState, "fragmentInstitution", fragmentInstitution);
+        }
+
+        Log.i(CLASS_NAME, "saveAllFragments 500");
+    }
+
+    // Restoring all already displayed fragments from the bundle to variables (e.g. in case of screen rotating)
+    private void restoreAllFragments(Bundle savedInstanceState) {
+        Log.i(CLASS_NAME, "restoreAllFragments 100");
+
+        if(getSupportFragmentManager().getFragment(savedInstanceState, "fragmentSchedule") != null){
+            Log.i(CLASS_NAME, "restoreAllFragments 200");
+            fragmentSchedule = (FragmentSchedule) getSupportFragmentManager().getFragment(savedInstanceState, "fragmentSchedule");
+        }
+        if(getSupportFragmentManager().getFragment(savedInstanceState, "fragmentReplacement") != null){
+            Log.i(CLASS_NAME, "restoreAllFragments 300");
+            fragmentReplacement = (ReplacementsFragment) getSupportFragmentManager().getFragment(savedInstanceState, "fragmentReplacement");
+        }
+        if(getSupportFragmentManager().getFragment(savedInstanceState, "fragmentInstitution") != null){
+            Log.i(CLASS_NAME, "restoreAllFragments 400");
+            fragmentInstitution = (FragmentInstitution) getSupportFragmentManager().getFragment(savedInstanceState, "fragmentInstitution");
+        }
+
+        Log.i(CLASS_NAME, "restoreAllFragments 500");
+    }
 }

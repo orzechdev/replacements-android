@@ -24,8 +24,6 @@ public class FragmentSchedule extends LifecycleFragment {
     private FragmentScheduleViewModel viewModel;
     private FragmentScheduleBinding binding;
 
-    public static final String ARG_POSITION = "test";
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -37,10 +35,10 @@ public class FragmentSchedule extends LifecycleFragment {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_schedule, container, false);
 
-        final FragmentScheduleViewModel.FragmentScheduleObservable observable = viewModel.getObservable();
+        final FragmentScheduleViewModel.Observable observable = viewModel.getObservable();
         binding.setObservable(observable);
 
-        viewModel.setText("Here You will have Your plans.");
+        viewModel.setup(getActivity().getApplicationContext());
 
         return binding.getRoot();
     }

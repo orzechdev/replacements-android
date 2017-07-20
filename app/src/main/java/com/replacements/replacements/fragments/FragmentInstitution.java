@@ -36,10 +36,10 @@ public class FragmentInstitution extends LifecycleFragment {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_institution, container, false);
 
-        final FragmentInstitutionViewModel.FragmentInstitutionObservable observable = viewModel.getObservable();
+        final FragmentInstitutionViewModel.Observable observable = viewModel.getObservable();
         binding.setObservable(observable);
 
-        viewModel.setText("Here You will have possibility to find Your school.");
+        viewModel.setup(getActivity().getApplicationContext());
 
         return binding.getRoot();
     }

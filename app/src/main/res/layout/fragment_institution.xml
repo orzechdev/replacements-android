@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable name="observable" type="com.replacements.replacements.viewmodel.FragmentInstitutionViewModel.FragmentInstitutionObservable"/>
+        <variable name="observable" type="com.replacements.replacements.viewmodel.FragmentInstitutionViewModel.Observable"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
