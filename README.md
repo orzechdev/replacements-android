@@ -1,6 +1,6 @@
 # replacements-android
 
-Aby uruchomić Activity nowej wersji aplikacji w konsoli w folderze sdk z adb.exe wpisz:
+Aby uruchomić Activity nowej wersji aplikacji w konsoli z folderu sdk z adb.exe wpisz:
 
 adb shell
 
