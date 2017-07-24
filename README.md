@@ -7,3 +7,7 @@ adb shell
 a następnie:
 
 am start -n com.replacements.replacements/.activities.ActivityMain
+
+
+Do tworzenia obiektów POJO na podstawie pliku JSON można użyć (wybierając Source type: JSON, Annotation style: Gson):
+http://www.jsonschema2pojo.org/
