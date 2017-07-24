@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.replacements.replacements.R;
+import com.replacements.replacements.repositories.ActivityMainRepository;
 
 /**
  * Created by Dawid on 15.07.2017.
@@ -17,6 +18,8 @@ import com.replacements.replacements.R;
 
 // Class handled by architecture component called ViewModel
 public class ActivityMainViewModel extends ViewModel {
+
+    private ActivityMainRepository activityMainRepository;
 
     private FragmentScheduleViewModel fragmentScheduleViewModel;
     private FragmentInstitutionViewModel fragmentInstitutionViewModel;
@@ -48,7 +51,7 @@ public class ActivityMainViewModel extends ViewModel {
         fragmentInstitutionViewModel = viewModel;
     }
 
-    private MutableLiveData<String> toolbarTitle = new MutableLiveData<>();
+    private MutableLiveData<String> toolbarTitle;// = new MutableLiveData<>();
 
     private Observable observable = new Observable();
 
@@ -58,10 +61,20 @@ public class ActivityMainViewModel extends ViewModel {
 
     public void setup(Context context) {
         // If setup was already done, do not do it again
-        if(this.getToolbarTitle().getValue() != null)
+//        if(this.getToolbarTitle().getValue() != null)
+//            return;
+        if(this.getToolbarTitle() != null)
             return;
         prepareStrings(context);
-        this.setToolbarTitle(scheduleHeader);
+
+        // Here works repository and Retrofit
+        activityMainRepository = new ActivityMainRepository();
+        activityMainRepository.setup();
+        toolbarTitle = activityMainRepository.getUser("name");//.getValue();
+        Log.i("ActivityMainViewModel","setup 1");
+        Log.i("ActivityMainViewModel","setup: " + toolbarTitle.getValue());
+
+        //this.setToolbarTitle(scheduleHeader);
     }
 
     public MutableLiveData<String> getToolbarTitle() {

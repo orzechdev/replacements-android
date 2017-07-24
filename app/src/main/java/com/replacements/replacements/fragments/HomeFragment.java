@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,34 +13,24 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.replacements.replacements.R;
 import com.replacements.replacements.helpers.DynamicImageView;
 import com.replacements.replacements.models.HomeCardView;
-import com.replacements.replacements.models.JsonReplacements;
+import com.replacements.replacements.models.JsonReplacementsOld;
 import com.replacements.replacements.models.cards.Article;
-import com.replacements.replacements.sync.GsonRequest;
-import com.replacements.replacements.sync.MainSingleton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class HomeFragment extends Fragment {
@@ -269,18 +257,18 @@ public class HomeFragment extends Fragment {
         Snackbar.make(getView(), "Aktualności jeszcze nie działają", Snackbar.LENGTH_LONG).show();
 
 
-//        GsonRequest<JsonReplacements> jsObjRequest = new GsonRequest<JsonReplacements>(
+//        GsonRequest<JsonReplacementsOld> jsObjRequest = new GsonRequest<JsonReplacementsOld>(
 //                Request.Method.GET,
 //                getString(R.string.url_repl_all),
-//                JsonReplacements.class, null,
+//                JsonReplacementsOld.class, null,
 //                this.createRequestSuccessListener(),
 //                this.createRequestErrorListener());
 //        MainSingleton.getInstance(getActivity()).addToRequestQueue(jsObjRequest);
     }
-    private Response.Listener<JsonReplacements> createRequestSuccessListener() {
-        return new Response.Listener<JsonReplacements>() {
+    private Response.Listener<JsonReplacementsOld> createRequestSuccessListener() {
+        return new Response.Listener<JsonReplacementsOld>() {
             @Override
-            public void onResponse(JsonReplacements response) {
+            public void onResponse(JsonReplacementsOld response) {
                 mTextView.setText("Response: " + System.getProperty("line.separator") + System.getProperty("line.separator") +
                         //response.getReplacement(0).getClassN() + " - " +
                         response.getReplacement(0).getReplacement() + ", " + System.getProperty("line.separator") +

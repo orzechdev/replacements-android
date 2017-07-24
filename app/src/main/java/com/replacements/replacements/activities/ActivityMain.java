@@ -2,11 +2,13 @@ package com.replacements.replacements.activities;
 
 import android.arch.lifecycle.LifecycleActivity;
 import android.arch.lifecycle.LifecycleFragment;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
@@ -77,6 +79,7 @@ public class ActivityMain extends LifecycleActivity {
         // and after recreate activity the new observableCallback will be created and binding will have two the same observableCallbacks
         setupObservableCallbacks();
         binding.getObservable().addOnPropertyChangedCallback(observableCallback);
+        setupViewModelObservables();
     }
 
     @Override
@@ -135,18 +138,18 @@ public class ActivityMain extends LifecycleActivity {
         Log.i(CLASS_NAME,"setActiveFragment 600");
     }
 
-    //    // Very important - notifies Observable that fields in ActivityMainViewModel are changed
-//    private void setupViewModelObservables() {
-//        viewModel.getToolbarTitle().observe(this, new Observer<String>() {
-//                    @Override
-//                    public void onChanged(@Nullable String s) {
-//                        Log.i("ActivityMain","setupViewModelObservables 1: " + binding.getObservable().toolbarTitle.get());
-//                        binding.getObservable().toolbarTitle.set(s);
-//                        Log.i("ActivityMain","setupViewModelObservables 2: " + binding.getObservable().toolbarTitle.get());
-//                    }
-//                }
-//        );
-//    }
+        // Very important - notifies Observable that fields in ActivityMainViewModel are changed
+    private void setupViewModelObservables() {
+        viewModel.getToolbarTitle().observe(this, new Observer<String>() {
+                    @Override
+                    public void onChanged(@Nullable String s) {
+                        Log.i("ActivityMain","setupViewModelObservables 1: " + binding.getObservable().toolbarTitle.get());
+                        binding.getObservable().toolbarTitle.set(s);
+                        Log.i("ActivityMain","setupViewModelObservables 2: " + binding.getObservable().toolbarTitle.get());
+                    }
+                }
+        );
+    }
 
     // Very important - notifies ActivityMainViewModel observer that fields in Observable are changed
     private void setupObservableCallbacks() {

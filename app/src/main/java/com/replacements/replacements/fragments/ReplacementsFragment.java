@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,7 +25,6 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.replacements.replacements.activities.ReplacementsMain;
 import com.replacements.replacements.data.ClassDbAdapter;
 import com.replacements.replacements.data.DbAdapter;
 import com.replacements.replacements.data.TeacherDbAdapter;
@@ -34,7 +32,7 @@ import com.replacements.replacements.helpers.StickyHeaderDecoration;
 import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.models.ClassTask;
 import com.replacements.replacements.models.JsonData;
-import com.replacements.replacements.models.JsonReplacements;
+import com.replacements.replacements.models.JsonReplacementsOld;
 import com.replacements.replacements.R;
 import com.replacements.replacements.data.ReplacementDbAdapter;
 import com.replacements.replacements.models.ReplacementTask;
@@ -286,11 +284,11 @@ public class ReplacementsFragment extends LifecycleFragment {
             Log.i("Request Repl 1", url_repl_today);
 
             //Pobranie zastepstw dzisiejszych
-            GsonRequest<JsonReplacements> jsObjRequestToday = new GsonRequest<>(
+            GsonRequest<JsonReplacementsOld> jsObjRequestToday = new GsonRequest<>(
                     Request.Method.GET,
                     //getString(R.string.url_repl_all_2new),
                     url_repl_today,
-                    JsonReplacements.class, null,
+                    JsonReplacementsOld.class, null,
                     this.createRequestSuccessListener(true),
                     this.createRequestErrorListener());
 
@@ -307,11 +305,11 @@ public class ReplacementsFragment extends LifecycleFragment {
             Log.i("Request Repl 2", url_repl_tomorrow);
 
             //Pobranie zastepstw jutrzejszych
-            GsonRequest<JsonReplacements> jsObjRequestTomorrow = new GsonRequest<>(
+            GsonRequest<JsonReplacementsOld> jsObjRequestTomorrow = new GsonRequest<>(
                     Request.Method.GET,
                     //getString(R.string.url_repl_all_2new),
                     url_repl_tomorrow,
-                    JsonReplacements.class, null,
+                    JsonReplacementsOld.class, null,
                     this.createRequestSuccessListener(false),
                     this.createRequestErrorListener());
 
@@ -322,11 +320,11 @@ public class ReplacementsFragment extends LifecycleFragment {
         }
     }
 
-    private Response.Listener<JsonReplacements> createRequestSuccessListener(boolean today) {
+    private Response.Listener<JsonReplacementsOld> createRequestSuccessListener(boolean today) {
         final boolean isToday = today;
-        return new Response.Listener<JsonReplacements>() {
+        return new Response.Listener<JsonReplacementsOld>() {
             @Override
-            public void onResponse(JsonReplacements response) {
+            public void onResponse(JsonReplacementsOld response) {
                 int responseSize = response.getSize();
                 boolean refreshedToday = false;
                 boolean refreshedTomorrow = false;
