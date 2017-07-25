@@ -16,6 +16,7 @@ import com.replacements.replacements.repositories.FragmentReplacementsRepository
 
 // Class handled by architecture component called ViewModel
 public class FragmentReplacementsViewModel extends ViewModel {
+
     private static final String CLASS_NAME = FragmentReplacementsViewModel.class.getName();
 
     private FragmentReplacementsRepository fragmentReplacementsRepository;
