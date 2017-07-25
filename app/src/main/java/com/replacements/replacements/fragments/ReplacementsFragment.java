@@ -1,6 +1,8 @@
 package com.replacements.replacements.fragments;
 
 import android.arch.lifecycle.LifecycleFragment;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -8,6 +10,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -25,6 +28,7 @@ import android.widget.TextView;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.replacements.replacements.activities.ActivityMain;
 import com.replacements.replacements.data.ClassDbAdapter;
 import com.replacements.replacements.data.DbAdapter;
 import com.replacements.replacements.data.TeacherDbAdapter;
@@ -32,6 +36,7 @@ import com.replacements.replacements.helpers.StickyHeaderDecoration;
 import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.models.ClassTask;
 import com.replacements.replacements.models.JsonData;
+import com.replacements.replacements.models.JsonReplacements;
 import com.replacements.replacements.models.JsonReplacementsOld;
 import com.replacements.replacements.R;
 import com.replacements.replacements.data.ReplacementDbAdapter;
@@ -39,6 +44,8 @@ import com.replacements.replacements.models.ReplacementTask;
 import com.replacements.replacements.models.TeacherTask;
 import com.replacements.replacements.sync.GsonRequest;
 import com.replacements.replacements.sync.MainSingleton;
+import com.replacements.replacements.viewmodel.ActivityMainViewModel;
+import com.replacements.replacements.viewmodel.FragmentReplacementsViewModel;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,6 +59,10 @@ import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderAdapter;
 
 public class ReplacementsFragment extends LifecycleFragment {
     private static final String CLASS_NAME = ReplacementsFragment.class.getName();
+
+    private FragmentReplacementsViewModel viewModel;
+    //private FragmentReplacementsBinding binding;
+
     private final int menuItemFragmentNumber = 2;
     private ArrayList<ClassTask> myClasses = new ArrayList<>();
     private ArrayList<TeacherTask> myTeachers = new ArrayList<>();
@@ -136,9 +147,41 @@ public class ReplacementsFragment extends LifecycleFragment {
         //Toast.makeText(getActivity().getApplicationContext(), "dziala onCreate", Toast.LENGTH_SHORT).show();
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //
+        //
+        //  THIS IS START OF PRELIMINARY IMPLEMENTATION OF VIEWMODEL
+        //
+        //
+
+
+        viewModel = ViewModelProviders.of(this).get(FragmentReplacementsViewModel.class);
+        //ActivityMainViewModel parentViewModel = ViewModelProviders.of(this).get(ActivityMainViewModel.class);
+        ActivityMainViewModel parentViewModel = ((ActivityMain)getActivity()).getViewModel();
+        parentViewModel.setFragmentReplacementsViewModel(viewModel);
+
+        //binding = DataBindingUtil.inflate(inflater, R.layout.fragment_institution, container, false);
+
+        final FragmentReplacementsViewModel.Observable observable = viewModel.getObservable();
+        //binding.setObservable(observable);
+
+        viewModel.setup(getActivity().getApplicationContext());
+
+        //return binding.getRoot();
+
+
+        //
+        //
+        //  THIS IS END OF PRELIMINARY IMPLEMENTATION OF VIEWMODEL
+        //
+        //
+
+
+
+
         Log.i(CLASS_NAME, "2000");
         // Ustalenie widoku dla fragmentu (Inflate the layout for this fragment)
         View fragment_view = inflater.inflate(R.layout.fragment_replacements, container, false);
@@ -189,6 +232,20 @@ public class ReplacementsFragment extends LifecycleFragment {
 //                new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL);
 //        mRecyclerView.addItemDecoration(itemDecoration);
         return fragment_view;
+    }
+
+    // Very important - notifies Observable that fields in ActivityMainViewModel are changed
+    private void setupViewModelObservables() {
+        viewModel.getJsonReplacements().observe(this, new Observer<JsonReplacements>() {
+                    @Override
+                    public void onChanged(@Nullable JsonReplacements s) {
+                        if(s.getReplacements() != null)
+                            Log.i("ReplacementsFragment","setupViewModelObservables 1: " + s.getReplacements().get(1).getReplacement());//.getReplacements().get(1).getReplacement());
+                        //binding.getObservable().toolbarTitle.set(s);
+                        //Log.i("ActivityMain","setupViewModelObservables 2: " + binding.getObservable().toolbarTitle.get());
+                    }
+                }
+        );
     }
 
     private void startRequest(boolean isOnline) {
@@ -1199,6 +1256,9 @@ public class ReplacementsFragment extends LifecycleFragment {
 
     public void onStart() {
         super.onStart();
+
+        setupViewModelObservables();
+
         Log.i(CLASS_NAME, "7000");
         setHasOptionsMenu(true);
         no_internet_connect = getString(R.string.no_internet_connect);

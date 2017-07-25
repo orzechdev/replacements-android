@@ -8,6 +8,7 @@ import android.databinding.ObservableField;
 import android.util.Log;
 
 import com.replacements.replacements.R;
+import com.replacements.replacements.repositories.FragmentScheduleRepository;
 
 /**
  * Created by Dawid on 19.07.2017.
@@ -15,6 +16,8 @@ import com.replacements.replacements.R;
 
 // Class handled by architecture component called ViewModel
 public class FragmentScheduleViewModel extends ViewModel {
+
+    private FragmentScheduleRepository fragmentScheduleRepository;
 
     private MutableLiveData<String> text = new MutableLiveData<>();
 
@@ -32,6 +35,8 @@ public class FragmentScheduleViewModel extends ViewModel {
             return;
         prepareStrings(context);
         this.setText(mainText);
+
+        fragmentScheduleRepository = FragmentScheduleRepository.getInstance();
     }
 
     public MutableLiveData<String> getText() {

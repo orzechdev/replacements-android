@@ -1,7 +1,6 @@
 package com.replacements.replacements.repositories.webservices;
 
 import com.replacements.replacements.models.JsonReplacements;
-import com.replacements.replacements.models.JsonReplacementsOld;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -13,7 +12,7 @@ import retrofit2.http.Query;
  * Created by Dawid on 24.07.2017.
  */
 
-public interface Webservice {
+public interface WebService {
     /**
      * @GET declares an HTTP GET request
      * @Path("user") annotation on the userId parameter marks it as a
@@ -22,7 +21,7 @@ public interface Webservice {
     @GET("restfultests/tekst.php")
     Call<ResponseBody> getUser(@Query("name") String name);
 
-    @GET("json/schools/{schoolId}/replacements/{date}/{ver}")
+    @GET("tutortest/json/institutions/{institutionId}/replacements/{date}/{ver}.php")
     Call<JsonReplacements> getReplacements(
             @Path("institutionId") String institutionId,
             @Path("date") String date,

@@ -22,6 +22,7 @@ public class ActivityMainViewModel extends ViewModel {
     private ActivityMainRepository activityMainRepository;
 
     private FragmentScheduleViewModel fragmentScheduleViewModel;
+    private FragmentReplacementsViewModel fragmentReplacementsViewModel;
     private FragmentInstitutionViewModel fragmentInstitutionViewModel;
 
     private String scheduleHeader;
@@ -43,6 +44,12 @@ public class ActivityMainViewModel extends ViewModel {
     }
     public void setFragmentScheduleViewModel(FragmentScheduleViewModel viewModel) {
         fragmentScheduleViewModel = viewModel;
+    }
+    public FragmentReplacementsViewModel getFragmentReplacementsViewModel() {
+        return fragmentReplacementsViewModel;
+    }
+    public void setFragmentReplacementsViewModel(FragmentReplacementsViewModel viewModel) {
+        fragmentReplacementsViewModel = viewModel;
     }
     public FragmentInstitutionViewModel getFragmentInstitutionViewModel() {
         return fragmentInstitutionViewModel;
@@ -68,8 +75,8 @@ public class ActivityMainViewModel extends ViewModel {
         prepareStrings(context);
 
         // Here works repository and Retrofit
-        activityMainRepository = new ActivityMainRepository();
-        activityMainRepository.setup();
+        activityMainRepository = ActivityMainRepository.getInstance();
+        //activityMainRepository.setup();
         toolbarTitle = activityMainRepository.getUser("name");//.getValue();
         Log.i("ActivityMainViewModel","setup 1");
         Log.i("ActivityMainViewModel","setup: " + toolbarTitle.getValue());
