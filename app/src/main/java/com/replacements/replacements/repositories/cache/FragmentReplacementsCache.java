@@ -1,10 +1,12 @@
 package com.replacements.replacements.repositories.cache;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.replacements.replacements.models.JsonReplacements;
+import com.replacements.replacements.repositories.database.Replacement;
+import com.replacements.replacements.repositories.models.ReplacementsModel;
+import com.replacements.replacements.repositories.webservices.json.JsonReplacements;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -15,35 +17,42 @@ import java.util.TreeMap;
 
 public class FragmentReplacementsCache {
 
-    private Map<String, ReplacementCache> jsonReplMapToday = new TreeMap<>();
-    private Map<String, ReplacementCache> jsonReplMapTomorrow = new TreeMap<>();
-    private Map<String, ReplacementCache> jsonReplMapOther = new TreeMap<>();
+//    private Map<String, ReplacementCache> jsonReplMapToday = new TreeMap<>();
+//    private Map<String, ReplacementCache> jsonReplMapTomorrow = new TreeMap<>();
+//    private Map<String, ReplacementCache> jsonReplMapOther = new TreeMap<>();
+    private Map<String, ReplacementCache> replsMapToday = new TreeMap<>();
+    private Map<String, ReplacementCache> replsMapTomorrow = new TreeMap<>();
+    private Map<String, ReplacementCache> replsMapOther = new TreeMap<>();
 
     private String today = "";
     private String tomorrow = "";
     private String other = "";
 
-    public boolean putRepl(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver, String date) {
+    //public boolean putRepl(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver, String date) {
+    public boolean putRepl(LiveData<List<Replacement>> listLiveDataReplacement, String institutionId, String ver, String date) {
         if(date.equals(""))
             return false;
         if (date.equals(today))
-            return putReplToday(jsonReplacements, institutionId, ver);
+            return putReplToday(listLiveDataReplacement, institutionId, ver);
         else if (date.equals(tomorrow))
-            return putReplTomorrow(jsonReplacements, institutionId, ver);
+            return putReplTomorrow(listLiveDataReplacement, institutionId, ver);
         this.other = date;
-        return putReplOther(jsonReplacements, institutionId, ver);
+        return putReplOther(listLiveDataReplacement, institutionId, ver);
     }
 
-    public boolean putReplToday(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver) {
-        jsonReplMapToday.put(institutionId, new ReplacementCache(jsonReplacements, ver));
+    //public boolean putReplToday(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver) {
+    public boolean putReplToday(LiveData<List<Replacement>> listLiveDataReplacement, String institutionId, String ver) {
+        replsMapToday.put(institutionId, new ReplacementCache(listLiveDataReplacement, ver));
         return true;
     }
-    public boolean putReplTomorrow(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver) {
-        jsonReplMapTomorrow.put(institutionId, new ReplacementCache(jsonReplacements, ver));
+    //public boolean putReplTomorrow(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver) {
+    public boolean putReplTomorrow(LiveData<List<Replacement>> listLiveDataReplacement, String institutionId, String ver) {
+        replsMapTomorrow.put(institutionId, new ReplacementCache(listLiveDataReplacement, ver));
         return true;
     }
-    public boolean putReplOther(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver) {
-        jsonReplMapOther.put(institutionId, new ReplacementCache(jsonReplacements, ver));
+    //public boolean putReplOther(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver) {
+    public boolean putReplOther(LiveData<List<Replacement>> listLiveDataReplacement, String institutionId, String ver) {
+        replsMapOther.put(institutionId, new ReplacementCache(listLiveDataReplacement, ver));
         return true;
     }
 
@@ -60,15 +69,15 @@ public class FragmentReplacementsCache {
     }
 
     public ReplacementCache getReplToday(String institutionId) {
-        return jsonReplMapToday.get(institutionId);
+        return replsMapToday.get(institutionId);
     }
 
     public ReplacementCache getReplTomorrow(String institutionId) {
-        return jsonReplMapTomorrow.get(institutionId);
+        return replsMapTomorrow.get(institutionId);
     }
 
     public ReplacementCache getReplOther(String institutionId) {
-        return jsonReplMapOther.get(institutionId);
+        return replsMapOther.get(institutionId);
     }
 
     public String getToday() {
@@ -109,20 +118,27 @@ public class FragmentReplacementsCache {
     }
 
     public class ReplacementCache {
-        private MutableLiveData<JsonReplacements> jsonReplMap;
+        //private MutableLiveData<JsonReplacements> jsonReplMap;
+        //private MutableLiveData<Replacement> replacementsModel;
+        private LiveData<List<Replacement>> listLiveDataReplacement;
         private String ver;
 
-        public ReplacementCache(MutableLiveData<JsonReplacements> jsonReplMap, String ver) {
-            this.jsonReplMap = jsonReplMap;
+        //public ReplacementCache(MutableLiveData<JsonReplacements> jsonReplMap, String ver) {
+        public ReplacementCache(LiveData<List<Replacement>> listLiveDataReplacement, String ver) {
+            this.listLiveDataReplacement = listLiveDataReplacement;
             this.ver = ver;
         }
 
-        public MutableLiveData<JsonReplacements> getJsonReplMap() {
-            return jsonReplMap;
+        //public MutableLiveData<JsonReplacements> getJsonReplMap() {
+        public LiveData<List<Replacement>> getReplModelMap() {
+            return listLiveDataReplacement;
         }
 
         public String getVer() {
             return ver;
+        }
+
+        public void addReplacement(Replacement newReplacement) {
         }
     }
 }

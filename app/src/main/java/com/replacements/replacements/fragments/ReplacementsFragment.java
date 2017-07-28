@@ -36,7 +36,8 @@ import com.replacements.replacements.helpers.StickyHeaderDecoration;
 import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.models.ClassTask;
 import com.replacements.replacements.models.JsonData;
-import com.replacements.replacements.models.JsonReplacements;
+import com.replacements.replacements.repositories.database.Replacement;
+import com.replacements.replacements.repositories.webservices.json.JsonReplacements;
 import com.replacements.replacements.models.JsonReplacementsOld;
 import com.replacements.replacements.R;
 import com.replacements.replacements.data.ReplacementDbAdapter;
@@ -52,6 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderAdapter;
@@ -236,11 +238,12 @@ public class ReplacementsFragment extends LifecycleFragment {
 
     // Very important - notifies Observable that fields in ActivityMainViewModel are changed
     private void setupViewModelObservables() {
-        viewModel.getJsonReplacements().observe(this, new Observer<JsonReplacements>() {
+        viewModel.getAllReplacements().observe(this, new Observer<List<Replacement>>() {
                     @Override
-                    public void onChanged(@Nullable JsonReplacements s) {
-                        if(s.getReplacements() != null)
-                            Log.i("ReplacementsFragment","setupViewModelObservables 1: " + s.getReplacements().get(1).getReplacement());//.getReplacements().get(1).getReplacement());
+                    public void onChanged(@Nullable List<Replacement> s) {
+                //        if(s != null)
+                            //TODO byl  java.lang.IndexOutOfBoundsException: Index: 1, Size: 0 wiec skomentowalem ponizszy jeden wiers i gorny if
+                //            Log.i("ReplacementsFragment","setupViewModelObservables 1: " + s.get(1).getReplacement());//.getReplacements().get(1).getReplacement());
                         //binding.getObservable().toolbarTitle.set(s);
                         //Log.i("ActivityMain","setupViewModelObservables 2: " + binding.getObservable().toolbarTitle.get());
                     }

@@ -1,6 +1,6 @@
 package com.replacements.replacements.repositories.webservices;
 
-import com.replacements.replacements.models.JsonReplacements;
+import com.replacements.replacements.repositories.webservices.json.JsonReplacements;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

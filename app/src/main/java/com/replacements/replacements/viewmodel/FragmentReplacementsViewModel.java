@@ -1,5 +1,6 @@
 package com.replacements.replacements.viewmodel;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
@@ -7,8 +8,11 @@ import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
 import android.util.Log;
 
-import com.replacements.replacements.models.JsonReplacements;
+import com.replacements.replacements.repositories.database.Replacement;
+import com.replacements.replacements.repositories.webservices.json.JsonReplacements;
 import com.replacements.replacements.repositories.FragmentReplacementsRepository;
+
+import java.util.List;
 
 /**
  * Created by Dawid on 19.07.2017.
@@ -21,7 +25,9 @@ public class FragmentReplacementsViewModel extends ViewModel {
 
     private FragmentReplacementsRepository fragmentReplacementsRepository;
 
-    private MutableLiveData<JsonReplacements> jsonReplacements;
+    //private MutableLiveData<JsonReplacements> jsonReplacements;
+
+    private LiveData<List<Replacement>> allReplacements;
 
     private MutableLiveData<String> text = new MutableLiveData<>();
 
@@ -41,13 +47,15 @@ public class FragmentReplacementsViewModel extends ViewModel {
         this.setText(mainText);
 
         // Here works repository and Retrofit
-        fragmentReplacementsRepository = FragmentReplacementsRepository.getInstance();
-        jsonReplacements = fragmentReplacementsRepository.getReplacements("3g5et","2015-09-25","0");
+        fragmentReplacementsRepository = FragmentReplacementsRepository.getInstance(context);
+        //jsonReplacements = fragmentReplacementsRepository.getReplacements("3g5et","2015-09-25","0");
+        allReplacements = fragmentReplacementsRepository.getReplacements("3g5et","2015-09-25","0");
         //Log.i(CLASS_NAME,"setup jsonReplacements: " + jsonReplacements.getValue().getReplacements().get(1).getReplacement());
     }
 
-    public MutableLiveData<JsonReplacements> getJsonReplacements() {
-        return jsonReplacements;
+    public LiveData<List<Replacement>> getAllReplacements() {
+        //return jsonReplacements;
+        return allReplacements;
     }
 
     public void refreshJsonReplacements() {

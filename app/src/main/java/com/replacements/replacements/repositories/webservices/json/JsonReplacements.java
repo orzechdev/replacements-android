@@ -1,4 +1,4 @@
-package com.replacements.replacements.models;
+package com.replacements.replacements.repositories.webservices.json;
 
 /**
  * Created by Dawid on 24.07.2017.
