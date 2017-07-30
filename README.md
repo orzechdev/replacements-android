@@ -5,7 +5,7 @@
 Aplikacja jest oparta o Komponenty Architektury Google tj.:
 https://developer.android.com/topic/libraries/architecture/index.html
 
-[[https://github.com/orzechdev/replacements-android/blob/beta/README_FILES/final-architecture.png|alt=octocat]]
+![alt text](https://github.com/orzechdev/replacements-android/blob/beta/README_FILES/final-architecture.png)
 
 #### Uruchamianie aktywności przez konsole
 
