@@ -1,5 +1,12 @@
 # replacements-android
 
+#### Architektura aplikacji
+
+Aplikacja jest oparta o Komponenty Architektury Google tj.:
+https://developer.android.com/topic/libraries/architecture/index.html
+
+[[https://github.com/orzechdev/replacements-android/blob/beta/README_FILES/final-architecture.png|alt=octocat]]
+
 #### Uruchamianie aktywności przez konsole
 
 Aby uruchomić Activity nowej wersji aplikacji w konsoli z folderu sdk z adb.exe wpisz:
