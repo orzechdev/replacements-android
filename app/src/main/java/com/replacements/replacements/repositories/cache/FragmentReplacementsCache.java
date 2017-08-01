@@ -1,11 +1,9 @@
 package com.replacements.replacements.repositories.cache;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 
 import com.replacements.replacements.repositories.database.Replacement;
-import com.replacements.replacements.repositories.models.ReplacementsModel;
-import com.replacements.replacements.repositories.webservices.json.JsonReplacements;
+import com.replacements.replacements.repositories.models.ReplacementRoomJson;
 
 import java.util.List;
 import java.util.Map;
@@ -28,8 +26,8 @@ public class FragmentReplacementsCache {
     private String tomorrow = "";
     private String other = "";
 
-    //public boolean putRepl(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver, String date) {
-    public boolean putRepl(LiveData<List<Replacement>> listLiveDataReplacement, String institutionId, String ver, String date) {
+    //public boolean putRepl(MutableLiveData<ReplacementsJson> jsonReplacements, String institutionId, String ver, String date) {
+    public boolean putRepl(LiveData<List<ReplacementRoomJson>> listLiveDataReplacement, String institutionId, String ver, String date) {
         if(date.equals(""))
             return false;
         if (date.equals(today))
@@ -40,18 +38,18 @@ public class FragmentReplacementsCache {
         return putReplOther(listLiveDataReplacement, institutionId, ver);
     }
 
-    //public boolean putReplToday(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver) {
-    public boolean putReplToday(LiveData<List<Replacement>> listLiveDataReplacement, String institutionId, String ver) {
+    //public boolean putReplToday(MutableLiveData<ReplacementsJson> jsonReplacements, String institutionId, String ver) {
+    public boolean putReplToday(LiveData<List<ReplacementRoomJson>> listLiveDataReplacement, String institutionId, String ver) {
         replsMapToday.put(institutionId, new ReplacementCache(listLiveDataReplacement, ver));
         return true;
     }
-    //public boolean putReplTomorrow(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver) {
-    public boolean putReplTomorrow(LiveData<List<Replacement>> listLiveDataReplacement, String institutionId, String ver) {
+    //public boolean putReplTomorrow(MutableLiveData<ReplacementsJson> jsonReplacements, String institutionId, String ver) {
+    public boolean putReplTomorrow(LiveData<List<ReplacementRoomJson>> listLiveDataReplacement, String institutionId, String ver) {
         replsMapTomorrow.put(institutionId, new ReplacementCache(listLiveDataReplacement, ver));
         return true;
     }
-    //public boolean putReplOther(MutableLiveData<JsonReplacements> jsonReplacements, String institutionId, String ver) {
-    public boolean putReplOther(LiveData<List<Replacement>> listLiveDataReplacement, String institutionId, String ver) {
+    //public boolean putReplOther(MutableLiveData<ReplacementsJson> jsonReplacements, String institutionId, String ver) {
+    public boolean putReplOther(LiveData<List<ReplacementRoomJson>> listLiveDataReplacement, String institutionId, String ver) {
         replsMapOther.put(institutionId, new ReplacementCache(listLiveDataReplacement, ver));
         return true;
     }
@@ -118,19 +116,19 @@ public class FragmentReplacementsCache {
     }
 
     public class ReplacementCache {
-        //private MutableLiveData<JsonReplacements> jsonReplMap;
+        //private MutableLiveData<ReplacementsJson> jsonReplMap;
         //private MutableLiveData<Replacement> replacementsModel;
-        private LiveData<List<Replacement>> listLiveDataReplacement;
+        private LiveData<List<ReplacementRoomJson>> listLiveDataReplacement;
         private String ver;
 
-        //public ReplacementCache(MutableLiveData<JsonReplacements> jsonReplMap, String ver) {
-        public ReplacementCache(LiveData<List<Replacement>> listLiveDataReplacement, String ver) {
+        //public ReplacementCache(MutableLiveData<ReplacementsJson> jsonReplMap, String ver) {
+        public ReplacementCache(LiveData<List<ReplacementRoomJson>> listLiveDataReplacement, String ver) {
             this.listLiveDataReplacement = listLiveDataReplacement;
             this.ver = ver;
         }
 
-        //public MutableLiveData<JsonReplacements> getJsonReplMap() {
-        public LiveData<List<Replacement>> getReplModelMap() {
+        //public MutableLiveData<ReplacementsJson> getJsonReplMap() {
+        public LiveData<List<ReplacementRoomJson>> getReplModelMap() {
             return listLiveDataReplacement;
         }
 

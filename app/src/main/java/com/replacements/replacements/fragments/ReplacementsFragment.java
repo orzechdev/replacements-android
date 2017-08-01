@@ -36,8 +36,7 @@ import com.replacements.replacements.helpers.StickyHeaderDecoration;
 import com.replacements.replacements.interfaces.ApplicationConstants;
 import com.replacements.replacements.models.ClassTask;
 import com.replacements.replacements.models.JsonData;
-import com.replacements.replacements.repositories.database.Replacement;
-import com.replacements.replacements.repositories.webservices.json.JsonReplacements;
+import com.replacements.replacements.repositories.models.ReplacementRoomJson;
 import com.replacements.replacements.models.JsonReplacementsOld;
 import com.replacements.replacements.R;
 import com.replacements.replacements.data.ReplacementDbAdapter;
@@ -238,12 +237,26 @@ public class ReplacementsFragment extends LifecycleFragment {
 
     // Very important - notifies Observable that fields in ActivityMainViewModel are changed
     private void setupViewModelObservables() {
-        viewModel.getAllReplacements().observe(this, new Observer<List<Replacement>>() {
+        viewModel.getAllReplacements().observe(this, new Observer<List<ReplacementRoomJson>>() {
                     @Override
-                    public void onChanged(@Nullable List<Replacement> s) {
+                    public void onChanged(@Nullable List<ReplacementRoomJson> s) {
                 //        if(s != null)
                             //TODO byl  java.lang.IndexOutOfBoundsException: Index: 1, Size: 0 wiec skomentowalem ponizszy jeden wiers i gorny if
                 //            Log.i("ReplacementsFragment","setupViewModelObservables 1: " + s.get(1).getReplacement());//.getReplacements().get(1).getReplacement());
+
+                        Log.i("ReplacementsFragment", "setupViewModelObservables 100");
+                        if(s != null)
+                            if(s.size() > 0) {
+                                Log.i("ReplacementsFragment", "setupViewModelObservables size: " + s.size());
+
+                                for(ReplacementRoomJson repl : s){
+                                    String itemId = repl.getId();
+                                    Log.i("ReplacementsFragment", "setupViewModelObservables item " + itemId + " replacement: " + repl.getReplacement());
+                                    Log.i("ReplacementsFragment", "setupViewModelObservables item " + itemId + " institution Id: " + repl.getInstitutId());
+                                    Log.i("ReplacementsFragment", "setupViewModelObservables item " + itemId + " ver: " + repl.getVer());
+                                }
+                            }
+                        Log.i("ReplacementsFragment", "setupViewModelObservables 200");
                         //binding.getObservable().toolbarTitle.set(s);
                         //Log.i("ActivityMain","setupViewModelObservables 2: " + binding.getObservable().toolbarTitle.get());
                     }

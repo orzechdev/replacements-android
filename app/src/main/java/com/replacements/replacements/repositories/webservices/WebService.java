@@ -1,6 +1,6 @@
 package com.replacements.replacements.repositories.webservices;
 
-import com.replacements.replacements.repositories.webservices.json.JsonReplacements;
+import com.replacements.replacements.repositories.models.ReplacementsJson;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -22,7 +22,7 @@ public interface WebService {
     Call<ResponseBody> getUser(@Query("name") String name);
 
     @GET("tutortest/json/institutions/{institutionId}/replacements/{date}/{ver}.php")
-    Call<JsonReplacements> getReplacements(
+    Call<ReplacementsJson> getReplacements(
             @Path("institutionId") String institutionId,
             @Path("date") String date,
             @Path("ver") String ver
@@ -30,7 +30,7 @@ public interface WebService {
 
     // Possible to call only if user have an account
     @GET("json/{user}/institutions")
-    Call<JsonReplacements> getUserInstitutions(
+    Call<ReplacementsJson> getUserInstitutions(
             //@Path("school_id") String schoolId
     );
 }

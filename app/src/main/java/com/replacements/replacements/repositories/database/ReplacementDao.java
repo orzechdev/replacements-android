@@ -3,8 +3,11 @@ package com.replacements.replacements.repositories.database;
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+
+import com.replacements.replacements.repositories.models.ReplacementRoomJson;
 
 import java.util.List;
 
@@ -17,14 +20,17 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface ReplacementDao {
     @Insert(onConflict = REPLACE)
-    void save(Replacement replacement);
+    void insert(ReplacementRoomJson replacement);
 
-    @Query("SELECT * FROM replacement WHERE id = :replacementId")
-    LiveData<Replacement> load(String replacementId);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<ReplacementRoomJson> replacements);
 
-    @Query("SELECT * FROM replacement")
-    LiveData<List<Replacement>> loadAll();
+    @Query("SELECT * FROM replacementroomjson WHERE id = :replacementId")
+    LiveData<ReplacementRoomJson> load(String replacementId);
+
+    @Query("SELECT * FROM replacementroomjson")
+    LiveData<List<ReplacementRoomJson>> loadAll();
 
     @Update
-    void updateReplacements(Replacement... replacements);
+    void updateReplacements(ReplacementRoomJson... replacements);
 }
