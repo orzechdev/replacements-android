@@ -327,6 +327,17 @@ public class ReplacementsMain extends AppCompatActivity {
 
         Log.i(CLASS_NAME, "onResume 100");
 
+        if(prefs.getInt("chosenSchool", 1) == 1 || prefs.getBoolean("schoolChangeStarted", true) || prefs.getBoolean("schoolToChange", true)) {
+            SharedPreferences.Editor localEditor = prefs.edit();
+            localEditor.putBoolean("schoolToChange", true);
+            localEditor.putInt("chosenSchool", 2);
+            localEditor.putBoolean("schoolChangeStarted", false);
+            localEditor.apply();
+            Intent intent = new Intent(this, ChooseSchool.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
         boolean first_run_db = prefs.getBoolean("first_run_db", true);
         boolean schoolChangeStarted = prefs.getBoolean("schoolChangeStarted", false);
         if(first_run_db || schoolChangeStarted){

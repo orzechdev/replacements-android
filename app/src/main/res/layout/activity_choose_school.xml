@@ -29,44 +29,44 @@
         android:layout_marginRight="15dp"
         android:layout_marginBottom="35dp" />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card1"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        card_view:cardCornerRadius="2dp"
-        android:layout_below="@+id/textViewMainSchools">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/school1"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true">
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="0.7"
-                android:background="@color/blue_light"
-                android:src="@drawable/header_image_1_c"
-                android:id="@+id/schoolImage1"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"/>
-            <TextView
-                android:text="@string/school_name_1"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:paddingTop="0dp"
-                android:paddingLeft="25dp"
-                android:paddingRight="15dp"
-                android:paddingBottom="0dp"
-                android:layout_weight="0.3"
-                android:id="@+id/schoolText1"
-                android:textSize="18sp"
-                android:gravity="center_vertical"/>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:id="@+id/card1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="100dp"-->
+        <!--android:layout_marginBottom="15dp"-->
+        <!--android:layout_marginLeft="15dp"-->
+        <!--android:layout_marginRight="15dp"-->
+        <!--card_view:cardCornerRadius="2dp"-->
+        <!--android:layout_below="@+id/textViewMainSchools">-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:id="@+id/school1"-->
+            <!--android:foreground="?android:attr/selectableItemBackground"-->
+            <!--android:clickable="true">-->
+            <!--<ImageView-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:layout_weight="0.7"-->
+                <!--android:background="@color/blue_light"-->
+                <!--android:src="@drawable/header_image_1_c"-->
+                <!--android:id="@+id/schoolImage1"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--android:adjustViewBounds="true"/>-->
+            <!--<TextView-->
+                <!--android:text="@string/school_name_1"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:paddingTop="0dp"-->
+                <!--android:paddingLeft="25dp"-->
+                <!--android:paddingRight="15dp"-->
+                <!--android:paddingBottom="0dp"-->
+                <!--android:layout_weight="0.3"-->
+                <!--android:id="@+id/schoolText1"-->
+                <!--android:textSize="18sp"-->
+                <!--android:gravity="center_vertical"/>-->
+        <!--</LinearLayout>-->
+    <!--</android.support.v7.widget.CardView>-->
 
     <android.support.v7.widget.CardView
         android:id="@+id/card2"
@@ -76,7 +76,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         card_view:cardCornerRadius="2dp"
-        android:layout_below="@+id/card1">
+        android:layout_below="@+id/textViewMainSchools">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
