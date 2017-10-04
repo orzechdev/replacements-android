@@ -2,6 +2,7 @@ package com.replacements.replacements.repositories.models;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -16,6 +17,7 @@ public class ReplacementRoomJson {//extends ReplacementsJson {
     @PrimaryKey
     @SerializedName("id")
     @Expose
+    @NonNull
     private String id;
     // Bellow variable for JSON not exists
     // Bellow variable for Room exists
