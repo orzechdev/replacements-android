@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable name="observable" type="com.replacements.replacements.viewmodel.FragmentScheduleViewModel.Observable"/>
+        <variable name="observable" type="com.studytor.app.viewmodel.FragmentScheduleViewModel.Observable"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.replacements.replacements.activities.ActivityMain">
+        tools:context="com.studytor.app.activities.ActivityMain">
 
 
         <TextView

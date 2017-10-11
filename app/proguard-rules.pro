@@ -15,12 +15,12 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--keepclassmembers class com.replacements.replacements.helpers.HtmlJSInterface {
+-keepclassmembers class com.studytor.app.helpers.HtmlJSInterface {
    public *;
 }
--keep public class com.replacements.replacements.helpers.HtmlJSInterface
--keep public class * implements com.replacements.replacements.helpers.HtmlJSInterface
--keepclassmembers class com.replacements.replacements.helpers.HtmlJSInterface {
+-keep public class com.studytor.app.helpers.HtmlJSInterface
+-keep public class * implements com.studytor.app.helpers.HtmlJSInterface
+-keepclassmembers class com.studytor.app.helpers.HtmlJSInterface {
     <methods>;
 }
 -keepattributes JavascriptInterface
@@ -39,13 +39,13 @@
 #-keep class sun.misc.Unsafe { *; }
 
 # Add any classes the interact with gson
-########################    -keep class com.replacements.replacements.** { *; }
+########################    -keep class com.studytor.app.** { *; }
 
 # Models cannot be change, becouse it has be the same as in message in json
--keep class com.replacements.replacements.models.** { *; }
-#-keep class com.replacements.replacements.sync.** { *; }
-#-keep class com.replacements.replacements.interfaces.** { *; }
-#-keep class com.replacements.replacements.data.** { *; }
+-keep class com.studytor.app.models.** { *; }
+#-keep class com.studytor.app.sync.** { *; }
+#-keep class com.studytor.app.interfaces.** { *; }
+#-keep class com.studytor.app.data.** { *; }
 
 -keepattributes *Annotation*
 -keepattributes Signature

@@ -15,7 +15,7 @@ Aby uruchomić Activity nowej wersji aplikacji w konsoli z folderu sdk z adb.exe
 
 a następnie:
 
-    am start -n com.replacements.replacements/.activities.ActivityMain
+    am start -n com.studytor.app/.activities.ActivityMain
 
 #### Klasa POJO dla JSON
 
