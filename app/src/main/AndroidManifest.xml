@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.replacements.replacements">
+    package="com.studytor.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -13,13 +13,18 @@
     <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
     <!-- For Firebase Analytics -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+
         <activity
-            android:name=".activities.ReplacementsMain"
+            android:name="com.studytor.app.activities.ReplacementsMain"
             android:label="@string/app_name"
             android:logo="@mipmap/ic_launcher">
 
@@ -29,53 +34,57 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--<intent-filter android:label="@string/app_name_zs_chocianow">-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
+            <!-- <intent-filter android:label="@string/app_name_zs_chocianow"> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
 
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-                <!--<category android:name="android.intent.category.BROWSABLE" />-->
-                <!--&lt;!&ndash; Accepts URIs that begin with "http://www.zschocianow.pl/zastepstwa” &ndash;&gt;-->
-                <!--<data-->
-                    <!--android:host="www.zschocianow.pl"-->
-                    <!--android:pathPrefix="/zastepstwa"-->
-                    <!--android:scheme="http" />-->
-                <!--&lt;!&ndash; note that the leading "/" is required for pathPrefix &ndash;&gt;-->
-                <!--&lt;!&ndash; Accepts URIs that begin with "http://www.zschocianow.pl/” &ndash;&gt;-->
-                <!--<data-->
-                    <!--android:host="www.zschocianow.pl"-->
-                    <!--android:scheme="http" />-->
-            <!--</intent-filter>-->
 
-            <!-- ATTENTION: This intent was auto-generated. Follow instructions at
-  https://g.co/AppIndexing/AndroidStudio to publish your URLs. -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
+            <!-- &lt;!&ndash; Accepts URIs that begin with "http://www.zschocianow.pl/zastepstwa” &ndash;&gt; -->
+            <!-- <data -->
+            <!-- android:host="www.zschocianow.pl" -->
+            <!-- android:pathPrefix="/zastepstwa" -->
+            <!-- android:scheme="http" /> -->
+            <!-- &lt;!&ndash; note that the leading "/" is required for pathPrefix &ndash;&gt; -->
+            <!-- &lt;!&ndash; Accepts URIs that begin with "http://www.zschocianow.pl/” &ndash;&gt; -->
+            <!-- <data -->
+            <!-- android:host="www.zschocianow.pl" -->
+            <!-- android:scheme="http" /> -->
+            <!-- </intent-filter> -->
+
+
+            <!--
+  ATTENTION: This intent was auto-generated. Follow instructions at
+  https://g.co/AppIndexing/AndroidStudio to publish your URLs.
+            -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "http://something.com/something" -->
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
+                <data android:scheme="http" />
+                <data android:scheme="https" />
                 <data android:host="zschocianow.pl" />
                 <data android:host="gimchocianow.pl" />
                 <data android:pathPrefix="/zastepstwa" />
                 <data android:pathPrefix="/plan" />
-                <!--<data-->
-                    <!--android:host="[ENTER-YOUR-HTTP-HOST-HERE]"-->
-                    <!--android:pathPrefix="/replacementsmain"-->
-                    <!--android:scheme="http" />-->
+                <!-- <data -->
+                <!-- android:host="[ENTER-YOUR-HTTP-HOST-HERE]" -->
+                <!-- android:pathPrefix="/replacementsmain" -->
+                <!-- android:scheme="http" /> -->
             </intent-filter>
         </activity>
         <activity
-            android:name=".preferences.SettingsActivity"
+            android:name="com.studytor.app.preferences.SettingsActivity"
             android:label="@string/settings"
             android:logo="@mipmap/ic_launcher"
-            android:parentActivityName=".activities.ReplacementsMain"
+            android:parentActivityName="com.studytor.app.activities.ReplacementsMain"
             android:theme="@style/SettingsTheme"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.ReplacementsMain" />
+                android:value="com.studytor.app.activities.ReplacementsMain" />
         </activity>
         <!-- <activity -->
         <!-- android:name=".activities.ChooseSchoolActivity" -->
@@ -90,23 +99,24 @@
         <!-- </activity> -->
 
         <activity
-            android:name=".activities.ChooseSchool"
+            android:name="com.studytor.app.activities.ChooseSchool"
             android:label="@string/app_name"
-            android:logo="@mipmap/ic_launcher"
-            android:launchMode="singleTask">
+            android:launchMode="singleTask"
+            android:logo="@mipmap/ic_launcher">
             <intent-filter>
-                <action android:name="com.replacements.replacements.activities.ChooseSchool" />
+                <action android:name="com.studytor.app.activities.ChooseSchool" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".activities.LoaderMain"
+            android:name="com.studytor.app.activities.LoaderMain"
             android:label="@string/app_name"
             android:logo="@mipmap/ic_launcher"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.replacements.replacements.activities.LoaderMain" />
+                <action android:name="com.studytor.app.activities.LoaderMain" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -127,13 +137,13 @@
         <!-- android:name=".sync.GcmNotificationIntentService" -->
         <!-- android:exported="false" /> -->
         <service
-            android:name=".sync.ProfileRegister"
+            android:name="com.studytor.app.sync.ProfileRegister"
             android:exported="false" />
         <service
-            android:name=".sync.ProfileSetToServer"
+            android:name="com.studytor.app.sync.ProfileSetToServer"
             android:exported="false" />
         <service
-            android:name=".sync.ScheduleUpdate"
+            android:name="com.studytor.app.sync.ScheduleUpdate"
             android:exported="false" />
 
         <!-- <receiver -->
@@ -146,14 +156,14 @@
         <!-- </receiver> -->
 
         <service
-            android:name=".sync.FcmListenerService"
+            android:name="com.studytor.app.sync.FcmListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name=".sync.InstanceIDListenerService"
+            android:name="com.studytor.app.sync.InstanceIDListenerService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -161,14 +171,19 @@
         </service>
 
         <receiver
-            android:name=".sync.MainReceiver"
+            android:name="com.studytor.app.sync.MainReceiver"
             android:exported="true"> <!-- android:debuggable="true" -->
             <intent-filter>
-                <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> TODO SHOULD IT BE COMMENT OF SHOULD IT WORKS?-->
+
+                <!-- <action android:name="android.net.conn.CONNECTIVITY_CHANGE" /> TODO SHOULD IT BE COMMENT OF SHOULD IT WORKS? -->
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name="com.studytor.app.activities.ActivityMain"
+            android:exported="true"
+            android:label="@string/title_activity_main"></activity>
     </application>
 
 </manifest>

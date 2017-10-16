@@ -8,7 +8,7 @@
             android:title="@string/pref_school"
             android:summary="@string/pref_school_summary"
             android:key="pref_school_pref">
-            <!--<intent android:action="com.replacements.replacements.activities.ChooseSchool"/>-->
+            <!--<intent android:action="com.studytor.app.activities.ChooseSchool"/>-->
         </Preference>
     <!--</PreferenceCategory>-->
     <PreferenceCategory

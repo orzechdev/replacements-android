@@ -20,9 +20,11 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/drawer_header"
-            app:menu="@menu/drawer_view"
+            app:menu="@menu/drawer_view_new"
             app:itemTextColor="@color/primary_text_default_material_light"
-            app:itemIconTint="@color/drawer_icon"/>
+            app:itemIconTint="@color/drawer_icon">
+        </android.support.design.widget.NavigationView>
+        <!-- TODO  change if necessary to:  app:menu="@menu/drawer_view"  -->
         <!-- The main content view -->
         <LinearLayout
             android:id="@+id/big_content_frame"

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_schedule"
+        android:icon="@drawable/ic_schedule_black_24dp" />
+
+    <item
+        android:id="@+id/navigation_replacement"
+        android:icon="@drawable/ic_replacement_black_24dp" />
+
+    <item
+        android:id="@+id/navigation_institution"
+        android:icon="@drawable/ic_institution_black_24dp" />
+
+</menu>
