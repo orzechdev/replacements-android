@@ -83,25 +83,35 @@ public class ChooseSchool extends Activity {
                 SharedPreferences.Editor localEditor = prefs.edit();
 
                 if(prefs.getInt("chosenSchool", 0) == 1 && prefs.getBoolean("schoolToChange", false) && prefs.getBoolean("schoolChangeStarted", false)){
+
                     localEditor.putInt("chosenSchool", 2);
                     localEditor.putBoolean("schoolChangeStarted", false);
                     Log.i(CLASS_NAME,"school2 socl 1 0");
+
                 }else if(prefs.getInt("chosenSchool", 0) == 1 && prefs.getBoolean("schoolToChange", false) && !prefs.getBoolean("schoolChangeStarted", true) && prefs.getBoolean("schoolChangeFinishedOnce", false)){
+
                     localEditor.putInt("chosenSchool", 2);
                     localEditor.putBoolean("schoolToChange", false);
                     Log.i(CLASS_NAME,"school2 socl 1 1");
+
                 }else if(prefs.getInt("chosenSchool", 0) == 1 && !prefs.getBoolean("schoolToChange", true) && !prefs.getBoolean("schoolChangeStarted", true)){
+
                     localEditor.putInt("chosenSchool", 2);
                     localEditor.putBoolean("schoolToChange", true);
                     Log.i(CLASS_NAME,"school2 socl 1 2");
+
                 }else if(prefs.getInt("chosenSchool", 0) == 0){
+
                     localEditor.putInt("chosenSchool", 2);
                     localEditor.putBoolean("schoolToChange", true);
                     localEditor.putBoolean("schoolChangeStarted", false);
                     Log.i(CLASS_NAME,"school2 socl 1 3");
+
                 }else if(prefs.getInt("chosenSchool", 0) == 1 && prefs.getBoolean("schoolToChange", false) && !prefs.getBoolean("schoolChangeStarted", true) && !prefs.getBoolean("schoolChangeFinishedOnce", false)){
+
                     localEditor.putInt("chosenSchool", 2);
                     Log.i(CLASS_NAME,"school2 socl 1 4");
+
                 }
 
                 localEditor.apply();

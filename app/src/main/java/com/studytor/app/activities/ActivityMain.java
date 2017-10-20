@@ -130,6 +130,8 @@ public class ActivityMain extends LifecycleActivity {
 
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_content, lifecycleFragment);
+        //Weird behaviour when user clicks return the fragments are switched, but the res ot UI remains
+        //It is also not natural to allow use of back stack with bottom navigation
         transaction.addToBackStack(backStackName);
         transaction.commitAllowingStateLoss();
 
@@ -233,5 +235,10 @@ public class ActivityMain extends LifecycleActivity {
         }
 
         Log.i(CLASS_NAME, "restoreAllFragments 500");
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Do nothing to prevent fragment retrieving from back stack
     }
 }

@@ -138,8 +138,11 @@
     <string name="title_notifications">Notifications</string>
 
 
-
     <!-- Following strings are for new app -->
+    <plurals name="news_header">
+        <item quantity="one">"News"</item>
+        <item quantity="other">"News"</item>
+    </plurals>
     <plurals name="schedule_header">
         <item quantity="one">"Schedule"</item>
         <item quantity="other">"Schedules"</item>
@@ -152,7 +155,6 @@
         <item quantity="one">"Institution"</item>
         <item quantity="other">"Institutions"</item>
     </plurals>
-
 
 
 </resources>

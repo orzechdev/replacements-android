@@ -2,18 +2,27 @@ package com.studytor.app.fragments;
 
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
+import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.studytor.app.R;
 import com.studytor.app.activities.ActivityMain;
+import com.studytor.app.adapters.InstitutionRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionBinding;
+import com.studytor.app.models.SingleInstitution;
 import com.studytor.app.viewmodel.ActivityMainViewModel;
 import com.studytor.app.viewmodel.FragmentInstitutionViewModel;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by Dawid on 19.07.2017.
@@ -23,6 +32,10 @@ public class FragmentInstitution extends LifecycleFragment {
 
     private FragmentInstitutionViewModel viewModel;
     private FragmentInstitutionBinding binding;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
 
     @Nullable
     @Override
@@ -41,6 +54,27 @@ public class FragmentInstitution extends LifecycleFragment {
 
         viewModel.setup(getActivity().getApplicationContext());
 
+
+        //Recycler view implementation
+        recyclerView = (RecyclerView) binding.getRoot().findViewById(R.id.recycler_view);
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        //TODO: Pobieranie list uczelni z viewModel zamiast na sztywno
+        List<SingleInstitution> items =
+                Arrays.asList(new SingleInstitution(R.drawable.header_image_1_c, "1"), new SingleInstitution(R.drawable.header_image_2_c, "2"));
+
+        // define an adapter
+        mAdapter = new InstitutionRecyclerViewAdapter(items);
+        recyclerView.setAdapter(mAdapter);
+
         return binding.getRoot();
+    }
+
+    @BindingAdapter("imageRes")
+    public static void bindImage(ImageView view, int r) {
+        view.setImageResource(r);
     }
 }

@@ -43,37 +43,38 @@ repositories {
 dependencies {
     compile files('libs/jsoup-1.7.3.jar')
     // Volley used in older versions of app for download data from internet
-    compile 'com.android.volley:volley:1.0.0'
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     // Support libraries
+    // Others, some of them are maybe not used and maybe should be deleted
+    // Firebase service
+    // For Lifecycles, LiveData, and ViewModel Architecture Components
+    // For Data fetching
+    // For Room Architecture Component
+    compile 'com.android.volley:volley:1.0.0'
     compile 'com.android.support:support-fragment:26.1.0'
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:cardview-v7:26.1.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support:support-vector-drawable:26.1.0'
-    // Others, some of them are maybe not used and maybe should be deleted
     compile 'me.zhanghai.android.materialprogressbar:library:1.1.5'
     compile 'ca.barrenechea.header-decor:header-decor:0.2.5'
     compile 'com.github.afollestad.material-dialogs:core:0.8.5.6@aar'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    // Firebase service
     compile 'com.google.firebase:firebase-messaging:10.2.0'
     compile 'com.google.firebase:firebase-appindexing:10.2.0'
     compile 'com.google.firebase:firebase-core:10.2.0'
-    // For Lifecycles, LiveData, and ViewModel Architecture Components
     compile 'android.arch.lifecycle:runtime:1.0.0'
     compile 'android.arch.lifecycle:extensions:1.0.0-beta2'
-    annotationProcessor "android.arch.lifecycle:compiler:1.0.0-beta2"
-    // For Data fetching
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    // For Room Architecture Component
     compile 'android.arch.persistence.room:runtime:1.0.0-beta2'
-    annotationProcessor "android.arch.persistence.room:compiler:1.0.0-beta2"
+    annotationProcessor 'android.arch.lifecycle:compiler:1.0.0-beta2'
+    annotationProcessor 'android.arch.persistence.room:compiler:1.0.0-beta2'
 }
+
 
 
 
