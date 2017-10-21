@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorPrimary">@color/blue</item>
         <item name="android:colorPrimaryDark">@color/blue_dark</item>
@@ -25,22 +26,5 @@
         <item name="android:colorAccent">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-    <!-- Stare tylko dla nowego SettingsActivity
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimary">@color/blue</item>
-        <item name="android:colorPrimaryDark">@color/blue_dark</item>
-        <item name="android:colorAccent">@color/blue</item>
-        <item name="android:colorControlActivated">@color/blue</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/semi_transparent</item>
-    </style>
-    <style name="SettingsTheme" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:colorPrimary">@color/blue</item>
-        <item name="android:colorPrimaryDark">@color/blue_dark</item>
-        <item name="android:colorAccent">@color/blue</item>
-        <item name="android:colorControlActivated">@color/blue</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/blue_and_semi_transparent</item>
-    </style>
-    -->
+
 </resources>

@@ -27,31 +27,6 @@
             android:defaultValue="1"
             android:entries="@array/pref_notify_repl_entries"
             android:entryValues="@array/pref_notify_repl_entryValues" />
-        <!--<ListPreference-->
-            <!--android:title="@string/pref_notify_schedule"-->
-            <!--android:key="pref_notify_schedule"-->
-            <!--android:dependency="pref_notify_switch"-->
-            <!--android:defaultValue="1"-->
-            <!--android:entries="@array/pref_notify_schedule_entries"-->
-            <!--android:entryValues="@array/pref_notify_schedule_entryValues" />-->
-        <!--<CheckBoxPreference-->
-            <!--android:title="@string/pref_schedule_offline_switch"-->
-            <!--android:key="pref_schedule_offline_switch"-->
-            <!--android:defaultValue="true"-->
-            <!--android:summaryOn="@string/pref_sync_summ_on"-->
-            <!--android:summaryOff="@string/pref_sync_summ_off"/>-->
-    </PreferenceCategory>
-    <PreferenceCategory
-        android:title="@string/pref_author"
-        android:key="pref_author_settings">
-        <Preference
-			android:title="@string/app_author_get"
-			android:summary="@string/app_author_info"
-			android:key="author_info">
-			<intent
-				android:action="android.intent.action.VIEW"
-				android:data="@string/pref_url_author" />
-		</Preference>
     </PreferenceCategory>
     <PreferenceCategory
         android:title="Opcje programistyczne"

@@ -34,8 +34,6 @@ public class FcmListenerService extends FirebaseMessagingService {
     private String new_replacements;
     private String new_schedule;
     private String click_to_view;
-    private String app_update_link;
-    private String new_app_update;
 
 
     @Override
@@ -49,8 +47,6 @@ public class FcmListenerService extends FirebaseMessagingService {
             new_replacements = getString(R.string.new_replacements);
             new_schedule = getString(R.string.new_schedule);
             click_to_view = getString(R.string.click_to_view);
-            app_update_link = getString(R.string.app_update_link);
-            new_app_update = getString(R.string.new_app_update);
 
             Map data = remoteMessage.getData();
             String message = data.get("m").toString();
@@ -104,17 +100,6 @@ public class FcmListenerService extends FirebaseMessagingService {
 
                 notifyTitle = new_replacements;
                 notifyID = 200;
-                sendNotification(notifyID, resultPendingIntent, notifyTitle);
-                break;
-            case 4:
-                Log.i(CLASS_NAME, "processMessage 240");
-                // pending implicit intent to view url
-                resultIntent = new Intent(Intent.ACTION_VIEW);
-                resultIntent.setData(Uri.parse(app_update_link));
-                resultPendingIntent = PendingIntent.getActivity(getBaseContext(), 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                notifyTitle = new_app_update;
-                notifyID = 400;
                 sendNotification(notifyID, resultPendingIntent, notifyTitle);
                 break;
             case 5:
