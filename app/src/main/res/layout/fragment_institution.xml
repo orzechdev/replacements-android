@@ -8,7 +8,7 @@
             type="com.studytor.app.viewmodel.FragmentInstitutionViewModel.Observable"/>
         <variable
             name="singleInstitution"
-            type="com.studytor.app.models.SingleInstitution"/>
+            type="com.studytor.app.viewmodel.SingleInstitution"/>
         <!--<variable name="listView" type="com.studytor.app.viewmodel.FragmentInstitutionViewModel.FragmentInstitutionSingleCardBinding"/>-->
     </data>
 

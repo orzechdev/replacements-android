@@ -1,4 +1,4 @@
-package com.studytor.app.models;
+package com.studytor.app.viewmodel;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;

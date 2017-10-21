@@ -25,14 +25,12 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.studytor.app.R;
 import com.studytor.app.data.ClassDbAdapter;
 import com.studytor.app.data.ReplacementDbAdapter;
-import com.studytor.app.data.ScheduleUrlFilesDbAdapter;
 import com.studytor.app.data.TeacherDbAdapter;
 import com.studytor.app.interfaces.ApplicationConstants;
 import com.studytor.app.models.JsonData;
 import com.studytor.app.sync.GsonRequest;
 import com.studytor.app.sync.MainSingleton;
 import com.studytor.app.sync.ProfileRegister;
-import com.studytor.app.sync.ScheduleUpdate;
 
 import java.io.File;
 import java.text.ParseException;
@@ -57,7 +55,6 @@ public class LoaderMain extends AppCompatActivity {
     private Cursor cursor;
     private SharedPreferences mSharedPreferences;
     private String data_last;
-    private ScheduleUrlFilesDbAdapter scheduleUrlFilesDbAdapter;
     private ReplacementDbAdapter replacementDbAdapter;
     private boolean allTasksDone = true;
     private boolean isBackPressPossible = false;
@@ -285,15 +282,6 @@ public class LoaderMain extends AppCompatActivity {
             Log.i(CLASS_NAME, "loadData scheduleUpdate");
             String dirCurrent = prefs.getString("scheduleFilesDirNameCurrent","");
             if(!dirCurrent.equals("")) {
-                scheduleUrlFilesDbAdapter = new ScheduleUrlFilesDbAdapter(getApplicationContext());
-                scheduleUrlFilesDbAdapter.open();
-                scheduleUrlFilesDbAdapter.deleteAllUrls();
-                scheduleUrlFilesDbAdapter.close();
-                //Delete old files if exist
-                File dir = new File(getApplicationContext().getFilesDir() + File.separator + dirCurrent);
-                if (dir.isDirectory()) {
-                    deleteOldFiles(dir);
-                }
                 localEditor.putString("scheduleFilesDirNameCurrent", "");
                 localEditor.putBoolean("scheduleUpdateToNotify", false);
                 localEditor.apply();
@@ -304,20 +292,6 @@ public class LoaderMain extends AppCompatActivity {
             schoolChangeStep = 4;
 
             jsonUpdate = true;
-
-        }
-
-        if(schoolChangeStep == 4){
-
-            Intent scheduleIntent = new Intent(getBaseContext(), ScheduleUpdate.class);
-            if(jsonUpdate)
-                scheduleIntent.putExtra("jsonUpdate", true);
-            scheduleIntent.putExtra("checkServicePossible", false);
-            startService(scheduleIntent);
-
-            //Log.e(CLASS_NAME, "mainBroadcast onReceive finishService ScheduleUpdated");
-            //localEditor.putInt("schoolChangeStep", 5);
-            //localEditor.apply();
 
         }else if(schoolChangeStep == 5) {
 

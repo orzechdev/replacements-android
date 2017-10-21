@@ -111,6 +111,7 @@
                         app:tabGravity="fill"
                         app:tabTextColor="#AFFF"
                         app:tabSelectedTextColor="#FFFF"
+                        app:tabIndicatorColor="#FFFF"
                         android:layout_below="@+id/institution_name"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true" />

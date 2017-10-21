@@ -106,20 +106,6 @@ public class FcmListenerService extends FirebaseMessagingService {
                 notifyID = 200;
                 sendNotification(notifyID, resultPendingIntent, notifyTitle);
                 break;
-            case 3:
-                Log.i(CLASS_NAME, "processMessage 230");
-                //Downloading schedule and sending notification after finished downloading service
-                //Najpierw pobierz plan a pozniej wyslij powiadomienie
-                sharedPrefEditor.putBoolean("scheduleUpdateToNotify",true);
-                sharedPrefEditor.apply();
-                Intent scheduleIntent = new Intent(getBaseContext(), ScheduleUpdate.class);
-                scheduleIntent.putExtra("jsonUpdate", true);
-                this.startService(scheduleIntent);
-
-                //notifyTitle = new_schedule;
-                //notifyID = 300;
-                //Notification is sending after service is finished - send inside a service
-                break;
             case 4:
                 Log.i(CLASS_NAME, "processMessage 240");
                 // pending implicit intent to view url

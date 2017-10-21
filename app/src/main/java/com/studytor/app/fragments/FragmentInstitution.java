@@ -21,7 +21,7 @@ import com.studytor.app.activities.ActivityInstitutionProfile;
 import com.studytor.app.adapters.InstitutionRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionBinding;
 import com.studytor.app.helpers.ItemClickSupport;
-import com.studytor.app.models.SingleInstitution;
+import com.studytor.app.viewmodel.SingleInstitution;
 import com.studytor.app.viewmodel.ActivityMainViewModel;
 import com.studytor.app.viewmodel.FragmentInstitutionViewModel;
 
@@ -68,7 +68,16 @@ public class FragmentInstitution extends Fragment {
 
         //TODO: Pobieranie list uczelni z viewModel zamiast na sztywno
         List<SingleInstitution> items =
-                Arrays.asList(new SingleInstitution(R.drawable.header_image_1_c, "1"), new SingleInstitution(R.drawable.header_image_2_c, "2"));
+                Arrays.asList(
+                        new SingleInstitution(R.drawable.header_image_1_c, "1"),
+                        new SingleInstitution(R.drawable.header_image_2_c, "2"),
+                        new SingleInstitution(R.drawable.header_image_1_c, "1"),
+                        new SingleInstitution(R.drawable.header_image_2_c, "2"),
+                        new SingleInstitution(R.drawable.header_image_1_c, "1"),
+                        new SingleInstitution(R.drawable.header_image_2_c, "2"),
+                        new SingleInstitution(R.drawable.header_image_1_c, "1"),
+                        new SingleInstitution(R.drawable.header_image_2_c, "2")
+                );
 
         // define an adapter
         mAdapter = new InstitutionRecyclerViewAdapter(items);

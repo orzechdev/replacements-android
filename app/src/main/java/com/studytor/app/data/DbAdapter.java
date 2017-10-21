@@ -62,14 +62,7 @@ public class DbAdapter {
 
 
     // Dodane w DB_VERSION = 2
-    private static final String CREATE_SCHEDULE_URL_FILES_TABLE =
-            "CREATE TABLE " + ScheduleUrlFilesDbAdapter.DB_TABLE + "( " +
-                    ScheduleUrlFilesDbAdapter.KEY_ID + " " + ScheduleUrlFilesDbAdapter.ID_OPTIONS + ", " +
-                    ScheduleUrlFilesDbAdapter.KEY_URL + " " + ScheduleUrlFilesDbAdapter.URL_OPTIONS + ", " +
-                    ScheduleUrlFilesDbAdapter.KEY_DOWNLOADED + " " + ScheduleUrlFilesDbAdapter.DOWNLOADED_OPTIONS +
-                    ");";
-    private static final String DROP_SCHEDULE_URL_FILES_TABLE =
-            "DROP TABLE IF EXISTS " + ScheduleUrlFilesDbAdapter.DB_TABLE;
+    // Byla baza url planu
 
 
 
@@ -99,7 +92,7 @@ public class DbAdapter {
             db.execSQL(CREATE_REPLACEMENTS_TOMORROW_TABLE);
 
             // Dodane w DB_VERSION = 2
-            db.execSQL(CREATE_SCHEDULE_URL_FILES_TABLE);
+            // Byla baza url planu
 
             Log.d(DEBUG_TAG, "All tables" + " ver." + DB_VERSION + " created");
         }
@@ -110,7 +103,7 @@ public class DbAdapter {
             if(oldVersion == 1 && newVersion == 2){
 
                 Log.d(DEBUG_TAG, "Database updating 1");
-                db.execSQL(CREATE_SCHEDULE_URL_FILES_TABLE);
+                // Byla baza url planu
                 Log.d(DEBUG_TAG, "Database updated 1");
 
             }

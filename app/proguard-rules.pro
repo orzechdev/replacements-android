@@ -15,14 +15,6 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
--keepclassmembers class com.studytor.app.helpers.HtmlJSInterface {
-   public *;
-}
--keep public class com.studytor.app.helpers.HtmlJSInterface
--keep public class * implements com.studytor.app.helpers.HtmlJSInterface
--keepclassmembers class com.studytor.app.helpers.HtmlJSInterface {
-    <methods>;
-}
 -keepattributes JavascriptInterface
 -keep class android.support.v4.** { *; }
 #-keep interface android.support.v4.** { *; }

@@ -137,9 +137,6 @@
         <service
             android:name=".sync.ProfileSetToServer"
             android:exported="false" />
-        <service
-            android:name=".sync.ScheduleUpdate"
-            android:exported="false" />
 
         <!-- <receiver -->
         <!-- android:name=".sync.GcmBroadcastReceiver" -->

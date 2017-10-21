@@ -1,6 +1,5 @@
 package com.studytor.app.activities;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,22 +39,15 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.studytor.app.data.ClassDbAdapter;
 import com.studytor.app.data.DbAdapter;
 import com.studytor.app.data.ReplacementDbAdapter;
-import com.studytor.app.data.ScheduleUrlFilesDbAdapter;
 import com.studytor.app.data.TeacherDbAdapter;
-import com.studytor.app.fragments.HomeFragment;
-import com.studytor.app.fragments.ProfileFragment;
-import com.studytor.app.fragments.ProfileFragmentClass;
-import com.studytor.app.fragments.ProfileFragmentTeacher;
 import com.studytor.app.R;
 import com.studytor.app.fragments.ReplacementsFragment;
-import com.studytor.app.fragments.ScheduleFragment;
 import com.studytor.app.interfaces.ApplicationConstants;
 import com.studytor.app.preferences.SettingsActivity;
 //import com.studytor.app.sync.GcmUserRegistration;
 //import com.studytor.app.sync.GcmUserUnregistration;
 import com.studytor.app.sync.ProfileRegister;
 import com.studytor.app.sync.ProfileSetToServer;
-import com.studytor.app.sync.ScheduleUpdate;
 
 
 public class ReplacementsMain extends AppCompatActivity {
@@ -71,17 +63,11 @@ public class ReplacementsMain extends AppCompatActivity {
     public boolean rotationChanged;
     private int currentProfileTab;
     private ViewPagerAdapter adapter;
-    public ProfileFragment profileFragment;
-    public HomeFragment homeFragment;
-    public ScheduleFragment scheduleFragment;
     public ReplacementsFragment replacementsFragment;
-    public ProfileFragmentClass profileFragmentClass;
-    public ProfileFragmentTeacher profileFragmentTeacher;
     private DbAdapter dbAdapter;
     private ReplacementDbAdapter replacementDbAdapter;
     private ClassDbAdapter classDbAdapter;
     private TeacherDbAdapter teacherDbAdapter;
-    private ScheduleUrlFilesDbAdapter scheduleUrlFilesDbAdapter;
     private String no_internet;
     private ArrayList<Long> myDataSetAll = new ArrayList<>();
     // GCM
@@ -108,9 +94,6 @@ public class ReplacementsMain extends AppCompatActivity {
         dbAdapter.open();
         dbAdapter.close();
         //dbAdapter.close();
-        scheduleUrlFilesDbAdapter = new ScheduleUrlFilesDbAdapter(this);
-        scheduleUrlFilesDbAdapter.open();
-        scheduleUrlFilesDbAdapter.close();
 
     //    Intent scheduleIntent = new Intent(this, ScheduleUpdate.class);
         //scheduleIntent.putExtra("jsonUpdate", true);
@@ -397,9 +380,7 @@ public class ReplacementsMain extends AppCompatActivity {
             String dirScheduleName = prefs.getString("scheduleFilesDirNameCurrent", "");
             if (dirScheduleName.equals("")) {
                 if (!prefs.getBoolean("scheduleUpdateToDo", false)) {
-                    Intent scheduleIntent = new Intent(getBaseContext(), ScheduleUpdate.class);
-                    scheduleIntent.putExtra("jsonUpdate", true);
-                    startService(scheduleIntent);
+                    // Here was schedule update
                 }
             }
 
@@ -415,14 +396,6 @@ public class ReplacementsMain extends AppCompatActivity {
 //            getSupportFragmentManager().putFragment(outState, "profileFragmentClass", profileFragmentClass);
 //            getSupportFragmentManager().putFragment(outState, "profileFragmentTeacher", profileFragmentTeacher);
 //        }
-        if (profileFragmentClass != null) {
-            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 100");
-            getSupportFragmentManager().putFragment(outState, "profileFragmentClass", profileFragmentClass);
-        }
-        if (profileFragmentTeacher != null) {
-            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 200");
-            getSupportFragmentManager().putFragment(outState, "profileFragmentTeacher", profileFragmentTeacher);
-        }
 //        if (profileFragment != null) {
 //            Log.i(CLASS_NAME, "onSaveInstanceState 2 - 300");
 //            getSupportFragmentManager().putFragment(outState, "profileFragment", profileFragment);
@@ -460,14 +433,6 @@ public class ReplacementsMain extends AppCompatActivity {
 //            profileFragmentClass = (ProfileFragmentClass) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass");
 //            profileFragmentTeacher = (ProfileFragmentTeacher) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher");
 //        }
-        if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass") != null){
-            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 100");
-            profileFragmentClass = (ProfileFragmentClass) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentClass");
-        }
-        if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher") != null){
-            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 200");
-            profileFragmentTeacher = (ProfileFragmentTeacher) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragmentTeacher");
-        }
 //        if(getSupportFragmentManager().getFragment(savedInstanceState, "profileFragment") != null){
 //            Log.i(CLASS_NAME, "onRestoreInstanceState 3 - 300");
 //            profileFragment = (ProfileFragment) getSupportFragmentManager().getFragment(savedInstanceState, "profileFragment");
@@ -515,15 +480,6 @@ public class ReplacementsMain extends AppCompatActivity {
         //if(adapter == null) {
             adapter = new ViewPagerAdapter(getSupportFragmentManager());
         //}
-        if(profileFragmentClass == null) {
-            profileFragmentClass = new ProfileFragmentClass();
-        }
-        adapter.addFrag(profileFragmentClass, getString(R.string.tab_class));
-        if(profileFragmentTeacher == null) {
-            profileFragmentTeacher = new ProfileFragmentTeacher();
-        }
-        adapter.addFrag(profileFragmentTeacher, getString(R.string.tab_teacher));
-        viewPager.setAdapter(adapter);
         Log.i("WYBRANO", "Add");
     }
 
@@ -588,15 +544,6 @@ public class ReplacementsMain extends AppCompatActivity {
         mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         View hView =  mNavigationView.getHeaderView(0);
-        LinearLayout drawerHeader = (LinearLayout) hView.findViewById(R.id.drawer_header);
-        TextView textHeader = (TextView)drawerHeader.findViewById(R.id.drawer_header_text);
-        SharedPreferences prefs = getSharedPreferences("dane", Context.MODE_PRIVATE);
-        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN) {
-            drawerHeader.setBackgroundDrawable(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 0) == 1)? R.drawable.header_image_1 : R.drawable.header_image_2));
-        } else {
-            drawerHeader.setBackground(ContextCompat.getDrawable(this, (prefs.getInt("chosenSchool", 0) == 1)? R.drawable.header_image_1 : R.drawable.header_image_2));
-        }
-        textHeader.setText((prefs.getInt("chosenSchool", 0) == 1)? R.string.school_name_1 : R.string.school_name_2);
 
     //    setupActionBarDrawerToogle();
         if (mNavigationView != null) {
@@ -631,62 +578,6 @@ public class ReplacementsMain extends AppCompatActivity {
         switch (menuItem.getItemId()) {
             // Wybranie profilu i podmiana odpowiedniego fragmentu
             case R.id.nav_profile:
-                menuItem.setChecked(true);
-                Log.i("WYBRANO", "0");
-                mCurrentSelectedPosition = 0;
-                setTitle(menuItem.getTitle());
-
-
-                viewPager = (ViewPager) findViewById(R.id.viewpager);
-                if(!configChanged || rotationChanged) {
-                    //if(profileFragment == null) {
-                        profileFragment = new ProfileFragment();
-                    //}
-                    // Insert the fragment by replacing any existing fragment
-                    FragmentManager fmProfile = getSupportFragmentManager();
-                    FragmentTransaction ftProfile = fmProfile.beginTransaction();
-                    //        ftProfile.remove(fmProfile.findFragmentById(R.id.content_frame));
-                    ftProfile.replace(R.id.content_frame, profileFragment);
-                    ftProfile.commitAllowingStateLoss();
-                    Log.i("WYBRANO", "1a");
-
-                    // Insert pages into viewPager and tabs from viewPager to tabLayout and set visibility
-                    Log.i("WYBRANO", "2a");
-                    setupViewPager(viewPager);
-                    Log.i("WYBRANO", "3a");
-                    tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-                    Log.i("WYBRANO", "4a");
-                    tabLayout.setupWithViewPager(viewPager);
-                    Log.i("WYBRANO", "5a");
-                    visibilityTabLayout(tabLayout);
-                    Log.i("WYBRANO", "6a");
-                    configChanged = true;
-                    rotationChanged = false;
-                    Log.i("WYBRANO", "BYLOBYLOBYLOBYLO");
-
-                    tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-                        @Override
-                        public void onTabSelected(TabLayout.Tab tab) {
-                            viewPager.setCurrentItem(tab.getPosition());
-                            switch (tab.getPosition()) {
-                                case 0:
-                                    currentProfileTab = 0;
-                                    break;
-                                case 1:
-                                    currentProfileTab = 1;
-                                    break;
-                            }
-                        }
-
-                        @Override
-                        public void onTabUnselected(TabLayout.Tab tab) {
-                        }
-
-                        @Override
-                        public void onTabReselected(TabLayout.Tab tab) {
-                        }
-                    });
-                }
             //    if (viewPager.getVisibility() == View.VISIBLE){
             //        Log.i("WYBRANO", "6 - Visible");
             //    } else if (viewPager.getVisibility() == View.GONE){
@@ -695,34 +586,6 @@ public class ReplacementsMain extends AppCompatActivity {
                 break;
             // Wybranie aktualnosci i podmiana odpowiedniego fragmentu
             case R.id.nav_home:
-                menuItem.setChecked(true);
-                Log.i("WYBRANO", "1");
-                mCurrentSelectedPosition = 1;
-                setTitle(menuItem.getTitle());
-
-                // Clear pages and insetr empty space to tabLayout and set visibility
-            //    viewPager = (ViewPager) findViewById(R.id.viewpager);
-            //    clearViewPager(viewPager);
-            //    tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-            //    tabLayout.setupWithViewPager(viewPager);
-            //    visibilityTabLayout(tabLayout);
-                tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-                if(configChanged) {
-                    tabLayout.removeAllTabs();
-                    viewPager = (ViewPager) findViewById(R.id.viewpager);
-                    clearViewPager(viewPager);
-                }
-                visibilityTabLayout(tabLayout);
-
-                //if(homeFragment == null) {
-                    homeFragment = new HomeFragment();
-                //}
-                // Insert the fragment by replacing any existing fragment
-                FragmentManager fmHome = getSupportFragmentManager();
-                FragmentTransaction ftHome = fmHome.beginTransaction();
-                ftHome.replace(R.id.content_frame, homeFragment);
-                ftHome.commitAllowingStateLoss();
-                configChanged = false;
                 break;
             // Wybranie zastepstw i podmiana odpowiedniego fragmentu
             case R.id.nav_replacements:
@@ -761,41 +624,6 @@ public class ReplacementsMain extends AppCompatActivity {
                 break;
             // Wybranie planu i podmiana odpowiedniego fragmentu
             case R.id.nav_schedule:
-                menuItem.setChecked(true);
-        //        menuItem.setCheckable(false);
-                Log.i("WYBRANO", "3");
-                mCurrentSelectedPosition = 3;
-                setTitle(menuItem.getTitle());
-
-                // Clear pages and insetr empty space to tabLayout and set visibility
-            //    viewPager = (ViewPager) findViewById(R.id.viewpager);
-            //    clearViewPager(viewPager);
-            //    tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-            //    tabLayout.setupWithViewPager(viewPager);
-            //    visibilityTabLayout(tabLayout);
-                tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-                if(configChanged) {
-                    tabLayout.removeAllTabs();
-                    viewPager = (ViewPager) findViewById(R.id.viewpager);
-                    clearViewPager(viewPager);
-                }
-                visibilityTabLayout(tabLayout);
-
-                //if(scheduleFragment == null) {
-                    scheduleFragment = new ScheduleFragment();
-                //}
-                FragmentManager fmSchedule = getSupportFragmentManager();
-                FragmentTransaction ftSchedule = fmSchedule.beginTransaction();
-                ftSchedule.replace(R.id.content_frame, scheduleFragment);
-                ftSchedule.commitAllowingStateLoss();
-                configChanged = false;
-//                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-//                String urlIntent = prefs.getString("schedule_url", "http://zschocianow.pl/plan/");
-//
-//                //String urlIntent = getString(R.string.url_schedule);
-//                Intent scheduleIntent = new Intent(Intent.ACTION_VIEW);
-//                scheduleIntent.setData(Uri.parse(urlIntent));
-//                startActivity(scheduleIntent);
                 break;
             // Wybranie ustawien i otworzenie activity ustawien
             case R.id.nav_settings:
@@ -969,32 +797,6 @@ public class ReplacementsMain extends AppCompatActivity {
         if (isNavDrawerOpen()) {
             closeNavDrawer();
         } else {
-            Fragment fragmentWebView = getSupportFragmentManager().findFragmentById(R.id.content_frame);
-            //Obsluga klikanie wstecz w internetowym widoku planu lekcji
-            if (fragmentWebView instanceof ScheduleFragment) {
-                boolean goback = false;
-                try {
-                    goback = ((ScheduleFragment) fragmentWebView).canGoBackWebView();
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-                if (goback) {
-                    Log.i(CLASS_NAME, "onBackPressed goback");
-                    ((ScheduleFragment) fragmentWebView).goBackWebView();
-                    //((ScheduleFragment) fragmentWebView).setScaleWebView();
-                }else {
-                    Log.i(CLASS_NAME, "onBackPressed not goback");
-                    Intent intent = getIntent();
-                    String action = intent.getAction();
-                    String data = intent.getDataString();
-                    //Check whether activity was instantiated from App Indexing Google SearchActivity and on back pressed close current activity task
-                    // without closing but not showing previous activity tasks remaining in memory
-                    if (Intent.ACTION_VIEW.equals(action) && data != null) {
-                        moveTaskToBack(true);
-                    }
-                    super.onBackPressed();
-                }
-            }else{
                 Intent intent = getIntent();
                 String action = intent.getAction();
                 String data = intent.getDataString();
@@ -1004,7 +806,7 @@ public class ReplacementsMain extends AppCompatActivity {
                     moveTaskToBack(true);
                 }
                 super.onBackPressed();
-            }
+//            }
         }
     }
 
