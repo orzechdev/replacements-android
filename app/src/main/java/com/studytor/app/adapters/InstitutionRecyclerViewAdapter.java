@@ -4,10 +4,12 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.studytor.app.BR;
 import com.studytor.app.R;
+import com.studytor.app.RecyclerItemClickListener;
 import com.studytor.app.models.SingleInstitution;
 
 import java.util.List;
@@ -19,6 +21,7 @@ import java.util.List;
 
 public class InstitutionRecyclerViewAdapter extends RecyclerView.Adapter<InstitutionRecyclerViewAdapter.MyViewHolder> {
     private List<SingleInstitution> data;
+    RecyclerItemClickListener.OnItemClickListener onItemClickListener;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -48,15 +51,15 @@ public class InstitutionRecyclerViewAdapter extends RecyclerView.Adapter<Institu
         // create a new view
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         ViewDataBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_institution_single_card, parent, false);
-        // set the view's size, margins, paddings and layout parameters
         return new MyViewHolder(binding);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        final SingleInstitution temperatureData = data.get(position);
-        holder.bind(temperatureData);
+
+        final SingleInstitution singleInstitution = data.get(position);
+        holder.bind(singleInstitution);
 
     }
 
@@ -64,6 +67,14 @@ public class InstitutionRecyclerViewAdapter extends RecyclerView.Adapter<Institu
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public SingleInstitution getItemAt(int position){
+        if(position < 0) return null;
+        if(position >= this.getItemCount()) return null;
+        if(data == null) return  null;
+
+        return data.get(position);
     }
 
 }

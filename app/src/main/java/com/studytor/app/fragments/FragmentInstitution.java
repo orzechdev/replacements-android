@@ -2,6 +2,7 @@ package com.studytor.app.fragments;
 
 import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -12,11 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.studytor.app.R;
 import com.studytor.app.activities.ActivityMain;
+import com.studytor.app.activities.InstitutionProfileActivity;
 import com.studytor.app.adapters.InstitutionRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionBinding;
+import com.studytor.app.helpers.ItemClickSupport;
 import com.studytor.app.models.SingleInstitution;
 import com.studytor.app.viewmodel.ActivityMainViewModel;
 import com.studytor.app.viewmodel.FragmentInstitutionViewModel;
@@ -69,6 +73,18 @@ public class FragmentInstitution extends LifecycleFragment {
         // define an adapter
         mAdapter = new InstitutionRecyclerViewAdapter(items);
         recyclerView.setAdapter(mAdapter);
+
+        //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                InstitutionRecyclerViewAdapter tempAdapter = (InstitutionRecyclerViewAdapter) mAdapter;
+                Toast.makeText(getContext(), "CLICKED " + String.valueOf(tempAdapter.getItemAt(position).getName()), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getContext(), InstitutionProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         return binding.getRoot();
     }
