@@ -15,7 +15,6 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.studytor.app.R;
-import com.studytor.app.activities.ReplacementsMain;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -88,19 +87,6 @@ public class FcmListenerService extends FirebaseMessagingService {
             case 2:
                 Log.i(CLASS_NAME, "processMessage 220");
                 //New replacements notification
-                resultIntent = new Intent(getBaseContext(), ReplacementsMain.class);
-                resultIntent.putExtra("isNotified", true);
-                Log.i("GNIS sendNotification", Integer.toString(msgSubject));
-                resultIntent.putExtra("menuItem", msgSubject);
-                resultIntent.putExtra("greetjson", jsonMsg);
-                resultIntent.setAction(Intent.ACTION_MAIN);
-                resultIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-                resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                resultPendingIntent = PendingIntent.getActivity(getBaseContext(), 0, resultIntent, PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_ONE_SHOT);
-
-                notifyTitle = new_replacements;
-                notifyID = 200;
-                sendNotification(notifyID, resultPendingIntent, notifyTitle);
                 break;
             case 5:
                 Log.i(CLASS_NAME, "processMessage 250");

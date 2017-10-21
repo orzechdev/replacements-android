@@ -15,8 +15,6 @@ import android.util.Log;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.studytor.app.data.ClassDbAdapter;
-import com.studytor.app.data.TeacherDbAdapter;
 import com.studytor.app.interfaces.ApplicationConstants;
 
 import java.util.ArrayList;
@@ -224,7 +222,6 @@ public class ProfileRegister extends IntentService {
             if (localSharedPreferences.getString("pref_notify_repl", "1").equals("1")) {
                 // Wedlug profilu
                 // Get all selected user classes and teachers
-                readAllFromSQLite();
                 if(!myDataSetAll.isEmpty()){
                     String dataIdsString = myDataSetAll.toString().replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(" ", "");
                     profileSetToServer.putExtra("serverAction", 1);
@@ -280,48 +277,5 @@ public class ProfileRegister extends IntentService {
             this.startService(profileSetToServer);
         }
         Log.i(CLASS_NAME, "changeSetInServer 30");
-    }
-
-    public ArrayList<Integer> readAllFromSQLite() {
-        myDataSetAll.clear();
-        Cursor cursor;
-        ClassDbAdapter classDbAdapter;
-        TeacherDbAdapter teacherDbAdapter;
-
-        classDbAdapter = new ClassDbAdapter(this);
-        classDbAdapter.open();
-        cursor = classDbAdapter.getAllIdsSelected();
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    int idOfData = cursor.getInt(cursor.getColumnIndex(ClassDbAdapter.KEY_ID));
-                    if(cursor.getLong(cursor.getColumnIndex(ClassDbAdapter.KEY_SELECTED)) == 1){
-                        myDataSetAll.add(idOfData);
-                    }
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
-        }
-        classDbAdapter.close();
-
-        teacherDbAdapter = new TeacherDbAdapter(this);
-        teacherDbAdapter.open();
-        cursor = teacherDbAdapter.getAllIdsSelected();
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast()) {
-                    int idOfData = cursor.getInt(cursor.getColumnIndex(ClassDbAdapter.KEY_ID));
-                    if(cursor.getLong(cursor.getColumnIndex(ClassDbAdapter.KEY_SELECTED)) == 1){
-                        myDataSetAll.add(idOfData);
-                    }
-                    cursor.moveToNext();
-                }
-            }
-            cursor.close();
-        }
-        teacherDbAdapter.close();
-
-        return myDataSetAll;
     }
 }

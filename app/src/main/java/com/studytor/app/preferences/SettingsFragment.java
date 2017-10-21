@@ -17,9 +17,6 @@ import android.util.Log;
 //import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.studytor.app.R;
-import com.studytor.app.activities.ChooseSchool;
-import com.studytor.app.data.ClassDbAdapter;
-import com.studytor.app.data.TeacherDbAdapter;
 //import com.studytor.app.sync.GcmUserRegistration;
 //import com.studytor.app.sync.GcmUserUnregistration;
 import com.studytor.app.interfaces.ApplicationConstants;
@@ -37,8 +34,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 	private String notifySchedule;
 	private ConnectivityManager connManager;
 	private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-	private ClassDbAdapter classDbAdapter;
-	private TeacherDbAdapter teacherDbAdapter;
 	private Cursor cursor;
 	private ArrayList<Long> myDataSetAll = new ArrayList<>();
 	private String tempNotifyRepl;
@@ -116,15 +111,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 			getPreferenceScreen().removePreference(devPreference);
 		}
 		Preference prefSchoolPref = findPreference("pref_school_pref");
-		prefSchoolPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-			@Override
-			public boolean onPreferenceClick(Preference arg0) {
-				Intent intent = new Intent(getActivity(), ChooseSchool.class);
-				intent.putExtra("activityParentExists", true);
-				startActivity(intent);
-				return true;
-			}
-		});
 		for (int i = 0;; i++){
 			if (i >= getPreferenceScreen().getPreferenceCount()) {
 				return;
@@ -222,7 +208,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 					// Wedlug profilu
 					tempNotifyRepl = "1";
 					// Get all selected user classes and teachers
-					readAllFromSQLite();
 				} else {
 					// Wszystkie
 					tempNotifyRepl = "2";
@@ -332,43 +317,4 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 //		return true;
 //	}
 
-	public ArrayList<Long> readAllFromSQLite() {
-		myDataSetAll.clear();
-
-		classDbAdapter = new ClassDbAdapter(getActivity());
-		classDbAdapter.open();
-		cursor = classDbAdapter.getAllIdsSelected();
-		if (cursor != null) {
-			if (cursor.moveToFirst()) {
-				while (!cursor.isAfterLast()) {
-					long idOfData = cursor.getLong(cursor.getColumnIndex(ClassDbAdapter.KEY_ID));
-					if(cursor.getLong(cursor.getColumnIndex(ClassDbAdapter.KEY_SELECTED)) == 1){
-						myDataSetAll.add(idOfData);
-					}
-					cursor.moveToNext();
-				}
-			}
-			cursor.close();
-		}
-		classDbAdapter.close();
-
-		teacherDbAdapter = new TeacherDbAdapter(getActivity());
-		teacherDbAdapter.open();
-		cursor = teacherDbAdapter.getAllIdsSelected();
-		if (cursor != null) {
-			if (cursor.moveToFirst()) {
-				while (!cursor.isAfterLast()) {
-					long idOfData = cursor.getLong(cursor.getColumnIndex(ClassDbAdapter.KEY_ID));
-					if(cursor.getLong(cursor.getColumnIndex(ClassDbAdapter.KEY_SELECTED)) == 1){
-						myDataSetAll.add(idOfData);
-					}
-					cursor.moveToNext();
-				}
-			}
-			cursor.close();
-		}
-		teacherDbAdapter.close();
-
-		return myDataSetAll;
-	}
 }

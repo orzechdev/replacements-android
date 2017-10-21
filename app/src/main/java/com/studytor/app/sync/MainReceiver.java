@@ -9,16 +9,12 @@ import android.net.NetworkInfo;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.studytor.app.data.DbAdapter;
-
 /**
  * Created by Dawid on 2016-08-14.
  */
 public class MainReceiver extends BroadcastReceiver {
     private static final String CLASS_NAME =  MainReceiver.class.getName();
 
-    private DbAdapter dbAdapter;
-    
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i("MainReceiver","onReceive 1");
@@ -32,9 +28,6 @@ public class MainReceiver extends BroadcastReceiver {
                 //android.intent.action.MY_PACKAGE_REPLACED
                 //lub jesli nie bylo internetu to
                 //android.net.conn.CONNECTIVITY_CHANGE
-                dbAdapter = new DbAdapter(context);
-                dbAdapter.open();
-                dbAdapter.close();
 
                 Log.i(CLASS_NAME, "onReceive activeNetwork: " + activeNetwork.getTypeName());
                 SharedPreferences sharedPref = context.getSharedPreferences("dane", 0);
