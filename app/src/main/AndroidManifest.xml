@@ -185,7 +185,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.InstitutionProfileActivity" android:label="Zespół Szkół Jakichśtam w Warszawie"></activity>
+        <activity android:name=".activities.ActivityInstitutionProfile" android:label="Zespół Szkół Jakichśtam w Warszawie"></activity>
     </application>
 
 </manifest>

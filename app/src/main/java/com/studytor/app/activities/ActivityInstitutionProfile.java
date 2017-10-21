@@ -19,7 +19,7 @@ import com.studytor.app.fragments.FragmentInstitutionProfileSchedule;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InstitutionProfileActivity extends AppCompatActivity {
+public class ActivityInstitutionProfile extends AppCompatActivity {
     ViewPager viewPager;
     TabLayout tabLayout;
 

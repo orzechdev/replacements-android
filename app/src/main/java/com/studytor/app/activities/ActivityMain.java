@@ -9,8 +9,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,7 +24,7 @@ import com.studytor.app.fragments.FragmentSchedule;
 import com.studytor.app.fragments.ReplacementsFragment;
 import com.studytor.app.viewmodel.ActivityMainViewModel;
 
-public class ActivityMain extends LifecycleActivity {
+public class ActivityMain extends AppCompatActivity {
     private static final String CLASS_NAME = ActivityMain.class.getName();
 
     private ActivityMainViewModel viewModel;
@@ -94,7 +96,7 @@ public class ActivityMain extends LifecycleActivity {
         Log.i(CLASS_NAME,"setActiveFragment 100");
 
         FragmentTransaction transaction;
-        LifecycleFragment lifecycleFragment;
+        Fragment lifecycleFragment;
         String backStackName;
 
         switch (currentNavigationItem) {

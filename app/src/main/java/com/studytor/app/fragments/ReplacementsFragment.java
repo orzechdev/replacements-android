@@ -12,6 +12,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -58,7 +59,7 @@ import java.util.Locale;
 import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderAdapter;
 
 
-public class ReplacementsFragment extends LifecycleFragment {
+public class ReplacementsFragment extends Fragment {
     private static final String CLASS_NAME = ReplacementsFragment.class.getName();
 
     private FragmentReplacementsViewModel viewModel;
