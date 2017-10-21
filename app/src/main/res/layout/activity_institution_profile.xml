@@ -5,6 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    app:theme="@style/ActivityInstitutionProfile"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
@@ -12,7 +13,8 @@
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:theme="@style/ActivityInstitutionProfile"
+        android:background="@android:color/black"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -20,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/new_blue_light"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp"
             android:fitsSystemWindows="true">
@@ -28,7 +30,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="56dp"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_collapseMode="pin" />
 
@@ -48,12 +50,38 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
 
+                <!-- Image Dark Vignette -->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@drawable/image_buttons_shadow"
+                    />
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_margin="16dp"
+                    app:srcCompat="@drawable/activity_institution_subscribe_star"
+                    android:layout_alignEnd="@id/institution_banner"
+                    android:layout_alignRight="@id/institution_banner"
+                    android:id="@+id/imageView" />
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    app:srcCompat="@drawable/activity_institution_back_arrow"
+                    android:layout_marginLeft="18dp"
+                    android:layout_alignTop="@+id/imageView"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="18dp" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="128dp"
+                    android:layout_height="wrap_content"
                     android:paddingTop="8dp"
                     android:layout_below="@+id/institution_banner"
-                    android:background="@color/blue_very_very_light">
+                    android:background="@color/new_blue_light">
 
                     <ImageView
                         android:layout_width="48dp"
@@ -77,10 +105,15 @@
                     <android.support.design.widget.TabLayout
                         android:id="@+id/tabs"
                         android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_below="@id/institution_name"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="8dp"
                         app:tabMode="fixed"
-                        app:tabGravity="fill"/>
+                        app:tabGravity="fill"
+                        app:tabTextColor="#AFFF"
+                        app:tabSelectedTextColor="#FFFF"
+                        android:layout_below="@+id/institution_name"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true" />
 
                 </RelativeLayout>
 
@@ -100,12 +133,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/viewpager"
-            android:background="@color/red"
             android:clipToPadding="false">
 
         </android.support.v4.view.ViewPager>
 
     </android.support.v4.widget.NestedScrollView>
+
+    <!-- Image Dark Vignette -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:background="@drawable/toolbar_dropshadow"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        />
 
 
 </android.support.design.widget.CoordinatorLayout>

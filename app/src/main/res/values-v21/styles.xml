@@ -20,6 +20,11 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/blue_and_semi_transparent</item>
     </style>
+    <!-- Style to set notification bar color to black to match the gradient -->
+    <style name="ActivityInstitutionProfile" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:colorAccent">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
     <!-- Stare tylko dla nowego SettingsActivity
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorPrimary">@color/blue</item>

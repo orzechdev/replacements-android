@@ -26,6 +26,9 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_institution_profile);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
