@@ -1,7 +1,5 @@
 package com.studytor.app.activities;
 
-import android.arch.lifecycle.LifecycleActivity;
-import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
@@ -18,8 +16,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.studytor.app.R;
+
 import com.studytor.app.databinding.ActivityMainBinding;
-import com.studytor.app.fragments.FragmentInstitution;
+import com.studytor.app.fragments.FragmentInstitutionList;
 import com.studytor.app.fragments.FragmentSchedule;
 import com.studytor.app.fragments.ReplacementsFragment;
 import com.studytor.app.viewmodel.ActivityMainViewModel;
@@ -40,7 +39,7 @@ public class ActivityMain extends AppCompatActivity {
 
     private FragmentSchedule fragmentSchedule;
     private ReplacementsFragment fragmentReplacement;
-    private FragmentInstitution fragmentInstitution;
+    private FragmentInstitutionList fragmentInstitutionList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,10 +115,10 @@ public class ActivityMain extends AppCompatActivity {
                 break;
             case R.id.navigation_institution:
                 Log.i(CLASS_NAME,"setActiveFragment 400");
-                if(fragmentInstitution == null)
-                    fragmentInstitution = new FragmentInstitution();
-                lifecycleFragment = fragmentInstitution;
-                backStackName = "fragmentInstitution";
+                if(fragmentInstitutionList == null)
+                    fragmentInstitutionList = new FragmentInstitutionList();
+                lifecycleFragment = fragmentInstitutionList;
+                backStackName = "fragmentInstitutionList";
                 break;
             default:
                 Log.i(CLASS_NAME,"setActiveFragment 500");
@@ -211,9 +210,9 @@ public class ActivityMain extends AppCompatActivity {
             Log.i(CLASS_NAME, "saveAllFragments 300");
             getSupportFragmentManager().putFragment(outState, "fragmentReplacement", fragmentReplacement);
         }
-        if (fragmentInstitution != null) {
+        if (fragmentInstitutionList != null) {
             Log.i(CLASS_NAME, "saveAllFragments 400");
-            getSupportFragmentManager().putFragment(outState, "fragmentInstitution", fragmentInstitution);
+            getSupportFragmentManager().putFragment(outState, "fragmentInstitutionList", fragmentInstitutionList);
         }
 
         Log.i(CLASS_NAME, "saveAllFragments 500");
@@ -231,9 +230,9 @@ public class ActivityMain extends AppCompatActivity {
             Log.i(CLASS_NAME, "restoreAllFragments 300");
             fragmentReplacement = (ReplacementsFragment) getSupportFragmentManager().getFragment(savedInstanceState, "fragmentReplacement");
         }
-        if(getSupportFragmentManager().getFragment(savedInstanceState, "fragmentInstitution") != null){
+        if(getSupportFragmentManager().getFragment(savedInstanceState, "fragmentInstitutionList") != null){
             Log.i(CLASS_NAME, "restoreAllFragments 400");
-            fragmentInstitution = (FragmentInstitution) getSupportFragmentManager().getFragment(savedInstanceState, "fragmentInstitution");
+            fragmentInstitutionList = (FragmentInstitutionList) getSupportFragmentManager().getFragment(savedInstanceState, "fragmentInstitutionList");
         }
 
         Log.i(CLASS_NAME, "restoreAllFragments 500");

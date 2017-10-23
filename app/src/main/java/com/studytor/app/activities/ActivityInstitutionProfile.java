@@ -1,6 +1,7 @@
 package com.studytor.app.activities;
 
 import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.TabHost;
 import android.widget.Toast;
 
@@ -31,11 +33,23 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
 
         setContentView(R.layout.activity_institution_profile);
 
+        CoordinatorLayout coordinator = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+        //coordinator.setPadding(0, -getStatusBarHeight() , 0, 0);
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     private void setupViewPager(ViewPager viewPager) {

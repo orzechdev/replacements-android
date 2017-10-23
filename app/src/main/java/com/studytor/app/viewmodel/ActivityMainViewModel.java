@@ -23,7 +23,7 @@ public class ActivityMainViewModel extends ViewModel {
 
     private FragmentScheduleViewModel fragmentScheduleViewModel;
     private FragmentReplacementsViewModel fragmentReplacementsViewModel;
-    private FragmentInstitutionViewModel fragmentInstitutionViewModel;
+    private FragmentInstitutionListViewModel fragmentInstitutionListViewModel;
 
     private String scheduleHeader;
     private String replacementsHeader;
@@ -51,11 +51,11 @@ public class ActivityMainViewModel extends ViewModel {
     public void setFragmentReplacementsViewModel(FragmentReplacementsViewModel viewModel) {
         fragmentReplacementsViewModel = viewModel;
     }
-    public FragmentInstitutionViewModel getFragmentInstitutionViewModel() {
-        return fragmentInstitutionViewModel;
+    public FragmentInstitutionListViewModel getFragmentInstitutionListViewModel() {
+        return fragmentInstitutionListViewModel;
     }
-    public void setFragmentInstitutionViewModel(FragmentInstitutionViewModel viewModel) {
-        fragmentInstitutionViewModel = viewModel;
+    public void setFragmentInstitutionListViewModel(FragmentInstitutionListViewModel viewModel) {
+        fragmentInstitutionListViewModel = viewModel;
     }
 
     private MutableLiveData<String> toolbarTitle;// = new MutableLiveData<>();

@@ -96,6 +96,9 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="snackbar_refresh">Refresh</string>
+    <string name="snackbar_try_again">Try again</string>
+    <string name="snackbar_no_internet_connection">Can\'t connect</string>
 
 
     <!-- Following strings are for new app -->

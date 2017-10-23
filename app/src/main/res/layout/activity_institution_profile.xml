@@ -5,6 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/coordinator_layout"
     app:theme="@style/ActivityInstitutionProfile"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -14,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ActivityInstitutionProfile"
-        android:background="@android:color/black"
+        android:background="@color/new_blue_light"
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -31,11 +32,13 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
+                android:background="@color/new_blue_light"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_collapseMode="pin" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
+                android:background="@color/new_blue_light"
                 android:layout_height="wrap_content">
 
                 <ImageView
@@ -60,21 +63,24 @@
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_margin="16dp"
-                    app:srcCompat="@drawable/activity_institution_subscribe_star"
-                    android:layout_alignEnd="@id/institution_banner"
-                    android:layout_alignRight="@id/institution_banner"
-                    android:id="@+id/imageView" />
+                    app:srcCompat="@drawable/activity_institution_back_arrow"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_alignTop="@+id/institution_banner"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="18dp" />
 
                 <ImageView
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    app:srcCompat="@drawable/activity_institution_back_arrow"
-                    android:layout_marginLeft="18dp"
-                    android:layout_alignTop="@+id/imageView"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_marginStart="18dp" />
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="18dp"
+                    android:layout_marginEnd="18dp"
+                    app:srcCompat="@drawable/activity_institution_subscribe_star"
+                    android:layout_alignTop="@+id/institution_banner"
+                    android:layout_alignEnd="@id/institution_banner"
+                    android:layout_alignRight="@id/institution_banner"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -96,6 +102,7 @@
                         android:id="@+id/institution_name"
                         android:text="Zespół Szkół Jakichśtam w Warszawie"
                         android:textSize="22sp"
+                        android:textColor="@android:color/white"
                         android:layout_marginTop="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
@@ -105,8 +112,8 @@
                     <android.support.design.widget.TabLayout
                         android:id="@+id/tabs"
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="30dp"
                         app:tabMode="fixed"
                         app:tabGravity="fill"
                         app:tabTextColor="#AFFF"

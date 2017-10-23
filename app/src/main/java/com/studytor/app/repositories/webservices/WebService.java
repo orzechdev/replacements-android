@@ -1,6 +1,10 @@
 package com.studytor.app.repositories.webservices;
 
+import com.studytor.app.models.Institutions;
+import com.studytor.app.models.SingleInstitution;
 import com.studytor.app.repositories.models.ReplacementsJson;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.studytor.app.BR;
 import com.studytor.app.R;
 import com.studytor.app.RecyclerItemClickListener;
-import com.studytor.app.viewmodel.SingleInstitution;
+import com.studytor.app.models.SingleInstitution;
 
 import java.util.List;
 
@@ -65,6 +65,7 @@ public class InstitutionRecyclerViewAdapter extends RecyclerView.Adapter<Institu
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
+        if(data == null) return 0;
         return data.size();
     }
 

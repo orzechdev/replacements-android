@@ -1,11 +1,14 @@
 package com.studytor.app.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.databinding.Observable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,9 +24,9 @@ import com.studytor.app.activities.ActivityInstitutionProfile;
 import com.studytor.app.adapters.InstitutionRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionBinding;
 import com.studytor.app.helpers.ItemClickSupport;
-import com.studytor.app.viewmodel.SingleInstitution;
+import com.studytor.app.viewmodel.FragmentInstitutionListViewModel;
+import com.studytor.app.models.SingleInstitution;
 import com.studytor.app.viewmodel.ActivityMainViewModel;
-import com.studytor.app.viewmodel.FragmentInstitutionViewModel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,9 +35,9 @@ import java.util.List;
  * Created by Dawid on 19.07.2017.
  */
 
-public class FragmentInstitution extends Fragment {
+public class FragmentInstitutionList extends Fragment {
 
-    private FragmentInstitutionViewModel viewModel;
+    private FragmentInstitutionListViewModel viewModel;
     private FragmentInstitutionBinding binding;
 
     private RecyclerView recyclerView;
@@ -46,14 +49,14 @@ public class FragmentInstitution extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-        viewModel = ViewModelProviders.of(this).get(FragmentInstitutionViewModel.class);
+        viewModel = ViewModelProviders.of(this).get(FragmentInstitutionListViewModel.class);
         //ActivityMainViewModel parentViewModel = ViewModelProviders.of(this).get(ActivityMainViewModel.class);
         ActivityMainViewModel parentViewModel = ((ActivityMain)getActivity()).getViewModel();
-        parentViewModel.setFragmentInstitutionViewModel(viewModel);
+        parentViewModel.setFragmentInstitutionListViewModel(viewModel);
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_institution, container, false);
 
-        final FragmentInstitutionViewModel.Observable observable = viewModel.getObservable();
+        final FragmentInstitutionListViewModel.Observable observable = viewModel.getObservable();
         binding.setObservable(observable);
 
         viewModel.setup(getActivity().getApplicationContext());
@@ -66,22 +69,26 @@ public class FragmentInstitution extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        //TODO: Pobieranie list uczelni z viewModel zamiast na sztywno
-        List<SingleInstitution> items =
-                Arrays.asList(
-                        new SingleInstitution(R.drawable.header_image_1_c, "1"),
-                        new SingleInstitution(R.drawable.header_image_2_c, "2"),
-                        new SingleInstitution(R.drawable.header_image_1_c, "1"),
-                        new SingleInstitution(R.drawable.header_image_2_c, "2"),
-                        new SingleInstitution(R.drawable.header_image_1_c, "1"),
-                        new SingleInstitution(R.drawable.header_image_2_c, "2"),
-                        new SingleInstitution(R.drawable.header_image_1_c, "1"),
-                        new SingleInstitution(R.drawable.header_image_2_c, "2")
-                );
+        //Always from web for now
+        viewModel.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
+            @Override
+            public void onChanged(@Nullable List<SingleInstitution> institutions) {
+                List<SingleInstitution> items = institutions;
+                if(items != null){
+                    mAdapter = new InstitutionRecyclerViewAdapter(items);
+                    recyclerView.setAdapter(mAdapter);
+                }else{
+                    Snackbar.make(getActivity().findViewById(R.id.main_content), getResources().getString(R.string.snackbar_no_internet_connection), 2000)
+                            .setAction(getResources().getString(R.string.snackbar_try_again), new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
 
-        // define an adapter
-        mAdapter = new InstitutionRecyclerViewAdapter(items);
-        recyclerView.setAdapter(mAdapter);
+                                }
+                            })
+                            .show();
+                }
+            }
+        });
 
         //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {

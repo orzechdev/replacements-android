@@ -658,7 +658,7 @@ public class ReplacementsFragment extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(false);
             }
             //Toast.makeText(getActivity().getApplicationContext(), no_internet_connect, Toast.LENGTH_SHORT).show();
-            Snackbar.make(getActivity().findViewById(R.id.main_content_container), no_internet_connect, Snackbar.LENGTH_LONG).show();
+            Snackbar.make(getActivity().findViewById(R.id.main_content), no_internet_connect, Snackbar.LENGTH_LONG).show();
         }
     }
 }

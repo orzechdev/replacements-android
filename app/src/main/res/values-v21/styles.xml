@@ -22,9 +22,13 @@
         <item name="android:statusBarColor">@color/blue_and_semi_transparent</item>
     </style>
     <!-- Style to set notification bar color to black to match the gradient -->
-    <style name="ActivityInstitutionProfile" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="ActivityInstitutionProfile" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorAccent">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:colorPrimaryDark">@color/new_blue_light</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
 </resources>
