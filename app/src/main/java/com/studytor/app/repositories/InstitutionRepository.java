@@ -1,6 +1,5 @@
 package com.studytor.app.repositories;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.studytor.app.R;
@@ -8,8 +7,6 @@ import com.studytor.app.models.Institutions;
 import com.studytor.app.models.SingleInstitution;
 import com.studytor.app.repositories.cache.FragmentInstitutionCache;
 import com.studytor.app.repositories.webservices.RetrofitClientSingleton;
-import com.studytor.app.repositories.webservices.StudytorRetrofitClientSingleton;
-import com.studytor.app.repositories.webservices.StudytorWebService;
 import com.studytor.app.repositories.webservices.WebService;
 
 import java.util.Arrays;
@@ -29,14 +26,14 @@ import static com.loopj.android.http.AsyncHttpClient.log;
  */
 
 public class InstitutionRepository {
-    private static final String CLASS_NAME = FragmentReplacementsRepository.class.getName();
+    private static final String CLASS_NAME = InstitutionRepository.class.getName();
 
     private static InstitutionRepository repositoryInstance;
-    private StudytorWebService webService;
-    private FragmentInstitutionCache fragmentReplacementsCache;
+    private WebService webService;
+    private FragmentInstitutionCache fragmentInstitutionCache;
 
     private InstitutionRepository() {
-        this.webService = StudytorRetrofitClientSingleton.getInstance().getWebService();
+        this.webService = RetrofitClientSingleton.getInstance().getWebService();
     }
 
     public static InstitutionRepository getInstance() {

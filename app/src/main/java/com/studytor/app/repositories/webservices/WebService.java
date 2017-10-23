@@ -37,4 +37,8 @@ public interface WebService {
     Call<ReplacementsJson> getUserInstitutions(
             //@Path("school_id") String schoolId
     );
+
+    @GET("json/schoolList.json")
+    Call<Institutions> getAllInstitutions(
+    );
 }
