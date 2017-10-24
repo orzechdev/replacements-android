@@ -17,7 +17,7 @@ public class RetrofitClientSingleton {
 
     private void buildRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:80/")
+                .baseUrl("http://studytor.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

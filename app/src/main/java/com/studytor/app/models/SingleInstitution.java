@@ -1,8 +1,11 @@
 package com.studytor.app.models;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.studytor.app.BR;
 import com.studytor.app.R;
@@ -13,16 +16,29 @@ import com.studytor.app.R;
  * it is also used in RetroFit to match JSON remote data
  */
 
+@Entity
 public class SingleInstitution extends BaseObservable {
 
     @SerializedName("id")
+    @PrimaryKey
+    @Expose
     private int id;
 
     @SerializedName("name")
+    @Expose
     private String name;
 
     @SerializedName("slug")
+    @Expose
     private String slug;
+
+    @SerializedName("logo")
+    @Expose
+    private String logoUrl;
+
+    @SerializedName("header")
+    @Expose
+    private String headerUrl;
 
     private int imageResource;
 
@@ -85,5 +101,21 @@ public class SingleInstitution extends BaseObservable {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public String getLogoUrl() {
+        return logoUrl;
+    }
+
+    public void setLogoUrl(String logoUrl) {
+        this.logoUrl = logoUrl;
+    }
+
+    public String getHeaderUrl() {
+        return headerUrl;
+    }
+
+    public void setHeaderUrl(String headerUrl) {
+        this.headerUrl = headerUrl;
     }
 }

@@ -75,7 +75,7 @@ public class ActivityMainViewModel extends ViewModel {
         prepareStrings(context);
 
         // Here works repository and Retrofit
-        activityMainRepository = ActivityMainRepository.getInstance();
+        activityMainRepository = ActivityMainRepository.getInstance(context);
         //activityMainRepository.setup();
         toolbarTitle = activityMainRepository.getUser("name");//.getValue();
         Log.i("ActivityMainViewModel","setup 1");

@@ -1,6 +1,7 @@
 package com.studytor.app.repositories;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Context;
 import android.util.Log;
 
 import com.studytor.app.repositories.cache.ActivityMainCache;
@@ -27,7 +28,7 @@ public class ActivityMainRepository {
         this.webService = RetrofitClientSingleton.getInstance().getWebService();
     }
 
-    public static ActivityMainRepository getInstance() {
+    public static ActivityMainRepository getInstance(Context context) {
         if (repositoryInstance == null) {
             repositoryInstance = new ActivityMainRepository();
         }
@@ -48,10 +49,13 @@ public class ActivityMainRepository {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 // error case is left out for brevity
                 try {
-                    //System.out.println(response.body().string());//convert reponse to string
-                    data.setValue(response.body().string());
-                    Log.i("ActivityMainRepository", "1");
-                    Log.i("ActivityMainRepository", response.body().string());
+                    //NullPointerException Fix
+                    if(response.isSuccessful() && response.body().string() != null){
+                        //System.out.println(response.body().string());//convert reponse to string
+                        data.setValue(response.body().string());
+                        Log.i("ActivityMainRepository", "1");
+                        Log.i("ActivityMainRepository", response.body().string());
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

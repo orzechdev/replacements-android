@@ -39,7 +39,7 @@ public class FragmentInstitutionListViewModel extends ViewModel {
             return;
 
         this.institutionList = new MutableLiveData<>();
-        fragmentInstitutionRepository = InstitutionRepository.getInstance();
+        fragmentInstitutionRepository = InstitutionRepository.getInstance(context);
 
         //Load institution data from repository
         /*fragmentInstitutionRepository.getInstitutionListFromCache().observeForever(new Observer<List<SingleInstitution>>() {
@@ -51,7 +51,7 @@ public class FragmentInstitutionListViewModel extends ViewModel {
 
         //TODO: Cache, prevent from trying to download if offline
 
-        fragmentInstitutionRepository.getInstitutionListFromWeb().observeForever(new Observer<List<SingleInstitution>>() {
+        fragmentInstitutionRepository.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
             @Override
             public void onChanged(@Nullable List<SingleInstitution> institutions) {
                 setInstitutionList(institutions);

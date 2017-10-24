@@ -78,14 +78,7 @@ public class FragmentInstitutionList extends Fragment {
                     mAdapter = new InstitutionRecyclerViewAdapter(items);
                     recyclerView.setAdapter(mAdapter);
                 }else{
-                    Snackbar.make(getActivity().findViewById(R.id.main_content), getResources().getString(R.string.snackbar_no_internet_connection), 2000)
-                            .setAction(getResources().getString(R.string.snackbar_try_again), new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-
-                                }
-                            })
-                            .show();
+                    Snackbar.make(getActivity().findViewById(R.id.main_content), getResources().getString(R.string.snackbar_no_internet_connection), 2000).show();
                 }
             }
         });

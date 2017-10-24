@@ -16,7 +16,8 @@ public class DatabaseSingleton {
     }
 
     private void getDatabase(Context context) {
-        this.mainDatabase = Room.databaseBuilder(context, MainDatabase.class, "database-name").build();
+        //TODO: On Schema update tables are cleared. Might need to be fixed with Migration.
+        this.mainDatabase = Room.databaseBuilder(context, MainDatabase.class, "database-name").fallbackToDestructiveMigration().build();
     }
 
     public static DatabaseSingleton getInstance(Context context) {
