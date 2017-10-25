@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -40,6 +41,7 @@ public class FragmentInstitutionList extends Fragment {
     private FragmentInstitutionListViewModel viewModel;
     private FragmentInstitutionBinding binding;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -61,6 +63,15 @@ public class FragmentInstitutionList extends Fragment {
 
         viewModel.setup(getActivity().getApplicationContext());
 
+        //Pull to refresh implementation
+        swipeRefreshLayout = (SwipeRefreshLayout) binding.getRoot().findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                viewModel.requestRepositoryUpdate();
+            }
+        });
+
 
         //Recycler view implementation
         recyclerView = (RecyclerView) binding.getRoot().findViewById(R.id.recycler_view);
@@ -77,9 +88,18 @@ public class FragmentInstitutionList extends Fragment {
                 if(items != null){
                     mAdapter = new InstitutionRecyclerViewAdapter(items);
                     recyclerView.setAdapter(mAdapter);
+
                 }else{
+                    //TODO: Display no data screen
                     Snackbar.make(getActivity().findViewById(R.id.main_content), getResources().getString(R.string.snackbar_no_internet_connection), 2000).show();
                 }
+                //Stop swipeRefreshLayout refreshing animation
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
             }
         });
 
@@ -93,7 +113,6 @@ public class FragmentInstitutionList extends Fragment {
                 startActivity(intent);
             }
         });
-
 
         return binding.getRoot();
     }

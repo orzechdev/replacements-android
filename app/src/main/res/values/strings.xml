@@ -80,7 +80,7 @@
     <string name="loading_school_data_error">Failed to fetch school data. Please try again later.</string>
 
 
-    <!-- TODO following strings are for new app order -->
+    <!-- following strings are for new app order -->
     <string name="nav_schools">Schools</string>
     <string name="nav_group_assistant">Assistant</string>
     <string name="nav_home">Home</string>

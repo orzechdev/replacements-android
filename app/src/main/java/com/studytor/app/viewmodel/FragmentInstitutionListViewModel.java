@@ -41,22 +41,16 @@ public class FragmentInstitutionListViewModel extends ViewModel {
         this.institutionList = new MutableLiveData<>();
         fragmentInstitutionRepository = InstitutionRepository.getInstance(context);
 
-        //Load institution data from repository
-        /*fragmentInstitutionRepository.getInstitutionListFromCache().observeForever(new Observer<List<SingleInstitution>>() {
-            @Override
-            public void onChanged(@Nullable List<SingleInstitution> singleInstitutions) {
-                setInstitutionList(singleInstitutions);
-            }
-        });*/
-
-        //TODO: Cache, prevent from trying to download if offline
-
         fragmentInstitutionRepository.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
             @Override
             public void onChanged(@Nullable List<SingleInstitution> institutions) {
                 setInstitutionList(institutions);
             }
         });
+    }
+
+    public void requestRepositoryUpdate(){
+        fragmentInstitutionRepository.refreshData();
     }
 
     public MutableLiveData<List<SingleInstitution>> getInstitutionList() {
