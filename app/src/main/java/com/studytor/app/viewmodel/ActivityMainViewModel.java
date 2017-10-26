@@ -81,7 +81,8 @@ public class ActivityMainViewModel extends ViewModel {
         Log.i("ActivityMainViewModel","setup 1");
         Log.i("ActivityMainViewModel","setup: " + toolbarTitle.getValue());
 
-        //this.setToolbarTitle(scheduleHeader);
+        // Set default title
+        this.setToolbarTitle(scheduleHeader);
     }
 
     public MutableLiveData<String> getToolbarTitle() {

@@ -37,4 +37,5 @@
     <color name="new_blue_light">#2250cc</color>
     <color name="new_blue">#1b41a6</color>
     <color name="new_black_light">#4b4b4b</color>
+    <color name="new_white_dark">#dedede</color>
 </resources>

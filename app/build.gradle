@@ -1,16 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.0'
     defaultConfig {
         applicationId 'com.studytor.app'
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 12
         versionName '0.5.000'
         //generatedDensities = []
         vectorDrawables.useSupportLibrary = true
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -46,16 +51,16 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     // Support libraries
-    compile 'com.android.support:support-fragment:26.1.0'
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'com.android.support:cardview-v7:26.1.0'
-    compile 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:support-vector-drawable:26.1.0'
+    compile 'com.android.support:support-fragment:27.0.0'
+    compile 'com.android.support:appcompat-v7:27.0.0'
+    compile 'com.android.support:cardview-v7:27.0.0'
+    compile 'com.android.support:recyclerview-v7:27.0.0'
+    compile 'com.android.support:design:27.0.0'
+    compile 'com.android.support:support-vector-drawable:27.0.0'
     // Others, some of them are maybe not used and maybe should be deleted
     compile 'ca.barrenechea.header-decor:header-decor:0.2.5'
-    compile 'com.github.afollestad.material-dialogs:core:0.8.5.6@aar'
-    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.afollestad.material-dialogs:core:0.9.5.0'
+    compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     // Firebase service
