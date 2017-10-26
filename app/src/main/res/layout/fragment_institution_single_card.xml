@@ -5,7 +5,7 @@
     <data>
         <variable
             name="obj"
-            type="com.studytor.app.models.SingleInstitution"/>
+            type="com.studytor.app.repositories.models.SingleInstitution"/>
     </data>
 
         <android.support.v7.widget.CardView

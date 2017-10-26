@@ -5,11 +5,14 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
+import android.view.View;
 import android.databinding.ObservableField;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.studytor.app.models.SingleInstitution;
+import com.studytor.app.R;
+import com.studytor.app.repositories.models.SingleInstitution;
 import com.studytor.app.repositories.InstitutionRepository;
 
 import java.util.List;
@@ -27,11 +30,16 @@ public class FragmentInstitutionListViewModel extends ViewModel {
 
     private String mainText;
 
+    Context context;
+
     private Observable observable = new Observable();
+    private Handlers handlers = new Handlers();
 
     public Observable getObservable() {
         return observable;
     }
+
+    public Handlers getHandlers() { return handlers; }
 
     public void setup(Context context) {
         // If setup was already done, do not do it again
@@ -39,6 +47,7 @@ public class FragmentInstitutionListViewModel extends ViewModel {
             return;
 
         this.institutionList = new MutableLiveData<>();
+        this.context = context;
         fragmentInstitutionRepository = InstitutionRepository.getInstance(context);
 
         fragmentInstitutionRepository.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
@@ -47,6 +56,7 @@ public class FragmentInstitutionListViewModel extends ViewModel {
                 setInstitutionList(institutions);
             }
         });
+
     }
 
     public void requestRepositoryUpdate(){
@@ -68,5 +78,17 @@ public class FragmentInstitutionListViewModel extends ViewModel {
 
         public final ObservableField<List<SingleInstitution>> institutionList = new ObservableField<>();
 
+        public boolean onRefreshClicked(View v){
+            requestRepositoryUpdate();
+            return true;
+        }
+
+    }
+
+    public class Handlers {
+        public void onRefreshClicked(View view){
+            Toast.makeText(context, context.getResources().getString(R.string.fragment_institution_list_toast_refreshing), Toast.LENGTH_SHORT).show();
+            requestRepositoryUpdate();
+        }
     }
 }

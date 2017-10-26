@@ -1,20 +1,18 @@
 package com.studytor.app.repositories;
 
-import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
-import com.studytor.app.models.Institutions;
-import com.studytor.app.models.SingleInstitution;
+import com.studytor.app.repositories.models.Institutions;
+import com.studytor.app.repositories.models.SingleInstitution;
 import com.studytor.app.repositories.cache.InstitutionCache;
 import com.studytor.app.repositories.database.DatabaseSingleton;
 import com.studytor.app.repositories.database.InstitutionDao;
 import com.studytor.app.repositories.webservices.RetrofitClientSingleton;
 import com.studytor.app.repositories.webservices.WebService;
 
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;

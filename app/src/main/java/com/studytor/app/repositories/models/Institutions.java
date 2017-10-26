@@ -1,4 +1,4 @@
-package com.studytor.app.models;
+package com.studytor.app.repositories.models;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -1,12 +1,8 @@
 package com.studytor.app.repositories.cache;
 
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Context;
 
-import com.studytor.app.models.SingleInstitution;
-import com.studytor.app.repositories.InstitutionRepository;
-import com.studytor.app.repositories.database.DatabaseSingleton;
-import com.studytor.app.repositories.webservices.RetrofitClientSingleton;
+import com.studytor.app.repositories.models.SingleInstitution;
 
 import java.util.List;
 
