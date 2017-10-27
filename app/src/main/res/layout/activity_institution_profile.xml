@@ -26,7 +26,8 @@
             app:contentScrim="@color/new_blue_light"
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp"
-            android:fitsSystemWindows="true">
+            android:fitsSystemWindows="true"
+            app:statusBarScrim="@color/new_blue">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -39,7 +40,9 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:background="@color/new_blue_light"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                android:layout_marginBottom="-24dp">
 
                 <ImageView
                     android:id="@+id/institution_banner"
@@ -113,7 +116,7 @@
                         android:id="@+id/tabs"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="16dp"
                         app:tabMode="fixed"
                         app:tabGravity="fill"
                         app:tabTextColor="#AFFF"

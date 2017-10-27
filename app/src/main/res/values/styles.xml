@@ -2,19 +2,13 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryDark">@color/blue_dark</item>
-        <item name="colorAccent">@color/blue</item>
+        <item name="colorPrimary">@color/new_blue_light</item>
+        <item name="colorPrimaryDark">@color/new_blue</item>
+        <item name="colorAccent">@color/new_blue_light</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="colorControlNormal">@color/white</item>
-    </style>
-
-    <style name="SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryDark">@color/blue_and_semi_transparent</item>
-        <item name="colorAccent">@color/blue</item>
     </style>
 
     <style name="TabTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">

@@ -2,24 +2,16 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimary">@color/blue</item>
-        <item name="android:colorPrimaryDark">@color/blue_dark</item>
-        <item name="android:colorAccent">@color/blue</item>
-        <item name="android:colorControlActivated">@color/blue</item>
+        <item name="android:colorPrimary">@color/new_blue_light</item>
+        <item name="android:colorPrimaryDark">@color/new_blue</item>
+        <item name="android:colorAccent">@color/new_blue_light</item>
+        <item name="android:colorControlActivated">@color/new_blue_light</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/semi_transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="colorControlNormal">@color/white</item>
-    </style>
-    <style name="SettingsTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimary">@color/blue</item>
-        <item name="android:colorPrimaryDark">@color/blue_very_dark</item>
-        <item name="android:colorAccent">@color/blue</item>
-        <item name="android:colorControlActivated">@color/blue</item>
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@color/blue_and_semi_transparent</item>
     </style>
     <!-- Style to set notification bar color to black to match the gradient -->
     <style name="ActivityInstitutionProfile" parent="Theme.AppCompat.Light.NoActionBar">
