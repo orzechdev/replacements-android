@@ -34,11 +34,11 @@ public class SingleInstitution extends BaseObservable {
     @Expose
     private String slug;
 
-    @SerializedName("logo")
+    @SerializedName("urlLogo")
     @Expose
     private String logoUrl;
 
-    @SerializedName("header")
+    @SerializedName("urlHeader")
     @Expose
     private String headerUrl;
 

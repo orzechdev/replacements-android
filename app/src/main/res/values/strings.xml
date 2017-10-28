@@ -100,7 +100,6 @@
     <string name="snackbar_try_again">Try again</string>
     <string name="snackbar_no_internet_connection">Can\'t connect</string>
     <string name="fragment_institution_list_no_connection_header">Can\'t connect\nTry again later</string>
-    <string name="fragment_institution_list_try_again_button"><u>Refresh now</u></string>
     <string name="fragment_institution_list_toast_refreshing"><u>Trying to get the data</u></string>
     <string name="fragment_institution_list_toast_no_data"><u>No data is available now</u></string>
 

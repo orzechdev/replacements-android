@@ -2,6 +2,7 @@ package com.studytor.app.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.studytor.app.R;
 import com.studytor.app.activities.ActivityMain;
 import com.studytor.app.activities.ActivityInstitutionProfile;
@@ -37,6 +39,8 @@ import java.util.List;
 
 public class FragmentInstitutionList extends Fragment {
 
+    public static Context context;
+
     private FragmentInstitutionListViewModel viewModel;
     private FragmentInstitutionListBinding binding;
 
@@ -50,6 +54,7 @@ public class FragmentInstitutionList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        context = getContext();
 
         viewModel = ViewModelProviders.of(this).get(FragmentInstitutionListViewModel.class);
         //ActivityMainViewModel parentViewModel = ViewModelProviders.of(this).get(ActivityMainViewModel.class);
@@ -93,24 +98,24 @@ public class FragmentInstitutionList extends Fragment {
                 if(items != null && items.size() > 0){
 
                     //Display RecyclerView with institutions
+                    errorMessage.setVisibility(View.INVISIBLE);
                     mAdapter = new InstitutionRecyclerViewAdapter(items);
                     recyclerView.setAdapter(mAdapter);
-                    swipeRefreshLayout.setVisibility(View.VISIBLE);
-                    errorMessage.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
 
                 }else{
 
                     //Display no data screen
-                    swipeRefreshLayout.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
                     if(errorMessage.getVisibility() != View.VISIBLE){
                         errorMessage.setVisibility(View.VISIBLE);
                         AlphaAnimation aa = new AlphaAnimation(0f, 1f);
                         aa.setDuration(1000);
                         aa.setFillAfter(true);
                         errorMessage.startAnimation(aa);
-                    }else if(errorMessage.getVisibility() == View.VISIBLE){
-                        Toast.makeText(getContext(), getResources().getString(R.string.fragment_institution_list_toast_no_data), Toast.LENGTH_SHORT).show();
                     }
+
                 }
                 //Stop swipeRefreshLayout refreshing animation
                 swipeRefreshLayout.setRefreshing(false);
@@ -134,5 +139,11 @@ public class FragmentInstitutionList extends Fragment {
     @BindingAdapter("imageRes")
     public static void bindImage(ImageView view, int r) {
         view.setImageResource(r);
+    }
+
+    @BindingAdapter("picassoImage")
+    public static void picassoImage(ImageView view, String url) {
+        System.out.println("OKURWA " + url);
+        Picasso.with(context).load("http://"+url).into(view);
     }
 }
