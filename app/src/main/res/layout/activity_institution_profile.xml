@@ -52,18 +52,18 @@
                     android:background="@drawable/image_buttons_shadow" />
 
                 <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginTop="40dp"
-                    android:layout_marginLeft="18dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_alignParentLeft="true"
                     app:srcCompat="@drawable/activity_institution_back_arrow" />
 
                 <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:layout_marginTop="40dp"
-                    android:layout_marginRight="18dp"
+                    android:layout_marginRight="16dp"
                     android:layout_alignParentRight="true"
                     app:srcCompat="@drawable/activity_institution_subscribe_star" />
 
@@ -72,7 +72,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="48dp"
                 android:layout_gravity="top"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_collapseMode="pin" />
@@ -103,6 +103,7 @@
                         android:textSize="22sp"
                         android:textColor="@android:color/white"
                         android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_toEndOf="@+id/institution_logo"
@@ -111,7 +112,7 @@
                     <android.support.design.widget.TabLayout
                         android:id="@+id/tabs"
                         android:layout_width="match_parent"
-                        android:layout_height="56dp"
+                        android:layout_height="48dp"
                         app:tabMode="fixed"
                         app:tabGravity="fill"
                         app:tabTextColor="#AFFF"
