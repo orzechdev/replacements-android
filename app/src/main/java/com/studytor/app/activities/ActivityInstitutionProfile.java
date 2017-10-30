@@ -1,6 +1,9 @@
 package com.studytor.app.activities;
 
-import android.content.Intent;
+import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.databinding.BindingAdapter;
+import android.databinding.DataBindingUtil;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,47 +12,59 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.widget.TabHost;
-import android.widget.Toast;
+import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
 import com.studytor.app.R;
+import com.studytor.app.databinding.ActivityInstitutionProfileBinding;
 import com.studytor.app.fragments.FragmentInstitutionProfileNews;
 import com.studytor.app.fragments.FragmentInstitutionProfileReplacements;
 import com.studytor.app.fragments.FragmentInstitutionProfileSchedule;
+import com.studytor.app.interfaces.ApplicationConstants;
+import com.studytor.app.viewmodel.ActivityInstitutionProfileViewModel;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
+
 public class ActivityInstitutionProfile extends AppCompatActivity {
+    public static Context context;
+
     ViewPager viewPager;
     TabLayout tabLayout;
+
+    ActivityInstitutionProfileViewModel viewModel;
+    ActivityInstitutionProfileBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = getApplicationContext();
+
+        viewModel = ViewModelProviders.of(this).get(ActivityInstitutionProfileViewModel.class);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_institution_profile);
+
+        int institutionId = getIntent().getIntExtra(ApplicationConstants.INTENT_INSTITUTION_ID, -1);
+        viewModel.setup(this, institutionId);
+
+        binding.setInstitution(viewModel.getObservable());
 
 
+        System.out.println(viewModel.getObservable().singleInstitution.get().getName());
 
-        setContentView(R.layout.activity_institution_profile);
+        final ActivityInstitutionProfileViewModel.Observable observable = viewModel.getObservable();
 
-        CoordinatorLayout coordinator = (CoordinatorLayout) findViewById(R.id.coordinator_layout);
+        CoordinatorLayout coordinator = (CoordinatorLayout) binding.getRoot().findViewById(R.id.coordinator_layout);
         //coordinator.setPadding(0, -getStatusBarHeight() , 0, 0);
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) binding.getRoot().findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) binding.getRoot().findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-    }
-
-    private int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -87,5 +102,20 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    @BindingAdapter("picassoCircleImage")
+    public static void picassoCircleImage(CircleImageView view, String url) {
+        System.out.println("Picasso painted this circle picture : " + url);
+        Picasso.with(context).load("http://"+url).into(view);
+        System.out.println("LOL");
+    }
+
+    @BindingAdapter("picassoImage")
+    public static void picassoImage(ImageView view, String url) {
+        System.out.println("Picasso painted this picture : " + url);
+        Picasso.with(context).load("http://"+url).into(view);
+        System.out.println("LOL2");
+        view.invalidate();
     }
 }

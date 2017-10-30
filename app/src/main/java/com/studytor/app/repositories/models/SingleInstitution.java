@@ -54,13 +54,6 @@ public class SingleInstitution extends BaseObservable {
         this.imageResource = R.drawable.header_image_1;
     }
 
-    public SingleInstitution(int id, String name, String slug, int imageResId){
-        this.id = id;
-        this.name = name;
-        this.slug = slug;
-        this.imageResource = imageResId;
-    }
-
     @Bindable
     public int getImageResource(){
         return imageResource;

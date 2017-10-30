@@ -27,6 +27,7 @@ import com.studytor.app.activities.ActivityInstitutionProfile;
 import com.studytor.app.adapters.InstitutionRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionListBinding;
 import com.studytor.app.helpers.ItemClickSupport;
+import com.studytor.app.interfaces.ApplicationConstants;
 import com.studytor.app.viewmodel.FragmentInstitutionListViewModel;
 import com.studytor.app.repositories.models.SingleInstitution;
 import com.studytor.app.viewmodel.ActivityMainViewModel;
@@ -67,7 +68,6 @@ public class FragmentInstitutionList extends Fragment {
 
         final FragmentInstitutionListViewModel.Observable observable = viewModel.getObservable();
         binding.setObservable(observable);
-        binding.setHandlers(viewModel.getHandlers());
 
         viewModel.setup(getActivity().getApplicationContext());
 
@@ -129,8 +129,8 @@ public class FragmentInstitutionList extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 InstitutionRecyclerViewAdapter tempAdapter = (InstitutionRecyclerViewAdapter) mAdapter;
-                Toast.makeText(getContext(), "CLICKED " + String.valueOf(tempAdapter.getItemAt(position).getName()), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), ActivityInstitutionProfile.class);
+                intent.putExtra(ApplicationConstants.INTENT_INSTITUTION_ID, viewModel.getInstitutionList().getValue().get(position).getId());
                 startActivity(intent);
             }
         });

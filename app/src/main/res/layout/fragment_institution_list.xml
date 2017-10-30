@@ -9,9 +9,6 @@
         <variable
             name="singleInstitution"
             type="com.studytor.app.repositories.models.SingleInstitution"/>
-        <variable
-            name="handlers"
-            type="com.studytor.app.viewmodel.FragmentInstitutionListViewModel.Handlers"/>
     </data>
 
     <RelativeLayout

@@ -28,18 +28,14 @@ public class FragmentInstitutionListViewModel extends ViewModel {
 
     private MutableLiveData<List<SingleInstitution>> institutionList = null;
 
-    private String mainText;
-
     Context context;
 
     private Observable observable = new Observable();
-    private Handlers handlers = new Handlers();
 
     public Observable getObservable() {
         return observable;
     }
 
-    public Handlers getHandlers() { return handlers; }
 
     public void setup(Context context) {
         // If setup was already done, do not do it again
@@ -78,17 +74,6 @@ public class FragmentInstitutionListViewModel extends ViewModel {
 
         public final ObservableField<List<SingleInstitution>> institutionList = new ObservableField<>();
 
-        public boolean onRefreshClicked(View v){
-            requestRepositoryUpdate();
-            return true;
-        }
-
     }
 
-    public class Handlers {
-        public void onRefreshClicked(View view){
-            Toast.makeText(context, context.getResources().getString(R.string.fragment_institution_list_toast_refreshing), Toast.LENGTH_SHORT).show();
-            requestRepositoryUpdate();
-        }
-    }
 }

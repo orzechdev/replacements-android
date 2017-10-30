@@ -39,4 +39,7 @@ public interface ApplicationConstants {
     static final String GOOGLE_PROJ_ID = "670012122702";
     static final String MSG_KEY = "m";
 
+    //Intent constants
+    static final String INTENT_INSTITUTION_ID = "INTENT_INSTITUTION_ID";
+
 }
