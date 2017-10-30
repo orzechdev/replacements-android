@@ -99,10 +99,11 @@
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/institution_logo"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
                         app:picassoCircleImage="@{institution.singleInstitution.logoUrl}"
-                        android:layout_margin="16dp"/>
+                        android:layout_margin="16dp"
+                        app:civ_circle_background_color="#FFF"/>
 
                     <TextView
                         android:layout_width="match_parent"
