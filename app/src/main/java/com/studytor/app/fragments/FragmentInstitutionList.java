@@ -33,6 +33,8 @@ import com.studytor.app.viewmodel.ActivityMainViewModel;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Created by Dawid on 19.07.2017.
  */
@@ -142,8 +144,8 @@ public class FragmentInstitutionList extends Fragment {
     }
 
     @BindingAdapter("picassoImage")
-    public static void picassoImage(ImageView view, String url) {
-        System.out.println("OKURWA " + url);
+    public static void picassoImage(CircleImageView view, String url) {
+        System.out.println("Picasso painted this picture : " + url);
         Picasso.with(context).load("http://"+url).into(view);
     }
 }

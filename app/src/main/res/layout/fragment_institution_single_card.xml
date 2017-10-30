@@ -8,46 +8,49 @@
             type="com.studytor.app.repositories.models.SingleInstitution"/>
     </data>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/school1"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:clickable="false"
-                android:background="@drawable/recycler_item_simple">
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/school1"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="false"
+        android:background="@drawable/recycler_item_simple">
 
+        <RelativeLayout
+            android:id="@+id/institution_logo_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/institution_logo"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@color/accent_blue"
-                    android:layout_margin="16dp"/>
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/institution_logo"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:minHeight="80dp"
+                android:src="@color/accent_blue"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:picassoImage="@{obj.logoUrl}" />
 
-                <!-- Sorki, że zepsułem ale musi być kułeczko xD ^^^ Na razie zostawiam niedziałające, bo muszę iść spać -->
+        </RelativeLayout>
 
-                <!--<ImageView-->
-                    <!--android:layout_width="fill_parent"-->
-                    <!--android:layout_height="fill_parent"-->
-                    <!--android:layout_weight="0.7"-->
-                    <!--android:background="@color/blue_light"-->
-                    <!--app:picassoImage="@{obj.logoUrl}"-->
-                    <!--android:id="@+id/schoolImage1"-->
-                    <!--android:scaleType="centerCrop"-->
-                    <!--android:adjustViewBounds="true"/>-->
+        <TextView
+            android:text="@{obj.name}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/institution_logo_container"
+            app:layout_constraintRight_toRightOf="parent"
+            android:paddingTop="16dp"
+            android:paddingRight="16dp"
+            android:paddingLeft="0dp"
+            android:paddingBottom="16dp"
+            android:layout_weight="0.3"
+            android:id="@+id/schoolText1"
+            android:textSize="18sp"
+            android:textColor="@color/new_black_light"/>
 
-                <TextView
-                    android:text="@{obj.name}"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="16dp"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="15dp"
-                    android:paddingBottom="16dp"
-                    android:layout_weight="0.3"
-                    android:id="@+id/schoolText1"
-                    android:textSize="18sp"
-                    android:gravity="center_vertical"/>
-            </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </layout>
