@@ -12,6 +12,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by przemek19980102 on 31.10.2017.
  * Custom model representing a single institution inside FragmentInstitutions and ActivityInstitutionProfile etc.
  * it is also used in RetroFit to match JSON remote data and in ROOM to match database Data
+ *
  */
 
 @Entity

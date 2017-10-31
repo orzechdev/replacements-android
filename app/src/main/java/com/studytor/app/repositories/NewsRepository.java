@@ -71,6 +71,7 @@ public class NewsRepository {
 
         final MutableLiveData<List<SingleNews>> returnData = new MutableLiveData<>();
 
+        //TODO Download from web when JSON is ready
         List<SingleNews> temp = new ArrayList<>();
         temp.add(new SingleNews(0, 0, "News 0", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w...", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia tekstem próbnej książki. Pięć wieków później zaczął być używany przemyśle elektronicznym, pozostając praktycznie niezmienionym", "http://studytor.com/json/school/gimchocianow/logo.png", "http://studytor.com/json/school/gimchocianow/header.jpg"));
         temp.add(new SingleNews(1, 0,"News 1", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w...", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia tekstem próbnej książki. Pięć wieków później zaczął być używany przemyśle elektronicznym, pozostając praktycznie niezmienionym", "http://studytor.com/json/school/gimchocianow/logo.png", "http://studytor.com/json/school/gimchocianow/header.jpg"));

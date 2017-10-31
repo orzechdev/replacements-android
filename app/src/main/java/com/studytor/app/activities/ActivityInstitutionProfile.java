@@ -34,6 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ActivityInstitutionProfile extends AppCompatActivity {
     public static Context context;
 
+
     ViewPager viewPager;
     TabLayout tabLayout;
 
