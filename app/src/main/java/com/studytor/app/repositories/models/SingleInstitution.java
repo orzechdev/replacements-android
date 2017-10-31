@@ -13,8 +13,8 @@ import com.studytor.app.R;
 
 /**
  * Created by przemek19980102 on 20.10.2017.
- * Custom model representing a single institution inside FragmentInstitutions and ActivityInstitutionProfile
- * it is also used in RetroFit to match JSON remote data
+ * Custom model representing a single institution inside FragmentInstitutions and ActivityInstitutionProfile etc.
+ * it is also used in RetroFit to match JSON remote data and in ROOM to match database Data
  */
 
 @Entity
@@ -42,7 +42,6 @@ public class SingleInstitution extends BaseObservable {
     @Expose
     private String headerUrl;
 
-    private int imageResource;
 
     //Whatever do describe an institution and pass it to Activity which is displaying Institution's profile
     private int institutionId;
@@ -51,17 +50,6 @@ public class SingleInstitution extends BaseObservable {
         this.id = id;
         this.name = name;
         this.slug = slug;
-        this.imageResource = R.drawable.header_image_1;
-    }
-
-    @Bindable
-    public int getImageResource(){
-        return imageResource;
-    }
-
-    public void setImageResource(int imageResId){
-        this.imageResource = imageResId;
-        notifyPropertyChanged(BR.imageResource);
     }
 
     @Bindable

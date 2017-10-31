@@ -91,11 +91,26 @@ public class InstitutionRepository {
 
     }
 
-    public MutableLiveData<List<SingleInstitution>> getInstitutionListOffline() {
+    public MutableLiveData<List<SingleInstitution>> getInstitutionListFromCache() {
 
         final MutableLiveData<List<SingleInstitution>> returnData = new MutableLiveData<>();
 
-        System.out.println("REPO AUTO GET");
+        //Observe cache only, because it gets updated with database or web updates
+        institutionCache.getData().observeForever(new Observer<List<SingleInstitution>>() {
+            @Override
+            public void onChanged(@Nullable List<SingleInstitution> institutions) {
+                System.out.println("REPO RETURN OBSERVED CACHE");
+                returnData.postValue(institutions);
+            }
+        });
+
+        return  returnData;
+
+    }
+
+    public MutableLiveData<List<SingleInstitution>> getInstitutionListOffline() {
+
+        final MutableLiveData<List<SingleInstitution>> returnData = new MutableLiveData<>();
 
         //Observe database updates to be able to update CACHE data
         //Needs to be separated, because it is also used in refreshData()

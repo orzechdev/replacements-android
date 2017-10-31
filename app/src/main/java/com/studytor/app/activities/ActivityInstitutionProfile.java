@@ -53,9 +53,6 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
 
         binding.setInstitution(viewModel.getObservable());
 
-
-        System.out.println(viewModel.getObservable().singleInstitution.get().getName());
-
         final ActivityInstitutionProfileViewModel.Observable observable = viewModel.getObservable();
 
         CoordinatorLayout coordinator = (CoordinatorLayout) binding.getRoot().findViewById(R.id.coordinator_layout);
@@ -113,14 +110,12 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
     public static void picassoCircleImage(CircleImageView view, String url) {
         System.out.println("Picasso painted this circle picture : " + url);
         Picasso.with(context).load("http://"+url).into(view);
-        System.out.println("LOL");
     }
 
     @BindingAdapter("picassoImage")
     public static void picassoImage(ImageView view, String url) {
         System.out.println("Picasso painted this picture : " + url);
         Picasso.with(context).load("http://"+url).into(view);
-        System.out.println("LOL2");
         view.invalidate();
     }
 }
