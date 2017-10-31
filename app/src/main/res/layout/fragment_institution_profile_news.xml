@@ -3,10 +3,27 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Aktualności"/>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/fragment_institution_profile_news_list_item"></include>
+            <include layout="@layout/fragment_institution_profile_news_list_item"></include>
+            <include layout="@layout/fragment_institution_profile_news_list_item"></include>
+            <include layout="@layout/fragment_institution_profile_news_list_item"></include>
+            <include layout="@layout/fragment_institution_profile_news_list_item"></include>
+            <include layout="@layout/fragment_institution_profile_news_list_item"></include>
+            <include layout="@layout/fragment_institution_profile_news_list_item"></include>
+            <include layout="@layout/fragment_institution_profile_news_list_item"></include>
+            <include layout="@layout/fragment_institution_profile_news_list_item"></include>
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </RelativeLayout>

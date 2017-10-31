@@ -1,0 +1,59 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/school1"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="false"
+        android:padding="16dp"
+        android:background="@drawable/recycler_item_simple">
+
+        <TextView
+            android:id="@+id/postTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:width="0dp"
+            android:text="Przykładowy tytuł durnej karty który jest za długi "
+            android:textStyle="bold"
+            android:textColor="@color/black_text_heading"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/postImage"
+            app:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@+id/postImage" />
+
+        <TextView
+            android:id="@+id/postPreview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:width="0dp"
+            android:text="Lorem Ipsum to durny tekst, którego używamy, żeby zapełnić pola tekstowe w projektach. Klient powinien skupić sie na walorach estetycznych, nie na treści samego tekstu. Pewnie nie zna łaciny... "
+            android:textColor="@color/black_text_caption"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/postImage"
+            app:layout_constraintTop_toBottomOf="@+id/postTitle"
+            card_view:layout_constraintEnd_toStartOf="@+id/postImage" />
+
+
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:id="@+id/postImage"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

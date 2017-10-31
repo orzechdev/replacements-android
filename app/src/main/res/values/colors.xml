@@ -38,4 +38,7 @@
     <color name="new_blue">#1b41a6</color>
     <color name="new_black_light">#4b4b4b</color>
     <color name="new_white_dark">#dedede</color>
+
+    <color name="black_text_heading">#dd000000</color>
+    <color name="black_text_caption">#8a000000</color>
 </resources>

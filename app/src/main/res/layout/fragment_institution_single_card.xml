@@ -52,7 +52,7 @@
             android:layout_weight="0.3"
             android:id="@+id/schoolText1"
             android:textSize="18sp"
-            android:textColor="@color/new_black_light"/>
+            android:textColor="@color/black_text_heading"/>
 
     </android.support.constraint.ConstraintLayout>
 
