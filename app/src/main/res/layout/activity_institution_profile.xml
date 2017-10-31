@@ -7,6 +7,9 @@
         <variable
             name="institution"
             type="com.studytor.app.viewmodel.ActivityInstitutionProfileViewModel.Observable"/>
+        <variable
+            name="activity"
+            type="com.studytor.app.activities.ActivityInstitutionProfile"/>
 
     </data>
 
@@ -48,9 +51,9 @@
                 android:layout_alignParentStart="true" />
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true">
+                android:fitsSystemWindows="false">
 
                 <!-- Image Dark Vignette -->
                 <ImageView
@@ -65,6 +68,8 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:onClick="goBack"
                     app:srcCompat="@drawable/activity_institution_back_arrow" />
 
                 <ImageView
@@ -74,6 +79,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     app:srcCompat="@drawable/activity_institution_subscribe_star" />
 
             </RelativeLayout>
@@ -87,7 +93,7 @@
                 app:layout_collapseMode="pin" />
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:fitsSystemWindows="true">
@@ -103,6 +109,8 @@
                         android:layout_height="56dp"
                         app:picassoCircleImage="@{institution.singleInstitution.logoUrl}"
                         android:layout_margin="16dp"
+                        app:civ_border_color="@android:color/white"
+                        app:civ_border_width="2dp"
                         app:civ_circle_background_color="#FFF"/>
 
                     <TextView

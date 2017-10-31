@@ -7,6 +7,7 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.studytor.app.repositories.InstitutionRepository;
 import com.studytor.app.repositories.models.SingleInstitution;
@@ -63,9 +64,5 @@ public class ActivityInstitutionProfileViewModel extends ViewModel{
 
         public ObservableField<SingleInstitution> singleInstitution = new ObservableField<>();
 
-    }
-
-    public class Handlers{
-        //UI clicks etc.
     }
 }
