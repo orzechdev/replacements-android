@@ -36,7 +36,7 @@ public class ActivityInstitutionProfileViewModel extends ViewModel{
         System.out.println("GOT INSTITUTION WITH ID " + this.institutionId);
         institutionRepository = InstitutionRepository.getInstance(context);
 
-        institutionRepository.getInstitutionListOffline().observeForever(new Observer<List<SingleInstitution>>() {
+        institutionRepository.getInstitutionListFromCache().observeForever(new Observer<List<SingleInstitution>>() {
             @Override
             public void onChanged(@Nullable List<SingleInstitution> institutions) {
                 for(int i = 0; i < institutions.size(); i++){
@@ -47,12 +47,6 @@ public class ActivityInstitutionProfileViewModel extends ViewModel{
                 }
             }
         });
-
-        //TODO Pobieranie z repository
-        SingleInstitution temp = new SingleInstitution(1, "Zespół szkoł ABCD w Wawce", "ABCWAW");
-        temp.setLogoUrl("studytor.com/json/school/zschocianow/logo.png");
-        temp.setHeaderUrl("studytor.com/json/school/zschocianow/header.png");
-        observable.singleInstitution.set(temp);
 
     }
 

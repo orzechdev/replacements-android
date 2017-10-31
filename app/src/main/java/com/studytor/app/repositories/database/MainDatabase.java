@@ -10,8 +10,9 @@ import com.studytor.app.repositories.models.ReplacementRoomJson;
  * Created by Dawid on 28.07.2017.
  */
 
-@Database(entities = {ReplacementRoomJson.class, SingleInstitution.class}, version = 2)
+@Database(entities = {ReplacementRoomJson.class, SingleInstitution.class}, version = 4)
 public abstract class MainDatabase extends RoomDatabase {
     public abstract ReplacementDao replacementDao();
     public abstract InstitutionDao institutionDao();
+    public abstract NewsDao newsDao();
 }
