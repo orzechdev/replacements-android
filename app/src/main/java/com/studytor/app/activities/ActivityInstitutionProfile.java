@@ -41,6 +41,8 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
     ActivityInstitutionProfileViewModel viewModel;
     ActivityInstitutionProfileBinding binding;
 
+    public int currentInstitutionId = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +52,7 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_institution_profile);
 
         int institutionId = getIntent().getIntExtra(ApplicationConstants.INTENT_INSTITUTION_ID, -1);
+        this.currentInstitutionId = institutionId;
         viewModel.setup(this, institutionId);
 
         binding.setInstitution(viewModel.getObservable());
@@ -110,13 +113,13 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
     @BindingAdapter("picassoCircleImage")
     public static void picassoCircleImage(CircleImageView view, String url) {
         System.out.println("Picasso painted this circle picture : " + url);
-        Picasso.with(context).load("http://"+url).into(view);
+        Picasso.with(context).load(url).into(view);
     }
 
     @BindingAdapter("picassoImage")
     public static void picassoImage(ImageView view, String url) {
         System.out.println("Picasso painted this picture : " + url);
-        Picasso.with(context).load("http://"+url).into(view);
+        Picasso.with(context).load(url).into(view);
         view.invalidate();
     }
 }

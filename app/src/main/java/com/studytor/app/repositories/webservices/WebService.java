@@ -1,6 +1,7 @@
 package com.studytor.app.repositories.webservices;
 
 import com.studytor.app.repositories.models.Institutions;
+import com.studytor.app.repositories.models.News;
 import com.studytor.app.repositories.models.ReplacementsJson;
 
 import okhttp3.ResponseBody;
@@ -39,4 +40,7 @@ public interface WebService {
     @GET("json/schoolList.json")
     Call<Institutions> getAllInstitutions(
     );
+
+    @GET("json/school/{id}/news.json")
+    Call<News> getAllNews(@Path("id") int institutionId);
 }

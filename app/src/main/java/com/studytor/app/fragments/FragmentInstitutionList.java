@@ -146,6 +146,6 @@ public class FragmentInstitutionList extends Fragment {
     @BindingAdapter("picassoImage")
     public static void picassoImage(CircleImageView view, String url) {
         System.out.println("Picasso painted this picture : " + url);
-        Picasso.with(context).load("http://"+url).into(view);
+        Picasso.with(context).load(url).into(view);
     }
 }

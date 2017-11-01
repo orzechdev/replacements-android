@@ -20,8 +20,8 @@ public class Global extends Application {
         Picasso.Builder builder = new Picasso.Builder(this);
         builder.downloader(new OkHttpDownloader(this,Integer.MAX_VALUE));
         Picasso built = builder.build();
-        built.setIndicatorsEnabled(true);
-        built.setLoggingEnabled(true);
+        built.setIndicatorsEnabled(false);
+        built.setLoggingEnabled(false);
         Picasso.setSingletonInstance(built);
 
     }

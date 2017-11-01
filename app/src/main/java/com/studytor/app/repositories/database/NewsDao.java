@@ -28,6 +28,9 @@ public interface NewsDao {
     @Query("SELECT * FROM singleNews WHERE id = :newsId")
     LiveData<SingleNews> load(int newsId);
 
+    @Query("SELECT * FROM singleNews WHERE institutionId = :institutionId ORDER BY date DESC")
+    LiveData<List<SingleNews>> loadByInstitution(int institutionId);
+
     @Query("SELECT * FROM singleNews")
     LiveData<List<SingleNews>> loadAll();
 

@@ -11,6 +11,7 @@ import com.studytor.app.repositories.database.DatabaseSingleton;
 import com.studytor.app.repositories.database.InstitutionDao;
 import com.studytor.app.repositories.database.NewsDao;
 import com.studytor.app.repositories.models.Institutions;
+import com.studytor.app.repositories.models.News;
 import com.studytor.app.repositories.models.SingleInstitution;
 import com.studytor.app.repositories.models.SingleNews;
 import com.studytor.app.repositories.webservices.RetrofitClientSingleton;
@@ -51,12 +52,12 @@ public class NewsRepository {
         return repositoryInstance;
     }
 
-    private void observeDatabase(){
+    private void observeDatabase(int institutionId){
 
-        System.out.println("REPO CHECK DATABASE");
+        System.out.println("REPO NEWS CHECK DATABASE");
 
 
-        this.newsDao.loadAll().observeForever(new Observer<List<SingleNews>>() {
+        this.newsDao.loadByInstitution(institutionId).observeForever(new Observer<List<SingleNews>>() {
             @Override
             public void onChanged(@Nullable List<SingleNews> newsList) {
                 newsCache.putData(newsList);
@@ -71,31 +72,23 @@ public class NewsRepository {
 
         final MutableLiveData<List<SingleNews>> returnData = new MutableLiveData<>();
 
-        //TODO Download from web when JSON is ready
-        List<SingleNews> temp = new ArrayList<>();
-        temp.add(new SingleNews(0, 0, "News 0", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w...", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia tekstem próbnej książki. Pięć wieków później zaczął być używany przemyśle elektronicznym, pozostając praktycznie niezmienionym", "http://studytor.com/json/school/gimchocianow/logo.png", "http://studytor.com/json/school/gimchocianow/header.jpg"));
-        temp.add(new SingleNews(1, 0,"News 1", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w...", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia tekstem próbnej książki. Pięć wieków później zaczął być używany przemyśle elektronicznym, pozostając praktycznie niezmienionym", "http://studytor.com/json/school/gimchocianow/logo.png", "http://studytor.com/json/school/gimchocianow/header.jpg"));
-        temp.add(new SingleNews(2, 0,"News 2", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w...", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia tekstem próbnej książki. Pięć wieków później zaczął być używany przemyśle elektronicznym, pozostając praktycznie niezmienionym", "http://studytor.com/json/school/gimchocianow/logo.png", "http://studytor.com/json/school/gimchocianow/header.jpg"));
-        temp.add(new SingleNews(3, 0,"News 3", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w...", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia tekstem próbnej książki. Pięć wieków później zaczął być używany przemyśle elektronicznym, pozostając praktycznie niezmienionym", "http://studytor.com/json/school/gimchocianow/logo.png", "http://studytor.com/json/school/gimchocianow/header.jpg"));
-        temp.add(new SingleNews(4, 0,"News 4", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w...", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia tekstem próbnej książki. Pięć wieków później zaczął być używany przemyśle elektronicznym, pozostając praktycznie niezmienionym", "http://studytor.com/json/school/gimchocianow/logo.png", "http://studytor.com/json/school/gimchocianow/header.jpg"));
-        temp.add(new SingleNews(5, 0,"News 5", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w...", "Lorem Ipsum jest tekstem stosowanym jako przykładowy wypełniacz w przemyśle poligraficznym. Został po raz pierwszy użyty w XV w. przez nieznanego drukarza do wypełnienia tekstem próbnej książki. Pięć wieków później zaczął być używany przemyśle elektronicznym, pozostając praktycznie niezmienionym", "http://studytor.com/json/school/gimchocianow/logo.png", "http://studytor.com/json/school/gimchocianow/header.jpg"));
+        System.out.println("REPO NEWS AUTO GET");
 
-        System.out.println("REPO AUTO GET");
+        observeDatabase(institutionId);
 
-        /*refreshData();
+        refreshData(institutionId);
 
         //Observe database updates to be able to update CACHE data
         //Needs to be separated, because it is also used in refreshData()
-        observeDatabase();
 
         //Observe cache only, because it gets updated with database or web updates
         newsCache.getData().observeForever(new Observer<List<SingleNews>>() {
             @Override
             public void onChanged(@Nullable List<SingleNews> newsList) {
-                System.out.println("REPO RETURN OBSERVED CACHE");
+                System.out.println("REPO NEWS RETURN OBSERVED CACHE");
                 returnData.postValue(newsList);
             }
-        });*/
+        });
 
         return  returnData;
 
@@ -109,7 +102,7 @@ public class NewsRepository {
         newsCache.getData().observeForever(new Observer<List<SingleNews>>() {
             @Override
             public void onChanged(@Nullable List<SingleNews> newsList) {
-                System.out.println("REPO RETURN OBSERVED CACHE");
+                System.out.println("REPO NEWS RETURN OBSERVED CACHE");
                 returnData.postValue(newsList);
             }
         });
@@ -124,13 +117,13 @@ public class NewsRepository {
 
         //Observe database updates to be able to update CACHE data
         //Needs to be separated, because it is also used in refreshData()
-        observeDatabase();
+        observeDatabase(institutionId);
 
         //Observe cache only, because it gets updated with database or web updates
         newsCache.getData().observeForever(new Observer<List<SingleNews>>() {
             @Override
             public void onChanged(@Nullable List<SingleNews> newsList) {
-                System.out.println("REPO RETURN OBSERVED CACHE");
+                System.out.println("REPO NEWS RETURN OBSERVED CACHE");
                 returnData.postValue(newsList);
             }
         });
@@ -140,28 +133,31 @@ public class NewsRepository {
     }
 
     //Load InstitutionList from web using retrofit
-    public void refreshData(int institutionId){
+    public void refreshData(final int institutionId){
 
-        System.out.println("REPO GET DATA FROM WEB");
-        /*
+        System.out.println("REPO NEWS GET DATA FROM WEB");
 
-        this.webService.getAllInstitutions().enqueue(new Callback<Institutions>() {
+
+        this.webService.getAllNews(institutionId).enqueue(new Callback<News>() {
             @Override
-            public void onResponse(Call<Institutions> call, final Response<Institutions> response) {
-                System.out.println("REPO GET DATA FROM WEB ENQUEUED");
+            public void onResponse(Call<News> call, final Response<News> response) {
+                System.out.println("REPO NEWS GET DATA FROM WEB ENQUEUED");
 
-                if(response.isSuccessful() && response.body().getInstitutions() != null){
-                    System.out.println("REPO GET DATA FROM WEB SUCCESSFUL");
+                if(response.isSuccessful() && response.body().getNewsList() != null){
+                    System.out.println("REPO NEWS GET DATA FROM WEB SUCCESSFUL");
 
                     //Save data to local database
                     Thread thread = new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            List<SingleNews> newsList = response.body().ge();
-                            if(institutionList != null){
+                            List<SingleNews> newsList = response.body().getNewsList();
+                            if(newsList != null){
 
                                 //Update database which will later update cache
-                                newsDao.insertAll(institutionList);
+                                for(int i = 0; i < newsList.size(); i++){
+                                    newsList.get(i).setInstitutionId(institutionId);
+                                }
+                                newsDao.insertAll(newsList);
 
                             }
                         }
@@ -170,27 +166,27 @@ public class NewsRepository {
 
 
                 }else{
-                    System.out.println("REPO GET DATA FROM WEB IS NULL 1");
+                    System.out.println("REPO NEWS GET DATA FROM WEB IS NULL 1" + response.toString());
 
                     //Reobserve Database if already observed to force data check
-                    observeDatabase();
+                    observeDatabase(institutionId);
 
                 }
 
             }
 
             @Override
-            public void onFailure(Call<Institutions> call, Throwable t) {
-                System.out.println("REPO GET DATA FROM WEB IS NULL 2");
+            public void onFailure(Call<News> call, Throwable t) {
+                System.out.println("REPO NEWS GET DATA FROM WEB IS NULL 2");
 
                 //Reobserve Database if already observed to force data check
-                observeDatabase();
+                observeDatabase(institutionId);
 
                 t.printStackTrace();
             }
         });
 
-        */
+
 
     }
 

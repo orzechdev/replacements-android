@@ -11,7 +11,7 @@ import com.studytor.app.repositories.models.SingleNews;
  * Created by Dawid on 28.07.2017.
  */
 
-@Database(entities = {ReplacementRoomJson.class, SingleInstitution.class, SingleNews.class}, version = 5)
+@Database(entities = {ReplacementRoomJson.class, SingleInstitution.class, SingleNews.class}, version = 6)
 public abstract class MainDatabase extends RoomDatabase {
     public abstract ReplacementDao replacementDao();
     public abstract InstitutionDao institutionDao();

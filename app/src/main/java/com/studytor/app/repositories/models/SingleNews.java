@@ -33,19 +33,23 @@ public class SingleNews extends BaseObservable{
     @Expose
     private String title;
 
-    @SerializedName("shortenedContent")
+    @SerializedName("date")
+    @Expose
+    private String date;
+
+    @SerializedName("contentIntro")
     @Expose
     private String shortenedContent;
 
-    @SerializedName("content")
+    @SerializedName("contentMain")
     @Expose
     private String content;
 
-    @SerializedName("thumbUrl")
+    @SerializedName("headerThumbnail")
     @Expose
     private String thumbURL;
 
-    @SerializedName("imageUrl")
+    @SerializedName("header")
     @Expose
     private String imageUrl;
 
@@ -119,5 +123,13 @@ public class SingleNews extends BaseObservable{
 
     public void setInstitutionId(@NonNull int institutionId) {
         this.institutionId = institutionId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
