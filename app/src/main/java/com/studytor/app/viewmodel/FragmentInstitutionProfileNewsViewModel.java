@@ -44,7 +44,7 @@ public class FragmentInstitutionProfileNewsViewModel extends ViewModel{
         this.context = context;
         newsRepository = NewsRepository.getInstance(context);
 
-        newsRepository.getNewsList(institutionId).observeForever(new Observer<List<SingleNews>>() {
+        newsRepository.getNewsListFromWebOnly(institutionId).observeForever(new Observer<List<SingleNews>>() {
             @Override
             public void onChanged(@Nullable List<SingleNews> newsList) {
                 setNewsList(newsList);

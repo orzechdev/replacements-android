@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.squareup.picasso.Picasso;
 import com.studytor.app.R;
@@ -46,6 +47,7 @@ public class FragmentInstitutionProfileNews extends Fragment{
     private FragmentInstitutionProfileNewsBinding binding;
 
     private RecyclerView recyclerView;
+    private RelativeLayout errorContainer;
     private RecyclerView.Adapter mAdapter;
 
     @Nullable
@@ -61,6 +63,8 @@ public class FragmentInstitutionProfileNews extends Fragment{
         viewModel.setup(context, 1);
 
         recyclerView = (RecyclerView) binding.getRoot().findViewById(R.id.recycler_view);
+        errorContainer = (RelativeLayout) binding.getRoot().findViewById(R.id.error_container);
+
         // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -76,6 +80,13 @@ public class FragmentInstitutionProfileNews extends Fragment{
                     //Display RecyclerView with institutions
                     mAdapter = new NewsListRecyclerViewAdapter(items);
                     recyclerView.setAdapter(mAdapter);
+                    recyclerView.setVisibility(View.VISIBLE);
+                    errorContainer.setVisibility(View.GONE);
+
+                }else{
+
+                    recyclerView.setVisibility(View.GONE);
+                    errorContainer.setVisibility(View.VISIBLE);
 
                 }
             }

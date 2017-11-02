@@ -132,6 +132,39 @@ public class NewsRepository {
 
     }
 
+    public MutableLiveData<List<SingleNews>> getNewsListFromWebOnly(final int institutionId) {
+
+        final MutableLiveData<List<SingleNews>> returnData = new MutableLiveData<>();
+
+        this.webService.getAllNews(institutionId).enqueue(new Callback<News>() {
+            @Override
+            public void onResponse(Call<News> call, final Response<News> response) {
+                System.out.println("REPO NEWS GET DATA FROM WEB ENQUEUED");
+
+                if(response.isSuccessful() && response.body().getNewsList() != null){
+                    System.out.println("REPO NEWS GET DATA FROM WEB SUCCESSFUL");
+                    returnData.postValue(response.body().getNewsList());
+
+                }else{
+                    System.out.println("REPO NEWS GET DATA FROM WEB IS NULL 1" + response.toString());
+                    returnData.postValue(null);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<News> call, Throwable t) {
+                System.out.println("REPO NEWS GET DATA FROM WEB IS NULL 2");
+
+                returnData.postValue(null);
+
+                t.printStackTrace();
+            }
+        });
+
+        return returnData;
+    }
+
     //Load InstitutionList from web using retrofit
     public void refreshData(final int institutionId){
 
