@@ -99,6 +99,7 @@ public class FragmentInstitutionProfileNews extends Fragment{
     @BindingAdapter("picassoImage")
     public static void picassoImage(ImageView view, String url) {
         System.out.println("Picasso painted this picture : " + url);
-        Picasso.with(context).load(url).into(view);
+        if(url != null && !url.equals(""))
+            Picasso.with(context).load(url).into(view);
     }
 }

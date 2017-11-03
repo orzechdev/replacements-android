@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
@@ -121,5 +122,13 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
         System.out.println("Picasso painted this picture : " + url);
         Picasso.with(context).load(url).into(view);
         view.invalidate();
+    }
+
+    @BindingAdapter("android:layout_marginTop")
+    public static void setTopMargin(View view, float topMargin) {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        layoutParams.setMargins(layoutParams.leftMargin, Math.round(topMargin),
+                layoutParams.rightMargin, layoutParams.bottomMargin);
+        view.setLayoutParams(layoutParams);
     }
 }

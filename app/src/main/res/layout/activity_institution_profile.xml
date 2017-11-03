@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
 
+        <import type="android.view.View"/>
         <variable
             name="institution"
             type="com.studytor.app.viewmodel.ActivityInstitutionProfileViewModel.Observable"/>
@@ -49,12 +50,15 @@
                 app:picassoImage="@{institution.singleInstitution.headerUrl}"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:visibility="@{(institution.singleInstitution.headerUrl == null) || (institution.singleInstitution.headerUrl.equals(``) ) ? View.GONE : View.VISIBLE}"/>
+            <!--android:visibility="@{(institution.singleInstitution.headerUrl == null) || (institution.singleInstitution.headerUrl.equals(``) ) ? View.GONE : View.VISIBLE }"-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true">
+                android:fitsSystemWindows="true"
+                android:visibility="@{(institution.singleInstitution.headerUrl == null) || (institution.singleInstitution.headerUrl.equals(``) ) ? View.GONE : View.VISIBLE}">
 
                 <!-- Image Dark Vignette -->
                 <ImageView
@@ -112,6 +116,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
+                android:layout_marginTop="@{(institution.singleInstitution.headerUrl == null) || (institution.singleInstitution.headerUrl.equals(``) ) ? @dimen/header_none_height : @dimen/header_exists_height}"
                 android:fitsSystemWindows="true">
 
                 <RelativeLayout
