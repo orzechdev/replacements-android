@@ -1,5 +1,7 @@
 package com.studytor.app.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
@@ -17,7 +19,7 @@ import com.studytor.app.repositories.ActivityMainRepository;
  */
 
 // Class handled by architecture component called ViewModel
-public class ActivityMainViewModel extends ViewModel {
+public class ActivityMainViewModel extends AndroidViewModel {
 
     private ActivityMainRepository activityMainRepository;
 
@@ -66,16 +68,20 @@ public class ActivityMainViewModel extends ViewModel {
         return observable;
     }
 
-    public void setup(Context context) {
+    public ActivityMainViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    public void setup() {
         // If setup was already done, do not do it again
 //        if(this.getToolbarTitle().getValue() != null)
 //            return;
         if(this.getToolbarTitle() != null)
             return;
-        prepareStrings(context);
+        prepareStrings(this.getApplication());
 
         // Here works repository and Retrofit
-        activityMainRepository = ActivityMainRepository.getInstance(context);
+        activityMainRepository = ActivityMainRepository.getInstance(this.getApplication());
         //activityMainRepository.setup();
         toolbarTitle = activityMainRepository.getUser("name");//.getValue();
         Log.i("ActivityMainViewModel","setup 1");

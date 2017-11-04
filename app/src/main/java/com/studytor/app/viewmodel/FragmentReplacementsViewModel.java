@@ -1,5 +1,7 @@
 package com.studytor.app.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
@@ -7,6 +9,7 @@ import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -21,7 +24,7 @@ import java.util.List;
  */
 
 // Class handled by architecture component called ViewModel
-public class FragmentReplacementsViewModel extends ViewModel {
+public class FragmentReplacementsViewModel extends AndroidViewModel {
 
     private static final String CLASS_NAME = FragmentReplacementsViewModel.class.getName();
 
@@ -48,17 +51,21 @@ public class FragmentReplacementsViewModel extends ViewModel {
         return observable;
     }
 
-    public void setup(Context context) {
+    public FragmentReplacementsViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    public void setup() {
         // If setup was already done, do not do it again
         if(this.getText().getValue() != null)
             return;
-        prepareStrings(context);
+        prepareStrings(this.getApplication());
         this.setText(mainText);
 
         Log.i(CLASS_NAME, "setup 100");
 
         // Here works repository and Retrofit
-        fragmentReplacementsRepository = FragmentReplacementsRepository.getInstance(context);
+        fragmentReplacementsRepository = FragmentReplacementsRepository.getInstance(this.getApplication());
 
         institutionIds.add("3g5et");
         selectedDate = "2015-09-25";

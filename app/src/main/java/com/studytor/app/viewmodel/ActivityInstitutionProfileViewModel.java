@@ -1,11 +1,14 @@
 package com.studytor.app.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
@@ -18,23 +21,25 @@ import java.util.List;
  * Created by przemek19980102 on 30.10.2017.
  */
 
-public class ActivityInstitutionProfileViewModel extends ViewModel{
+public class ActivityInstitutionProfileViewModel extends AndroidViewModel{
 
     private Observable observable = new Observable();
     private InstitutionRepository institutionRepository;
     private int institutionId;
-    Context context;
 
-    public void setup(Context context, final int institutionId) {
+    public ActivityInstitutionProfileViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    public void setup(final int institutionId) {
         // If setup was already done, do not do it again
         //if(this.getInstitutionList() != null && this.getInstitutionList().getValue() != null)
             //return;
 
         //this.institutionList = new MutableLiveData<>();
-        this.context = context;
         if(institutionId != -1)this.institutionId = institutionId;
         System.out.println("GOT INSTITUTION WITH ID " + this.institutionId);
-        institutionRepository = InstitutionRepository.getInstance(context);
+        institutionRepository = InstitutionRepository.getInstance(this.getApplication());
 
         institutionRepository.getInstitutionListFromCache().observeForever(new Observer<List<SingleInstitution>>() {
             @Override

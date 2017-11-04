@@ -42,7 +42,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FragmentInstitutionProfileNews extends Fragment{
 
-    public static Context context;
     private FragmentInstitutionProfileNewsViewModel viewModel;
     private FragmentInstitutionProfileNewsBinding binding;
 
@@ -54,13 +53,11 @@ public class FragmentInstitutionProfileNews extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        context = getContext();
-
         viewModel = ViewModelProviders.of(this).get(FragmentInstitutionProfileNewsViewModel.class);
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_institution_profile_news, container, false);
 
-        viewModel.setup(context, 1);
+        viewModel.setup(1);
 
         recyclerView = (RecyclerView) binding.getRoot().findViewById(R.id.recycler_view);
         errorContainer = (RelativeLayout) binding.getRoot().findViewById(R.id.error_container);
@@ -100,6 +97,6 @@ public class FragmentInstitutionProfileNews extends Fragment{
     public static void picassoImage(ImageView view, String url) {
         System.out.println("Picasso painted this picture : " + url);
         if(url != null && !url.equals(""))
-            Picasso.with(context).load(url).into(view);
+            Picasso.with(view.getContext()).load(url).into(view);
     }
 }

@@ -114,7 +114,7 @@ public class ReplacementsFragment extends Fragment {
         final FragmentReplacementsViewModel.Observable observable = viewModel.getObservable();
         //binding.setObservable(observable);
 
-        viewModel.setup(getActivity().getApplicationContext());
+        viewModel.setup();
 
         //return binding.getRoot();
 

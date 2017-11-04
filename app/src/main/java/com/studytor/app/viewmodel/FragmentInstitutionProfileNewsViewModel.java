@@ -1,11 +1,14 @@
 package com.studytor.app.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -20,13 +23,11 @@ import java.util.List;
  * Created by przemek19980102 on 01.11.2017.
  */
 
-public class FragmentInstitutionProfileNewsViewModel extends ViewModel{
+public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
 
     private NewsRepository newsRepository;
 
     private MutableLiveData<List<SingleNews>> newsList = null;
-
-    Context context;
 
     private FragmentInstitutionProfileNewsViewModel.Observable observable = new FragmentInstitutionProfileNewsViewModel.Observable();
 
@@ -34,15 +35,17 @@ public class FragmentInstitutionProfileNewsViewModel extends ViewModel{
         return observable;
     }
 
+    public FragmentInstitutionProfileNewsViewModel(@NonNull Application application) {
+        super(application);
+    }
 
-    public void setup(Context context, int institutionId) {
+    public void setup(int institutionId) {
         // If setup was already done, do not do it again
         if(this.getNewsList() != null && this.getNewsList().getValue() != null)
             return;
 
         this.newsList = new MutableLiveData<>();
-        this.context = context;
-        newsRepository = NewsRepository.getInstance(context);
+        newsRepository = NewsRepository.getInstance(this.getApplication());
 
         newsRepository.getNewsListFromWebOnly(institutionId).observeForever(new Observer<List<SingleNews>>() {
             @Override

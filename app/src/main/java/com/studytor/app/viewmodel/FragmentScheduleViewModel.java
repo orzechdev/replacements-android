@@ -1,10 +1,13 @@
 package com.studytor.app.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.studytor.app.repositories.FragmentScheduleRepository;
@@ -14,7 +17,7 @@ import com.studytor.app.repositories.FragmentScheduleRepository;
  */
 
 // Class handled by architecture component called ViewModel
-public class FragmentScheduleViewModel extends ViewModel {
+public class FragmentScheduleViewModel extends AndroidViewModel {
 
     private FragmentScheduleRepository fragmentScheduleRepository;
 
@@ -28,11 +31,15 @@ public class FragmentScheduleViewModel extends ViewModel {
         return observable;
     }
 
-    public void setup(Context context) {
+    public FragmentScheduleViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    public void setup() {
         // If setup was already done, do not do it again
         if(this.getText().getValue() != null)
             return;
-        prepareStrings(context);
+        prepareStrings(this.getApplication());
         this.setText(mainText);
 
         fragmentScheduleRepository = FragmentScheduleRepository.getInstance();

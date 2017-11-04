@@ -33,8 +33,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class ActivityInstitutionProfile extends AppCompatActivity {
-    public static Context context;
-
 
     ViewPager viewPager;
     TabLayout tabLayout;
@@ -47,14 +45,13 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = getApplicationContext();
 
         viewModel = ViewModelProviders.of(this).get(ActivityInstitutionProfileViewModel.class);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_institution_profile);
 
         int institutionId = getIntent().getIntExtra(ApplicationConstants.INTENT_INSTITUTION_ID, -1);
         this.currentInstitutionId = institutionId;
-        viewModel.setup(this, institutionId);
+        viewModel.setup(institutionId);
 
         binding.setInstitution(viewModel.getObservable());
 
@@ -114,13 +111,13 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
     @BindingAdapter("picassoCircleImage")
     public static void picassoCircleImage(CircleImageView view, String url) {
         System.out.println("Picasso painted this circle picture : " + url);
-        Picasso.with(context).load(url).into(view);
+        Picasso.with(view.getContext()).load(url).into(view);
     }
 
     @BindingAdapter("picassoImage")
     public static void picassoImage(ImageView view, String url) {
         System.out.println("Picasso painted this picture : " + url);
-        Picasso.with(context).load(url).into(view);
+        Picasso.with(view.getContext()).load(url).into(view);
         view.invalidate();
     }
 

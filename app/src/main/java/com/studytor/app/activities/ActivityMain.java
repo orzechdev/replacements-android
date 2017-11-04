@@ -56,7 +56,7 @@ public class ActivityMain extends AppCompatActivity {
         final ActivityMainViewModel.Observable observable = viewModel.getObservable();
         binding.setObservable(observable);
 
-        viewModel.setup(getApplicationContext());
+        viewModel.setup();
 
         prepareStrings();
         setupNavigation();

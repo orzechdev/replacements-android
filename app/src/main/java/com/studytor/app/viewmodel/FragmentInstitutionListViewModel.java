@@ -1,10 +1,13 @@
 package com.studytor.app.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.databinding.ObservableField;
 import android.support.annotation.Nullable;
@@ -22,13 +25,11 @@ import java.util.List;
  */
 
 // Class handled by architecture component called ViewModel
-public class FragmentInstitutionListViewModel extends ViewModel {
+public class FragmentInstitutionListViewModel extends AndroidViewModel {
 
     private InstitutionRepository fragmentInstitutionRepository;
 
     private MutableLiveData<List<SingleInstitution>> institutionList = null;
-
-    Context context;
 
     private Observable observable = new Observable();
 
@@ -36,15 +37,17 @@ public class FragmentInstitutionListViewModel extends ViewModel {
         return observable;
     }
 
+    public FragmentInstitutionListViewModel(@NonNull Application application){
+        super(application);
+    }
 
-    public void setup(Context context) {
+    public void setup() {
         // If setup was already done, do not do it again
         if(this.getInstitutionList() != null && this.getInstitutionList().getValue() != null)
             return;
 
         this.institutionList = new MutableLiveData<>();
-        this.context = context;
-        fragmentInstitutionRepository = InstitutionRepository.getInstance(context);
+        fragmentInstitutionRepository = InstitutionRepository.getInstance(this.getApplication());
 
         fragmentInstitutionRepository.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
             @Override
@@ -52,7 +55,6 @@ public class FragmentInstitutionListViewModel extends ViewModel {
                 setInstitutionList(institutions);
             }
         });
-
     }
 
     public void requestRepositoryUpdate(){

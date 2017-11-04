@@ -42,8 +42,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class FragmentInstitutionList extends Fragment {
 
-    public static Context context;
-
     private FragmentInstitutionListViewModel viewModel;
     private FragmentInstitutionListBinding binding;
 
@@ -57,8 +55,6 @@ public class FragmentInstitutionList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        context = getContext();
-
         viewModel = ViewModelProviders.of(this).get(FragmentInstitutionListViewModel.class);
         //ActivityMainViewModel parentViewModel = ViewModelProviders.of(this).get(ActivityMainViewModel.class);
         ActivityMainViewModel parentViewModel = ((ActivityMain)getActivity()).getViewModel();
@@ -69,7 +65,7 @@ public class FragmentInstitutionList extends Fragment {
         final FragmentInstitutionListViewModel.Observable observable = viewModel.getObservable();
         binding.setObservable(observable);
 
-        viewModel.setup(getActivity().getApplicationContext());
+        viewModel.setup();
 
         //Pull to refresh implementation
         swipeRefreshLayout = (SwipeRefreshLayout) binding.getRoot().findViewById(R.id.swipe_container);
@@ -146,6 +142,6 @@ public class FragmentInstitutionList extends Fragment {
     @BindingAdapter("picassoImage")
     public static void picassoImage(CircleImageView view, String url) {
         System.out.println("Picasso painted this picture : " + url);
-        Picasso.with(context).load(url).into(view);
+        Picasso.with(view.getContext()).load(url).into(view);
     }
 }
