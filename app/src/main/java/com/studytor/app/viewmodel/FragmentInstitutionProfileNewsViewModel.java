@@ -11,9 +11,11 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 
 import com.studytor.app.repositories.InstitutionRepository;
 import com.studytor.app.repositories.NewsRepository;
+import com.studytor.app.repositories.models.News;
 import com.studytor.app.repositories.models.SingleInstitution;
 import com.studytor.app.repositories.models.SingleNews;
 
@@ -27,9 +29,15 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
 
     private NewsRepository newsRepository;
 
-    private MutableLiveData<List<SingleNews>> newsList = null;
+    private MutableLiveData<News> news = null;
 
     private FragmentInstitutionProfileNewsViewModel.Observable observable = new FragmentInstitutionProfileNewsViewModel.Observable();
+    private Handlers handlers = new Handlers();
+
+    private int institutionId;
+    private int firstPageNum = 1;
+    private int currentPageNum = 1;
+    private int lastPageNum = 1;
 
     public FragmentInstitutionProfileNewsViewModel.Observable getObservable() {
         return observable;
@@ -41,35 +49,102 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
 
     public void setup(int institutionId) {
         // If setup was already done, do not do it again
-        if(this.getNewsList() != null && this.getNewsList().getValue() != null)
+        if(this.getNews() != null && this.getNews().getValue() != null)
             return;
 
-        this.newsList = new MutableLiveData<>();
+        this.institutionId = institutionId;
+        this.news = new MutableLiveData<>();
         newsRepository = NewsRepository.getInstance(this.getApplication());
 
-        newsRepository.getNewsListFromWebOnly(institutionId).observeForever(new Observer<List<SingleNews>>() {
+        newsRepository.getNewsData().observeForever(new Observer<News>() {
             @Override
-            public void onChanged(@Nullable List<SingleNews> newsList) {
-                setNewsList(newsList);
+            public void onChanged(@Nullable News news) {
+                setNews(news);
+                if(news != null)lastPageNum = news.getLastPage();
             }
         });
 
     }
 
-    public MutableLiveData<List<SingleNews>> getNewsList() {
-        return newsList;
+    public MutableLiveData<News> getNews() {
+        return news;
     }
 
-    public void setNewsList(List<SingleNews> list) {
-        this.newsList.setValue(list);
-        observable.newsList.set(list);
+    public void setNews(News news) {
+        this.news.setValue(news);
+        observable.newsList.set(news);
     }
 
     // Class handled by Data Binding library
     public class Observable extends BaseObservable {
 
-        public final ObservableField<List<SingleNews>> newsList = new ObservableField<>();
+        public final ObservableField<News> newsList = new ObservableField<>();
 
     }
 
+    public class Handlers{
+
+    }
+
+    public Handlers getHandlers() {
+        return handlers;
+    }
+
+    public void setHandlers(Handlers handlers) {
+        this.handlers = handlers;
+    }
+
+    public int getFirstPageNum() {
+        return firstPageNum;
+    }
+
+    public void setFirstPageNum(int firstPageNum) {
+        this.firstPageNum = firstPageNum;
+    }
+
+    public int getCurrentPageNum() {
+        return currentPageNum;
+    }
+
+    public void setCurrentPageNum(int currentPageNum) {
+        this.currentPageNum = currentPageNum;
+    }
+
+    public int getLastPageNum() {
+        return lastPageNum;
+    }
+
+    public void setLastPageNum(int lastPageNum) {
+        this.lastPageNum = lastPageNum;
+    }
+
+    public void goToFirstPage(){
+        newsRepository.getNews(this.institutionId, this.firstPageNum);
+        System.out.println("PAGE NUMBER IS " + this.currentPageNum);
+    }
+
+    public void goToLastPage(){
+        newsRepository.getNews(this.institutionId, this.lastPageNum);
+        System.out.println("PAGE NUMBER IS " + this.currentPageNum);
+    }
+
+    public void goToNextPage(){
+        if(isNextPageAvailable()) newsRepository.getNews(this.institutionId, ++this.currentPageNum);
+        System.out.println("PAGE NUMBER IS " + this.currentPageNum);
+    }
+
+    public void goToPreviousPage(){
+        if(isPreviousPageAvailable()) newsRepository.getNews(this.institutionId, --this.currentPageNum);
+        System.out.println("PAGE NUMBER IS " + this.currentPageNum);
+    }
+
+    public boolean isNextPageAvailable(){
+        if(this.currentPageNum + 1 > this.lastPageNum) return false;
+        return true;
+    }
+
+    public boolean isPreviousPageAvailable(){
+        if(this.currentPageNum - 1 < this.firstPageNum) return false;
+        return true;
+    }
 }

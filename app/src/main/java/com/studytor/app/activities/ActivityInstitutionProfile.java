@@ -37,6 +37,8 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
     ViewPager viewPager;
     TabLayout tabLayout;
 
+    private int institutionId;
+
     ActivityInstitutionProfileViewModel viewModel;
     ActivityInstitutionProfileBinding binding;
 
@@ -49,7 +51,7 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
         viewModel = ViewModelProviders.of(this).get(ActivityInstitutionProfileViewModel.class);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_institution_profile);
 
-        int institutionId = getIntent().getIntExtra(ApplicationConstants.INTENT_INSTITUTION_ID, -1);
+        institutionId = getIntent().getIntExtra(ApplicationConstants.INTENT_INSTITUTION_ID, -1);
         this.currentInstitutionId = institutionId;
         viewModel.setup(institutionId);
 
@@ -69,9 +71,15 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentInstitutionProfileNews(), "Aktualności");
+
+        FragmentInstitutionProfileNews newsFragment = new FragmentInstitutionProfileNews();
+        newsFragment.setup(institutionId);
+        adapter.addFragment(newsFragment, "Aktualności");
+
         adapter.addFragment(new FragmentInstitutionProfileSchedule(), "Plany");
+
         adapter.addFragment(new FragmentInstitutionProfileReplacements(), "Zastępstwa");
+
         viewPager.setAdapter(adapter);
     }
 

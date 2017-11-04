@@ -13,6 +13,11 @@ public class News {
     @SerializedName("news")
     private List<SingleNews> newsList;
 
+    @SerializedName("allPages")
+    private int lastPage;
+
+    private int currentPage;
+
     public News(){
         this.newsList = null;
     }
@@ -29,4 +34,19 @@ public class News {
         this.newsList = newsList;
     }
 
+    public int getLastPage() {
+        return lastPage;
+    }
+
+    public void setLastPage(int lastPage) {
+        this.lastPage = lastPage;
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
+    }
+
+    public void setCurrentPage(int currentPage) {
+        this.currentPage = currentPage;
+    }
 }

@@ -41,6 +41,6 @@ public interface WebService {
     Call<Institutions> getAllInstitutions(
     );
 
-    @GET("json/school/{id}/news.json")
-    Call<News> getAllNews(@Path("id") int institutionId);
+    @GET("json/school/{id}/news/page/{pageNum}.json")
+    Call<News> getAllNews(@Path("id") int institutionId, @Path("pageNum") int pageNum);
 }

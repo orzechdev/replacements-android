@@ -38,10 +38,13 @@ public class NewsRepository {
     private WebService webService;
     private NewsDao newsDao;
 
+    private MutableLiveData<News> newsData;
+
     private NewsRepository(Context context) {
         this.webService = RetrofitClientSingleton.getInstance().getWebService();
         this.newsDao = DatabaseSingleton.getInstance(context).getMainDatabase().newsDao();
         this.newsCache = NewsCache.getInstance();
+        this.newsData = new MutableLiveData<>();
     }
 
     public static NewsRepository getInstance(Context context) {
@@ -52,102 +55,27 @@ public class NewsRepository {
         return repositoryInstance;
     }
 
-    private void observeDatabase(int institutionId){
-
-        System.out.println("REPO NEWS CHECK DATABASE");
-
-
-        this.newsDao.loadByInstitution(institutionId).observeForever(new Observer<List<SingleNews>>() {
-            @Override
-            public void onChanged(@Nullable List<SingleNews> newsList) {
-                newsCache.putData(newsList);
-            }
-        });
-
-
+    public MutableLiveData<News> getNewsData() {
+        return newsData;
     }
 
-    //Get institution list from any available source (CACHE, DB, WEB)
-    public MutableLiveData<List<SingleNews>> getNewsList(int institutionId) {
 
-        final MutableLiveData<List<SingleNews>> returnData = new MutableLiveData<>();
+    public void getNews(final int institutionId, final int pageNum) {
 
-        System.out.println("REPO NEWS AUTO GET");
-
-        observeDatabase(institutionId);
-
-        refreshData(institutionId);
-
-        //Observe database updates to be able to update CACHE data
-        //Needs to be separated, because it is also used in refreshData()
-
-        //Observe cache only, because it gets updated with database or web updates
-        newsCache.getData().observeForever(new Observer<List<SingleNews>>() {
-            @Override
-            public void onChanged(@Nullable List<SingleNews> newsList) {
-                System.out.println("REPO NEWS RETURN OBSERVED CACHE");
-                returnData.postValue(newsList);
-            }
-        });
-
-        return  returnData;
-
-    }
-
-    public MutableLiveData<List<SingleNews>> getNewsListFromCache(int institutionId) {
-
-        final MutableLiveData<List<SingleNews>> returnData = new MutableLiveData<>();
-
-        //Observe cache only, because it gets updated with database or web updates
-        newsCache.getData().observeForever(new Observer<List<SingleNews>>() {
-            @Override
-            public void onChanged(@Nullable List<SingleNews> newsList) {
-                System.out.println("REPO NEWS RETURN OBSERVED CACHE");
-                returnData.postValue(newsList);
-            }
-        });
-
-        return  returnData;
-
-    }
-
-    public MutableLiveData<List<SingleNews>> getNewsListOffline(int institutionId) {
-
-        final MutableLiveData<List<SingleNews>> returnData = new MutableLiveData<>();
-
-        //Observe database updates to be able to update CACHE data
-        //Needs to be separated, because it is also used in refreshData()
-        observeDatabase(institutionId);
-
-        //Observe cache only, because it gets updated with database or web updates
-        newsCache.getData().observeForever(new Observer<List<SingleNews>>() {
-            @Override
-            public void onChanged(@Nullable List<SingleNews> newsList) {
-                System.out.println("REPO NEWS RETURN OBSERVED CACHE");
-                returnData.postValue(newsList);
-            }
-        });
-
-        return  returnData;
-
-    }
-
-    public MutableLiveData<List<SingleNews>> getNewsListFromWebOnly(final int institutionId) {
-
-        final MutableLiveData<List<SingleNews>> returnData = new MutableLiveData<>();
-
-        this.webService.getAllNews(institutionId).enqueue(new Callback<News>() {
+        this.webService.getAllNews(institutionId, pageNum).enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, final Response<News> response) {
                 System.out.println("REPO NEWS GET DATA FROM WEB ENQUEUED");
 
                 if(response.isSuccessful() && response.body().getNewsList() != null){
                     System.out.println("REPO NEWS GET DATA FROM WEB SUCCESSFUL");
-                    returnData.postValue(response.body().getNewsList());
+                    News news = response.body();
+                    news.setCurrentPage(pageNum);
 
+                    newsData.postValue(news);
                 }else{
                     System.out.println("REPO NEWS GET DATA FROM WEB IS NULL 1" + response.toString());
-                    returnData.postValue(null);
+                    newsData.postValue(null);
                 }
 
             }
@@ -156,70 +84,11 @@ public class NewsRepository {
             public void onFailure(Call<News> call, Throwable t) {
                 System.out.println("REPO NEWS GET DATA FROM WEB IS NULL 2");
 
-                returnData.postValue(null);
+                newsData.postValue(null);
 
                 t.printStackTrace();
             }
         });
-
-        return returnData;
-    }
-
-    //Load InstitutionList from web using retrofit
-    public void refreshData(final int institutionId){
-
-        System.out.println("REPO NEWS GET DATA FROM WEB");
-
-
-        this.webService.getAllNews(institutionId).enqueue(new Callback<News>() {
-            @Override
-            public void onResponse(Call<News> call, final Response<News> response) {
-                System.out.println("REPO NEWS GET DATA FROM WEB ENQUEUED");
-
-                if(response.isSuccessful() && response.body().getNewsList() != null){
-                    System.out.println("REPO NEWS GET DATA FROM WEB SUCCESSFUL");
-
-                    //Save data to local database
-                    Thread thread = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            List<SingleNews> newsList = response.body().getNewsList();
-                            if(newsList != null){
-
-                                //Update database which will later update cache
-                                for(int i = 0; i < newsList.size(); i++){
-                                    newsList.get(i).setInstitutionId(institutionId);
-                                }
-                                newsDao.insertAll(newsList);
-
-                            }
-                        }
-                    });
-                    thread.start();
-
-
-                }else{
-                    System.out.println("REPO NEWS GET DATA FROM WEB IS NULL 1" + response.toString());
-
-                    //Reobserve Database if already observed to force data check
-                    observeDatabase(institutionId);
-
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-                System.out.println("REPO NEWS GET DATA FROM WEB IS NULL 2");
-
-                //Reobserve Database if already observed to force data check
-                observeDatabase(institutionId);
-
-                t.printStackTrace();
-            }
-        });
-
-
 
     }
 

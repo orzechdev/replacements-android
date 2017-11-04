@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent">
+    
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_keyboard_arrow_left_black_24dp"
+                android:id="@+id/previous"
+                android:background="@android:color/transparent"/>
+            <Button
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:id="@+id/first"
+                android:background="@android:color/transparent"/>
+    
+            <Button
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:text="C"
+                android:textSize="24sp"
+                android:id="@+id/current"
+                android:background="@android:color/transparent"/>
+    
+            <Button
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:text="5"
+                android:id="@+id/last"
+                android:background="@android:color/transparent"/>
+    
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:id="@+id/next"
+                android:background="@android:color/transparent"/>
+    
+        </LinearLayout>
+    
+    
+    </RelativeLayout>
+
+</layout>
