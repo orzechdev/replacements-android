@@ -23,24 +23,38 @@
                 android:id="@+id/previous"
                 android:background="@android:color/transparent"/>
             <Button
-                android:layout_width="48dp"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
                 android:text="1"
+                android:textStyle="bold"
                 android:id="@+id/first"
                 android:background="@android:color/transparent"/>
-    
-            <Button
+            <ImageView
                 android:layout_width="48dp"
-                android:layout_height="wrap_content"
-                android:text="C"
-                android:textSize="24sp"
+                android:layout_height="18dp"
+                android:id="@+id/dotsLeft"
+                app:srcCompat="@drawable/ic_more_horiz_black_24dp"/>
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="99"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
                 android:id="@+id/current"
-                android:background="@android:color/transparent"/>
+                android:background="@drawable/background_circle_black"/>
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="18dp"
+                android:id="@+id/dotsRight"
+                app:srcCompat="@drawable/ic_more_horiz_black_24dp"/>
     
             <Button
-                android:layout_width="48dp"
+                android:layout_width="20dp"
                 android:layout_height="wrap_content"
-                android:text="5"
+                android:text="99"
+                android:textStyle="bold"
                 android:id="@+id/last"
                 android:background="@android:color/transparent"/>
     

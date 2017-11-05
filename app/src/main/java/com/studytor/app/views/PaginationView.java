@@ -33,6 +33,8 @@ public class PaginationView extends LinearLayout{
     private Button current;
     private Button last;
     private ImageView next;
+    private ImageView dotsLeft;
+    private ImageView dotsRight;
 
     public PaginationView(Context context) {
         super(context);
@@ -61,6 +63,8 @@ public class PaginationView extends LinearLayout{
             current = (Button) this.thisView.findViewById(R.id.current);
             last = (Button) this.thisView.findViewById(R.id.last);
             next = (ImageView) this.thisView.findViewById(R.id.next);
+            dotsLeft = (ImageView) this.thisView.findViewById(R.id.dotsLeft);
+            dotsRight = (ImageView) this.thisView.findViewById(R.id.dotsRight);
 
             previous.setOnClickListener(new OnClickListener() {
                 @Override
@@ -103,20 +107,28 @@ public class PaginationView extends LinearLayout{
             this.isPreviousPageAvailable = false;
             previous.setEnabled(false);
             previous.setAlpha(0.25f);
+            first.setVisibility(INVISIBLE);
+            dotsLeft.setVisibility(INVISIBLE);
         }else{
             this.isPreviousPageAvailable = true;
             previous.setEnabled(true);
             previous.setAlpha(1f);
+            first.setVisibility(VISIBLE);
+            dotsLeft.setVisibility(VISIBLE);
         }
 
         if(this.currentPageNum >= this.lastPageNum){
             this.isNextPageAvaialble = false;
             next.setEnabled(false);
             next.setAlpha(0.25f);
+            last.setVisibility(INVISIBLE);
+            dotsRight.setVisibility(INVISIBLE);
         }else{
             this.isNextPageAvaialble = true;
             next.setEnabled(true);
             next.setAlpha(1f);
+            last.setVisibility(VISIBLE);
+            dotsRight.setVisibility(VISIBLE);
         }
 
         current.setText(String.valueOf(this.currentPageNum));
