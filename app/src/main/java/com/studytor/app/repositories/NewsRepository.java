@@ -59,8 +59,36 @@ public class NewsRepository {
         return newsData;
     }
 
+    public void getNewsWithCacheCheck(final int institutionId, final int pageNum){
+
+        System.out.println("NEWS REPO CHECK CACHE");
+        newsCache.getData().observeForever(new Observer<List<News>>() {
+            @Override
+            public void onChanged(@Nullable List<News> news) {
+                System.out.println("NEWS REPO CACHE CHANGED");
+                News temp = null;
+                if(news == null){
+                    getNews(institutionId, pageNum);
+                }
+                for(News n : news){
+                    if(n.getInstitutionId() == institutionId && n.getCurrentPage() == pageNum){
+                        temp = n;
+                    }
+                }
+                if(temp != null){
+                    newsData.postValue(temp);
+                }else{
+                    getNews(institutionId, pageNum);
+                }
+
+            }
+        });
+
+    }
 
     public void getNews(final int institutionId, final int pageNum) {
+
+        System.out.println("REPO NEWS CALLING WEB");
 
         this.webService.getAllNews(institutionId, pageNum).enqueue(new Callback<News>() {
             @Override
@@ -71,6 +99,9 @@ public class NewsRepository {
                     System.out.println("REPO NEWS GET DATA FROM WEB SUCCESSFUL");
                     News news = response.body();
                     news.setCurrentPage(pageNum);
+                    news.setInstitutionId(institutionId);
+
+                    newsCache.insertOrAddNews(institutionId, pageNum, news);
 
                     newsData.postValue(news);
                 }else{

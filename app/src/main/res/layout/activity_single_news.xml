@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.studytor.app.activities.ActivitySingleNews">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/headerImage"
+        android:src="@drawable/header_image_2_c"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        app:layout_constraintTop_toBottomOf="@id/headerImage"
+        android:textSize="24sp"
+        android:textColor="@color/black_text_heading"
+        android:paddingTop="16sp"
+        android:paddingLeft="32sp"
+        android:paddingStart="32sp"
+        android:paddingRight="32sp"
+        android:paddingEnd="32sp"
+        android:text="Młodzież naszej szkoły na VI Targach Pracy w Polkowicach"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/date"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:paddingTop="8sp"
+        android:paddingLeft="32sp"
+        android:paddingStart="32sp"
+        android:paddingRight="32sp"
+        android:paddingEnd="32sp"
+        android:textSize="13sp"
+        android:textColor="@color/black_text_caption"
+        android:text="30-10-2017"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        app:layout_constraintTop_toBottomOf="@id/date"
+        android:layout_marginTop="8sp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginEnd="32dp"
+        android:alpha="0.5"
+        android:background="@color/black_text_caption"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/date"
+        android:paddingTop="16sp"
+        android:paddingLeft="32sp"
+        android:paddingStart="32sp"
+        android:paddingRight="32sp"
+        android:paddingEnd="32sp"
+        android:textSize="13sp"
+        android:textColor="@color/black_text_caption"
+        android:text="Ta forma kontaktów bezpośrednich pracodawców z kandydatami na pracowników cieszy się od lat niesłabnącym  zainteresowaniem obu stron. Celem wyjazdu było wprowadzenie uczniów klas III i  IV tych na rynek pracy, przybliżenie jednej z form wymiany informacji w zakresie zatrudnienia, a także stworzenie możliwości złożenia dokumentów aplikacyjnych. W tym roku nie wszyscy chętni do udziału w targach pracodawcy mogli zaprezentować swoje oferty ze względu na dużą ilość zgłoszeń i wyczerpanie miejsc wystawienniczych. Ten rok jest rynkiem pracownika. Z naszej szkoły na Targi przybyli się uczniowie klas IV TA,IV TT, IV TB i IV TTL oraz III TLM w liczbie ok.50 uczniów, którzy już za 6 miesięcy zakończą edukację zawodową i mogą podjąć swoją pierwszą pracę. Imprezę otworzył Starosta Polkowicki p. Marek Tramś, który podkreślił znaczenie tego wydarzenia dla rozwoju gospodarczego i społecznego regionu oraz poinformował, iż w roku ubiegłym dzięki tej formie wymiany informacji o rynku pracy zatrudnienie strefie i poza nią znalazło ok.300 osób. Uczniowie z zainteresowaniem dopytywali się o warunki zatrudnienia nie tylko w zakładach oferujących pracę na stanowiskach adekwatnych dla ich wykształcenia ale także z zaciekawieniem poznawali walory pracy w zupełnie odmiennych branżach zawodowych takich jak np. policja, zawodowa straż pożarna czy transport. Wśród ponad 50 pracodawców zagłębia miedziowego nie zabrakło firm z którymi współpracujemy w kształceniu zawodowym jak firma Laedec sp.zo.o. z Polkowickiej podstrefy i Lubinpex sp.z o.o. z Lubina, które sukcesywnie rozwijając swoją działalność rynkową odnotowują wzrost zapotrzebowania na pracowników. Na targach pojawili się także nasi absolwenci, którzy mając zatrudnienie szukali korzystniejszych dla siebie warunków pracy. Mamy nadzieję, że to pierwsze doświadczenie kontaktu z pracodawcą okaże się owocne i satysfakcjonujące dla naszych mechatroników, turystów i logistyków w kwestii zebrania informacji, pierwszych doświadczeń w rozmowie rekrutacyjnej a nawet uzyskania zatrudnienia .\n\nDoradca zawodowy\nKrystyna Zborowska"/>
+
+</android.support.constraint.ConstraintLayout>

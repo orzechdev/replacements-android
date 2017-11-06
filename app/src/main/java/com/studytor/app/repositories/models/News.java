@@ -18,6 +18,8 @@ public class News {
 
     private int currentPage;
 
+    private int institutionId;
+
     public News(){
         this.newsList = null;
     }
@@ -48,5 +50,13 @@ public class News {
 
     public void setCurrentPage(int currentPage) {
         this.currentPage = currentPage;
+    }
+
+    public int getInstitutionId() {
+        return institutionId;
+    }
+
+    public void setInstitutionId(int institutionId) {
+        this.institutionId = institutionId;
     }
 }
