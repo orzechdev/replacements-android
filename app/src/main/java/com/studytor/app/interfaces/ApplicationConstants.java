@@ -41,5 +41,7 @@ public interface ApplicationConstants {
 
     //Intent constants
     static final String INTENT_INSTITUTION_ID = "INTENT_INSTITUTION_ID";
+    static final String INTENT_PAGE_NUMBER = "INTENT_PAGE_NUMBER";
+    static final String INTENT_NEWS_ID = "INTENT_NEWS_ID";
 
 }

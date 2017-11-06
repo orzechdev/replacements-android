@@ -3,6 +3,7 @@ package com.studytor.app.fragments;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -23,11 +24,14 @@ import com.squareup.picasso.Picasso;
 import com.studytor.app.R;
 import com.studytor.app.activities.ActivityInstitutionProfile;
 import com.studytor.app.activities.ActivityMain;
+import com.studytor.app.activities.ActivitySingleNews;
 import com.studytor.app.adapters.InstitutionRecyclerViewAdapter;
 import com.studytor.app.adapters.NewsListRecyclerViewAdapter;
 import com.studytor.app.databinding.ActivityInstitutionProfileBinding;
 import com.studytor.app.databinding.FragmentInstitutionProfileNewsBinding;
 import com.studytor.app.databinding.FragmentInstitutionProfileNewsListItemBinding;
+import com.studytor.app.helpers.ItemClickSupport;
+import com.studytor.app.interfaces.ApplicationConstants;
 import com.studytor.app.repositories.models.News;
 import com.studytor.app.repositories.models.SingleInstitution;
 import com.studytor.app.repositories.models.SingleNews;
@@ -69,8 +73,6 @@ public class FragmentInstitutionProfileNews extends Fragment{
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_institution_profile_news, container, false);
 
-
-        System.out.println("INSTITUTION CHUJ WIE CO " + institutionId);
         viewModel.setup(institutionId);
         binding.setHandlers(viewModel.getHandlers());
 
@@ -149,6 +151,19 @@ public class FragmentInstitutionProfileNews extends Fragment{
 
         viewModel.goToFirstPage();
 
+        //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+
+                Intent intent = new Intent(getContext(), ActivitySingleNews.class);
+                intent.putExtra(ApplicationConstants.INTENT_NEWS_ID, viewModel.getNews().getValue().getNewsList().get(position).getId());
+                intent.putExtra(ApplicationConstants.INTENT_PAGE_NUMBER, viewModel.getNews().getValue().getCurrentPage());
+                intent.putExtra(ApplicationConstants.INTENT_INSTITUTION_ID, viewModel.getNews().getValue().getInstitutionId());
+                startActivity(intent);
+
+            }
+        });
 
         return binding.getRoot();
     }
