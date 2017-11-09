@@ -32,7 +32,6 @@ public class ActivitySingleNews extends AppCompatActivity {
 
     private ActivitySingleNewsViewModel viewModel;
     private ActivitySingleNewsBinding binding;
-    static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,6 @@ public class ActivitySingleNews extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this).get(ActivitySingleNewsViewModel.class);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_single_news);
-        context = getApplicationContext();
 
         Intent tempIntent = getIntent();
         viewModel.setup(tempIntent.getIntExtra(ApplicationConstants.INTENT_INSTITUTION_ID, -1), tempIntent.getIntExtra(ApplicationConstants.INTENT_PAGE_NUMBER, -1), tempIntent.getIntExtra(ApplicationConstants.INTENT_NEWS_ID, -1));
@@ -79,7 +77,7 @@ public class ActivitySingleNews extends AppCompatActivity {
             SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
             try{
                 c.setTime(format.parse(date));
-                tv.setText(c.get(Calendar.DAY_OF_MONTH) + " " + context.getResources().getStringArray(R.array.months)[c.get(Calendar.MONTH)] + " " + c.get(Calendar.YEAR));
+                tv.setText(c.get(Calendar.DAY_OF_MONTH) + " " + tv.getContext().getResources().getStringArray(R.array.months)[c.get(Calendar.MONTH)] + " " + c.get(Calendar.YEAR));
             }catch (Exception e){
                 e.printStackTrace();
             }
