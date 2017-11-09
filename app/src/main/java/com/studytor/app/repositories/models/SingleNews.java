@@ -54,17 +54,6 @@ public class SingleNews extends BaseObservable{
     private String imageUrl;
 
     public SingleNews(){
-
-    }
-
-    public SingleNews(int id, int institutionId, String title, String shortenedContent, String content, String thumbUrl, String imageUrl){
-        this.id = id;
-        this.institutionId = institutionId;
-        this.title = title;
-        this.shortenedContent = shortenedContent;
-        this.content = content;
-        this.thumbURL = thumbUrl;
-        this.imageUrl = imageUrl;
     }
 
     @NonNull
