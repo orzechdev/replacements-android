@@ -103,7 +103,6 @@
     <string name="fragment_institution_list_toast_refreshing"><u>Trying to get the data</u></string>
     <string name="fragment_institution_list_toast_no_data"><u>No data is available now</u></string>
 
-
     <!-- Following strings are for new app -->
     <plurals name="news_header">
         <item quantity="one">"News"</item>
