@@ -36,7 +36,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="@color/new_blue_light"
             android:fitsSystemWindows="true"
-            app:statusBarScrim="@color/new_blue">
+            app:statusBarScrim="@color/new_blue_light">
 
             <ImageView
                 android:id="@+id/institution_banner"
