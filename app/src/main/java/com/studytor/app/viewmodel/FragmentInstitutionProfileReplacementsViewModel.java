@@ -1,11 +1,14 @@
 package com.studytor.app.viewmodel;
 
+import android.app.Application;
+import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.studytor.app.repositories.NewsRepository;
@@ -17,7 +20,7 @@ import java.util.List;
  * Created by przemek19980102 on 01.11.2017.
  */
 
-public class FragmentInstitutionProfileReplacementsViewModel extends ViewModel{
+public class FragmentInstitutionProfileReplacementsViewModel extends AndroidViewModel {
 
 //    private MutableLiveData<List<SingleReplacement>> replacementsList = null;
 //
@@ -28,26 +31,30 @@ public class FragmentInstitutionProfileReplacementsViewModel extends ViewModel{
 //    public FragmentInstitutionProfileReplacementsViewModel.Observable getObservable() {
 //        return observable;
 //    }
-//
-//    public void setup(Context context, int institutionId) {
-//        // If setup was already done, do not do it again
+
+    public FragmentInstitutionProfileReplacementsViewModel(@NonNull Application application) {
+        super(application);
+    }
+
+    public void setup(int institutionId) {
+        // If setup was already done, do not do it again
 //        if(this.getReplacementsList() != null && this.getReplacementsList().getValue() != null)
 //            return;
 //
 //        this.replacementsList = new MutableLiveData<>();
 //        this.context = context;
-//
-//        //TODO Obtain repl list from repo i.e. only from web
-//
+
+        //TODO Obtain repl list from repo i.e. only from web
+
 //        new Observer<List<SingleReplacement>>() {
 //            @Override
 //            public void onChanged(@Nullable List<SingleReplacement> replacementsList) {
 //                setReplacementsList(replacementsList);
 //            }
 //        };
-//
-//    }
-//
+
+    }
+
 //    public MutableLiveData<List<SingleReplacement>> getReplacementsList() {
 //        return replacementsList;
 //    }
