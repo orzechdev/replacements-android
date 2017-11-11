@@ -3,6 +3,7 @@ package com.studytor.app.repositories.webservices;
 import com.studytor.app.repositories.models.Institutions;
 import com.studytor.app.repositories.models.News;
 import com.studytor.app.repositories.models.ReplacementsJson;
+import com.studytor.app.repositories.models.UserReplacementsJson;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -25,15 +26,21 @@ public interface WebService {
     Call<ResponseBody> getUser(@Query("name") String name);
 
     @GET("tutortest/json/institutions/{institutionId}/replacements/{date}/{ver}.php")
-    Call<ReplacementsJson> getReplacements(
+    Call<UserReplacementsJson> getUserReplacements(
             @Path("institutionId") String institutionId,
             @Path("date") String date,
             @Path("ver") String ver
     );
 
+    @GET("json/school/{id}/replacements/{date}.php")
+    Call<ReplacementsJson> getReplacements(
+            @Path("id") int institutionId,
+            @Path("date") String date
+    );
+
     // Possible to call only if user have an account
     @GET("json/{user}/institutions")
-    Call<ReplacementsJson> getUserInstitutions(
+    Call<UserReplacementsJson> getUserInstitutions(
             //@Path("school_id") String schoolId
     );
 

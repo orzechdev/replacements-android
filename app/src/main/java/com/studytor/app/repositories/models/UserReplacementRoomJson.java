@@ -12,7 +12,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 @Entity
-public class ReplacementRoomJson {//extends ReplacementsJson {
+public class UserReplacementRoomJson {//extends UserReplacementsJson {
 
     @PrimaryKey
     @SerializedName("id")
@@ -38,6 +38,7 @@ public class ReplacementRoomJson {//extends ReplacementsJson {
     @Expose
     private String defaultInteger;
 
+    @NonNull
     public String getId() {
         return id;
     }

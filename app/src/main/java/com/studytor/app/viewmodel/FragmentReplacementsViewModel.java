@@ -5,7 +5,6 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
@@ -13,7 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.studytor.app.repositories.models.ReplacementRoomJson;
+import com.studytor.app.repositories.models.UserReplacementRoomJson;
 import com.studytor.app.repositories.FragmentReplacementsRepository;
 
 import java.util.ArrayList;
@@ -30,9 +29,9 @@ public class FragmentReplacementsViewModel extends AndroidViewModel {
 
     private FragmentReplacementsRepository fragmentReplacementsRepository;
 
-    //private MutableLiveData<ReplacementsJson> jsonReplacements;
+    //private MutableLiveData<UserReplacementsJson> jsonReplacements;
 
-    private LiveData<List<ReplacementRoomJson>> allReplacements;
+    private LiveData<List<UserReplacementRoomJson>> allReplacements;
 
     private boolean replacementsRefreshAllowed = false;
     private boolean replacementsRefreshInProgress = false;
@@ -82,9 +81,9 @@ public class FragmentReplacementsViewModel extends AndroidViewModel {
 
     private void setupUpdatingReplacementsFromInternet() {
         Log.i(CLASS_NAME, "setupUpdatingReplacementsFromInternet 100");
-        allReplacements.observeForever(new Observer<List<ReplacementRoomJson>>() {
+        allReplacements.observeForever(new Observer<List<UserReplacementRoomJson>>() {
             @Override
-            public void onChanged(@Nullable List<ReplacementRoomJson> replacements) {
+            public void onChanged(@Nullable List<UserReplacementRoomJson> replacements) {
                 Log.i(CLASS_NAME, "setupUpdatingReplacementsFromInternet onChanged 100");
                 if(replacementsRefreshAllowed && !fragmentReplacementsRepository.replacementsRefreshInProgress) {
                     Log.i(CLASS_NAME, "setupUpdatingReplacementsFromInternet onChanged 200");
@@ -95,7 +94,7 @@ public class FragmentReplacementsViewModel extends AndroidViewModel {
         });
     }
 
-    public LiveData<List<ReplacementRoomJson>> getAllReplacements() {
+    public LiveData<List<UserReplacementRoomJson>> getAllReplacements() {
         //return jsonReplacements;
         return allReplacements;
     }

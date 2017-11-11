@@ -27,7 +27,7 @@ import android.widget.TextView;
 import com.studytor.app.activities.ActivityMain;
 import com.studytor.app.helpers.StickyHeaderDecoration;
 import com.studytor.app.models.ClassTask;
-import com.studytor.app.repositories.models.ReplacementRoomJson;
+import com.studytor.app.repositories.models.UserReplacementRoomJson;
 import com.studytor.app.R;
 import com.studytor.app.models.ReplacementTask;
 import com.studytor.app.models.TeacherTask;
@@ -182,9 +182,9 @@ public class ReplacementsFragment extends Fragment {
 
     // Very important - notifies Observable that fields in ActivityMainViewModel are changed
     private void setupViewModelObservables() {
-        viewModel.getAllReplacements().observe(this, new Observer<List<ReplacementRoomJson>>() {
+        viewModel.getAllReplacements().observe(this, new Observer<List<UserReplacementRoomJson>>() {
                     @Override
-                    public void onChanged(@Nullable List<ReplacementRoomJson> s) {
+                    public void onChanged(@Nullable List<UserReplacementRoomJson> s) {
                 //        if(s != null)
                             //TODO byl  java.lang.IndexOutOfBoundsException: Index: 1, Size: 0 wiec skomentowalem ponizszy jeden wiers i gorny if
                 //            Log.i("ReplacementsFragment","setupViewModelObservables 1: " + s.get(1).getReplacement());//.getReplacements().get(1).getReplacement());
@@ -194,7 +194,7 @@ public class ReplacementsFragment extends Fragment {
                             if(s.size() > 0) {
                                 Log.i("ReplacementsFragment", "setupViewModelObservables size: " + s.size());
 
-                                for(ReplacementRoomJson repl : s){
+                                for(UserReplacementRoomJson repl : s){
                                     String itemId = repl.getId();
                                     Log.i("ReplacementsFragment", "setupViewModelObservables item " + itemId + " replacement: " + repl.getReplacement());
                                     Log.i("ReplacementsFragment", "setupViewModelObservables item " + itemId + " institution Id: " + repl.getInstitutId());

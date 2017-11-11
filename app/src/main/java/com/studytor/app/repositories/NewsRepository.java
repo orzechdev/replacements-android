@@ -30,7 +30,7 @@ import retrofit2.Response;
 
 public class NewsRepository {
 
-    private static final String CLASS_NAME = InstitutionRepository.class.getName();
+    private static final String CLASS_NAME = NewsRepository.class.getName();
 
     private static NewsRepository repositoryInstance;
 

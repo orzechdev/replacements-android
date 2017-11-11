@@ -7,8 +7,8 @@ import android.util.Log;
 
 import com.studytor.app.repositories.database.DatabaseSingleton;
 import com.studytor.app.repositories.database.ReplacementDao;
-import com.studytor.app.repositories.models.ReplacementRoomJson;
-import com.studytor.app.repositories.models.ReplacementsJson;
+import com.studytor.app.repositories.models.UserReplacementRoomJson;
+import com.studytor.app.repositories.models.UserReplacementsJson;
 import com.studytor.app.repositories.cache.FragmentReplacementsCache;
 import com.studytor.app.repositories.webservices.RetrofitClientSingleton;
 import com.studytor.app.repositories.webservices.WebService;
@@ -52,9 +52,9 @@ public class FragmentReplacementsRepository {
         return repositoryInstance;
     }
 
-    //public MutableLiveData<ReplacementsJson> getReplacements(String institutionId, String date, String ver) {
-    public LiveData<List<ReplacementRoomJson>> getReplacements(String institutionId, String date, String ver) {
-        Log.i(CLASS_NAME, "getReplacements 100");
+    //public MutableLiveData<UserReplacementsJson> getReplacements(String institutionId, String date, String ver) {
+    public LiveData<List<UserReplacementRoomJson>> getReplacements(String institutionId, String date, String ver) {
+        Log.i(CLASS_NAME, "getUserReplacements 100");
 
         prepareProperDaysInCache();
 
@@ -63,37 +63,37 @@ public class FragmentReplacementsRepository {
 
         FragmentReplacementsCache.ReplacementCache replacementCache = fragmentReplacementsCache.getRepl(institutionId, date);
         if(replacementCache != null) {
-            Log.i(CLASS_NAME, "getReplacements 200");
-            //MutableLiveData<ReplacementsJson> cached = replacementCache.getJsonReplMap();
-            LiveData<List<ReplacementRoomJson>> cached = replacementCache.getReplModelMap();
+            Log.i(CLASS_NAME, "getUserReplacements 200");
+            //MutableLiveData<UserReplacementsJson> cached = replacementCache.getJsonReplMap();
+            LiveData<List<UserReplacementRoomJson>> cached = replacementCache.getReplModelMap();
             //TODO bellow getVer is latest ver
             replacementCache.getVer();
             if (cached != null)
             {
-                Log.i(CLASS_NAME, "getReplacements 300");
+                Log.i(CLASS_NAME, "getUserReplacements 300");
                 return cached;
             }
         }
-        Log.i(CLASS_NAME, "getReplacements 400");
+        Log.i(CLASS_NAME, "getUserReplacements 400");
 
-        LiveData<List<ReplacementRoomJson>> allReplacements = replacementDao.loadAll();
+        LiveData<List<UserReplacementRoomJson>> allReplacements = replacementDao.loadAll();
 
         fragmentReplacementsCache.putRepl(allReplacements, institutionId, ver, date);
 
         return allReplacements;
     }
 
-    public MutableLiveData<ReplacementsJson> refreshReplacementsFromInternet(final LiveData<List<ReplacementRoomJson>> allReplacements, final String institutionId, String date, String ver) {
+    public MutableLiveData<UserReplacementsJson> refreshReplacementsFromInternet(final LiveData<List<UserReplacementRoomJson>> allReplacements, final String institutionId, String date, String ver) {
         replacementsRefreshInProgress = true;
         Log.d(CLASS_NAME, "refreshReplacementsFromInternet 100");
-        final MutableLiveData<ReplacementsJson> newReplacements = new MutableLiveData<>();
+        final MutableLiveData<UserReplacementsJson> newReplacements = new MutableLiveData<>();
 
-        webService.getReplacements(institutionId, date, ver).enqueue(new Callback<ReplacementsJson>() {
+        webService.getUserReplacements(institutionId, date, ver).enqueue(new Callback<UserReplacementsJson>() {
 
-            List<ReplacementRoomJson> replsJson;
+            List<UserReplacementRoomJson> replsJson;
 
             @Override
-            public void onResponse(Call<ReplacementsJson> call, final Response<ReplacementsJson> response) {
+            public void onResponse(Call<UserReplacementsJson> call, final Response<UserReplacementsJson> response) {
 
                 Log.d(CLASS_NAME, "refreshReplacementsFromInternet onResponse url: " + call.request().url());
 
@@ -110,11 +110,11 @@ public class FragmentReplacementsRepository {
                             if(response.body() != null) {
                                 Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse Thread 200");
 
-                                List<ReplacementRoomJson> repls = response.body().getReplacements();
+                                List<UserReplacementRoomJson> repls = response.body().getReplacements();
 
                                 Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse Thread 300");
 
-                                for(ReplacementRoomJson repl : repls){
+                                for(UserReplacementRoomJson repl : repls){
                                     Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse Thread 400");
                                     repl.setInstitutId(institutionId);
                                     repl.setVer(response.body().getVer());
@@ -139,13 +139,13 @@ public class FragmentReplacementsRepository {
                     Log.d(CLASS_NAME, "refreshReplacementsFromInternet onResponse error errorBody: " + response.errorBody());
                 }
 
-                //List<ReplacementsJson.ReplacementRoomJson> jsonReplacements = response.body().getReplacements();
+                //List<UserReplacementsJson.UserReplacementRoomJson> jsonReplacements = response.body().getReplacements();
                 //Log.i("ActivityMainRepository", jsonReplacements.get(1).getReplacement());
                 Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse 300");
             }
 
             @Override
-            public void onFailure(Call<ReplacementsJson> call, Throwable t) {
+            public void onFailure(Call<UserReplacementsJson> call, Throwable t) {
                 Log.d(CLASS_NAME, "refreshReplacementsFromInternet onFailure url: " + call.request().url());
                 Log.i(CLASS_NAME, "refreshReplacementsFromInternet onFailure 100");
                 t.printStackTrace();
