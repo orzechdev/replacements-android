@@ -13,8 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.studytor.app.R;
+import com.studytor.app.adapters.ReplacementsListRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionProfileReplacementsBinding;
+import com.studytor.app.models.ReplacementTask;
 import com.studytor.app.viewmodel.FragmentInstitutionProfileReplacementsViewModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by przemek19980102 on 21.10.2017.
@@ -49,6 +54,15 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
+
+        List<ReplacementTask> items = new ArrayList<>();
+        items.add(new ReplacementTask(1,"1","1","repl 1",1,1));
+        items.add(new ReplacementTask(2,"2","2","repl 2",2,2));
+        items.add(new ReplacementTask(3,"3","3","repl 3",3,3));
+
+        //Display RecyclerView with institutions
+        mAdapter = new ReplacementsListRecyclerViewAdapter(items);
+        recyclerView.setAdapter(mAdapter);
 
         return binding.getRoot();
     }

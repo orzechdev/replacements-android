@@ -1,9 +1,7 @@
 package com.studytor.app.adapters;
 
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +9,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.studytor.app.R;
+import com.studytor.app.models.ReplacementTask;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderAdapter;
@@ -24,8 +23,8 @@ import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderAdapter;
  * Created by Dawid on 04.11.2017.
  */
 
-public class ReplacementListRecyclerViewAdapter extends RecyclerView.Adapter<ReplacementListRecyclerViewAdapter.ViewHolder> implements StickyHeaderAdapter<ReplacementListRecyclerViewAdapter.HeaderHolder> {
-//    private ArrayList<ReplacementTask> mReplacements;
+public class ReplacementsListRecyclerViewAdapter extends RecyclerView.Adapter<ReplacementsListRecyclerViewAdapter.ViewHolder> implements StickyHeaderAdapter<ReplacementsListRecyclerViewAdapter.HeaderHolder> {
+    private List<ReplacementTask> mReplacements;
 //    private ArrayList<ClassTask> mClasses;
 //    private ArrayList<TeacherTask> mTeachers;
 //    private ArrayList<Long> mClassesNum;
@@ -71,10 +70,11 @@ public class ReplacementListRecyclerViewAdapter extends RecyclerView.Adapter<Rep
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ReplacementListRecyclerViewAdapter(//ArrayList<ReplacementTask> myReplacements, ArrayList<ClassTask> myClasses, ArrayList<TeacherTask> myTeachers,
-                               ArrayList<Long> myClassesNum, ArrayList<Long> myTeachersNum,
-                               int myTodayReplCount, int myTomorrowReplCount) {
-//        mReplacements = myReplacements;
+    public ReplacementsListRecyclerViewAdapter(List<ReplacementTask> myReplacements//, ArrayList<ClassTask> myClasses, ArrayList<TeacherTask> myTeachers,
+                                               //ArrayList<Long> myClassesNum, ArrayList<Long> myTeachersNum,
+                                               //int myTodayReplCount, int myTomorrowReplCount
+    ) {
+        mReplacements = myReplacements;
 //        mClasses = myClasses;
 //        mTeachers = myTeachers;
 //        mClassesNum = myClassesNum;
@@ -86,7 +86,7 @@ public class ReplacementListRecyclerViewAdapter extends RecyclerView.Adapter<Rep
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ReplacementListRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ReplacementsListRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.replacement_view, parent, false);
         // set the view's size, margins, paddings and layout parameters
@@ -98,7 +98,7 @@ public class ReplacementListRecyclerViewAdapter extends RecyclerView.Adapter<Rep
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-//        ReplacementTask replTask = mReplacements.get(position);
+        ReplacementTask replTask = mReplacements.get(position);
 //        if(mTodayReplCount == 0 && mTomorrowReplCount == 0 && position == 0) {
 //            holder.rowRepl.setVisibility(View.GONE);
 //            holder.rowNone.setVisibility(View.VISIBLE);
@@ -119,62 +119,62 @@ public class ReplacementListRecyclerViewAdapter extends RecyclerView.Adapter<Rep
 //            holder.rowRepl.setVisibility(View.GONE);
 //        }else
 //        if(replTask.isReplacements() && (mTodayReplCount != 0 || mTomorrowReplCount != 0)){
-//            holder.rowRepl.setVisibility(View.VISIBLE);
-//            holder.rowNone.setVisibility(View.GONE);
-//            holder.rowNoneInside.setVisibility(View.GONE);
-//
-//            String newNumber = replTask.getNumber();
-//            if (newNumber != null && !newNumber.isEmpty()) {
-//                String[] arrayNumberStr = newNumber.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(" ", "").split(",");
-//                String lastNumberStr = (arrayNumberStr.length > 1) ? "-" + arrayNumberStr[arrayNumberStr.length - 1] : "";
-//                String rowNumberStr = arrayNumberStr[0] + lastNumberStr;
-//                holder.rowNumber.setText(rowNumberStr);
-//                holder.rowLesson.setText(getString(R.string.lesson));
-//            } else {
-//                holder.rowNumber.setText("");
-//                holder.rowLesson.setText("");
-//            }
-//            long newClassNumber = replTask.getClassNumber();
-//            long newDefaultInteger = replTask.getDefaultInteger();
-//            if (replTask.getReplacement().equals("0") && newClassNumber==0 && newDefaultInteger==0){
-//                holder.rowClassRepl.setText(getString(R.string.set_no_replacements));
-//            }else if (newClassNumber != 0) {
-//                int classNum = mClassesNum.indexOf(newClassNumber);
-//                String class_name;
-//                if (classNum != -1){
-//                    class_name = mClasses.get(classNum).getName();
-//                }else{
-//                    class_name = "";
-//                }
-//                String rowClassReplStr = class_name + " - " + Html.fromHtml(Html.fromHtml(replTask.getReplacement()).toString());
-//                holder.rowClassRepl.setText(rowClassReplStr);
-//            } else {
-//                holder.rowClassRepl.setText(Html.fromHtml(Html.fromHtml(replTask.getReplacement()).toString()));
-//            }
-//            if (newDefaultInteger != 0) {
-//                int teacherNum = mTeachersNum.indexOf(newDefaultInteger);
-//                String teacher_name;
-//                if (teacherNum != -1){
-//                    teacher_name = mTeachers.get(teacherNum).getName();
-//                }else{
-//                    teacher_name = "";
-//                }
-//                holder.rowDefault.setVisibility(View.VISIBLE);
-//                String rowDefaultStr = getString(R.string.repl_for) + " " + teacher_name;
-//                holder.rowDefault.setText(rowDefaultStr);
-//            } else {
-//                holder.rowDefault.setVisibility(View.GONE);
-//            }
-//            float scale = getResources().getDisplayMetrics().density;
-//            int dpAs8px = (int) (8*scale + 0.5f);
-//            int dpAs12px = (int) (12*scale + 0.5f);
-//            if (newNumber == null || newNumber.isEmpty() && newClassNumber == 0 && newDefaultInteger == 0){
-//                holder.columnNumber.setVisibility(View.GONE);
-//                holder.rowClassRepl.setPadding(dpAs12px, dpAs8px, dpAs12px, dpAs8px);
-//            }else{
-//                holder.columnNumber.setVisibility(View.VISIBLE);
-//                holder.rowClassRepl.setPadding(dpAs8px, dpAs8px, dpAs12px, 0);
-//            }
+            holder.rowRepl.setVisibility(View.VISIBLE);
+            holder.rowNone.setVisibility(View.GONE);
+            holder.rowNoneInside.setVisibility(View.GONE);
+
+            String newNumber = replTask.getNumber();
+            if (newNumber != null && !newNumber.isEmpty()) {
+                String[] arrayNumberStr = newNumber.replaceAll("\\[", "").replaceAll("\\]", "").replaceAll(" ", "").split(",");
+                String lastNumberStr = (arrayNumberStr.length > 1) ? "-" + arrayNumberStr[arrayNumberStr.length - 1] : "";
+                String rowNumberStr = arrayNumberStr[0] + lastNumberStr;
+                holder.rowNumber.setText(rowNumberStr);
+                holder.rowLesson.setText(holder.itemView.getResources().getString(R.string.lesson));
+            } else {
+                holder.rowNumber.setText("");
+                holder.rowLesson.setText("");
+            }
+            long newClassNumber = replTask.getClassNumber();
+            long newDefaultInteger = replTask.getDefaultInteger();
+            if (replTask.getReplacement().equals("0") && newClassNumber==0 && newDefaultInteger==0){
+                holder.rowClassRepl.setText(holder.itemView.getResources().getString(R.string.set_no_replacements));
+            }else if (newClassNumber != 0) {
+            //    int classNum = mClassesNum.indexOf(newClassNumber);
+                String class_name;
+            //    if (classNum != -1){
+            //        class_name = mClasses.get(classNum).getName();
+            //    }else{
+                    class_name = "";
+            //    }
+                String rowClassReplStr = class_name + " - " + Html.fromHtml(Html.fromHtml(replTask.getReplacement()).toString());
+                holder.rowClassRepl.setText(rowClassReplStr);
+            } else {
+                holder.rowClassRepl.setText(Html.fromHtml(Html.fromHtml(replTask.getReplacement()).toString()));
+            }
+            if (newDefaultInteger != 0) {
+            //    int teacherNum = mTeachersNum.indexOf(newDefaultInteger);
+                String teacher_name;
+            //    if (teacherNum != -1){
+            //        teacher_name = mTeachers.get(teacherNum).getName();
+            //    }else{
+                    teacher_name = "";
+            //    }
+                holder.rowDefault.setVisibility(View.VISIBLE);
+                String rowDefaultStr = holder.itemView.getResources().getString(R.string.repl_for) + " " + teacher_name;
+                holder.rowDefault.setText(rowDefaultStr);
+            } else {
+                holder.rowDefault.setVisibility(View.GONE);
+            }
+            float scale = holder.itemView.getResources().getDisplayMetrics().density;
+            int dpAs8px = (int) (8*scale + 0.5f);
+            int dpAs12px = (int) (12*scale + 0.5f);
+            if (newNumber == null || newNumber.isEmpty() && newClassNumber == 0 && newDefaultInteger == 0){
+                holder.columnNumber.setVisibility(View.GONE);
+                holder.rowClassRepl.setPadding(dpAs12px, dpAs8px, dpAs12px, dpAs8px);
+            }else{
+                holder.columnNumber.setVisibility(View.VISIBLE);
+                holder.rowClassRepl.setPadding(dpAs8px, dpAs8px, dpAs12px, 0);
+            }
 //            holder.rowView.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
@@ -187,14 +187,14 @@ public class ReplacementListRecyclerViewAdapter extends RecyclerView.Adapter<Rep
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return 1;//mReplacements.size();
+        return mReplacements.size();
     }
     @Override
     public long getHeaderId(int position) {
 //        if(position < mTodayReplCount)
-//            return 1;
+            return 1;
 //        else
-            return 2;
+//            return 2;
     }
 
     @Override
@@ -205,13 +205,13 @@ public class ReplacementListRecyclerViewAdapter extends RecyclerView.Adapter<Rep
     @Override
     public void onBindHeaderViewHolder(HeaderHolder holder, int position) {
 //        if(position < mTodayReplCount && mTodayReplCount != 0) {
-//            holder.wrapperDate.setVisibility(View.VISIBLE);
-//            Calendar calendar = Calendar.getInstance();
-//            Date today = calendar.getTime();
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
-//            String todayAsString = dateFormat.format(today);
-//            String headerStr = getString(R.string.today) + " - " + todayAsString;
-//            holder.header.setText(headerStr);
+            holder.wrapperDate.setVisibility(View.VISIBLE);
+            Calendar calendar = Calendar.getInstance();
+            Date today = calendar.getTime();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+            String todayAsString = dateFormat.format(today);
+            String headerStr = holder.itemView.getResources().getString(R.string.today) + " - " + todayAsString;
+            holder.header.setText(headerStr);
 //        }else if(mTomorrowReplCount != 0 && position >= mTodayReplCount){
 //            holder.wrapperDate.setVisibility(View.VISIBLE);
 //            Calendar calendar = Calendar.getInstance();
