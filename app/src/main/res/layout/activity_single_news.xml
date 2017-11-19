@@ -11,107 +11,110 @@
             type="com.studytor.app.viewmodel.ActivitySingleNewsViewModel.Observable"/>
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.studytor.app.activities.ActivitySingleNews"
-        android:padding="0dp"
-        android:fitsSystemWindows="true">
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        android:fitsSystemWindows="true"
+        android:layout_marginTop="-25dp"
+        app:theme="@style/ActivityInstitutionProfile">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/headerWrapper">
+                    android:orientation="vertical"
+                    android:fitsSystemWindows="true">
 
-                    <ImageView
-                        android:id="@+id/headerImage"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:adjustViewBounds="true"
-                        app:headerVisible="@{observable.singleNews.imageUrl}"
-                        android:scaleType="centerCrop"
-                        app:picassoImage="@{observable.singleNews.imageUrl}"
-                        app:layout_constraintLeft_toLeftOf="parent" />
+                        android:layout_height="wrap_content"
+                        android:id="@+id/headerWrapper">
 
-                    <!-- Image Dark Vignette -->
-                    <ImageView
+                        <ImageView
+                            android:id="@+id/headerImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:adjustViewBounds="true"
+                            app:headerVisible="@{observable.singleNews.imageUrl}"
+                            android:scaleType="centerCrop"
+                            app:picassoImage="@{observable.singleNews.imageUrl}"
+                            app:layout_constraintLeft_toLeftOf="parent" />
+
+                        <!-- Image Dark Vignette -->
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="100dp"
+                            android:background="@drawable/image_buttons_shadow" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:padding="8dp"
+                            android:layout_marginTop="33dp"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:onClick="goBack"
+                            app:srcCompat="@drawable/activity_institution_back_arrow"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="@drawable/transparent_ripple"/>
+
+                    </RelativeLayout>
+
+                    <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="75dp"
-                        android:background="@drawable/image_buttons_shadow" />
+                        android:layout_height="wrap_content"
+                        android:id="@+id/title"
+                        app:layout_constraintTop_toBottomOf="@id/headerWrapper"
+                        android:textSize="24sp"
+                        android:textColor="@color/black_text_heading"
+                        android:paddingTop="16sp"
+                        android:paddingLeft="32sp"
+                        android:paddingStart="32sp"
+                        android:paddingRight="32sp"
+                        android:paddingEnd="32sp"
+                        android:text="@{observable.singleNews.title}"/>
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:padding="8dp"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginStart="8dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:onClick="goBack"
-                        app:srcCompat="@drawable/activity_institution_back_arrow"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:foreground="@drawable/transparent_ripple"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/date"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/title"
+                        android:paddingTop="8sp"
+                        android:paddingLeft="32sp"
+                        android:paddingStart="32sp"
+                        android:paddingRight="32sp"
+                        android:paddingEnd="32sp"
+                        android:textSize="13sp"
+                        android:textColor="@color/black_text_caption"
+                        app:customDate="@{observable.singleNews.date}"/>
 
-                </RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/content"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/date"
+                        android:paddingTop="16sp"
+                        android:paddingLeft="32sp"
+                        android:paddingStart="32sp"
+                        android:paddingRight="32sp"
+                        android:paddingEnd="32sp"
+                        android:paddingBottom="32sp"
+                        android:textSize="13sp"
+                        android:textColor="@color/black_text_caption"
+                        android:text="@{observable.singleNews.content}"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/title"
-                    app:layout_constraintTop_toBottomOf="@id/headerWrapper"
-                    android:textSize="24sp"
-                    android:textColor="@color/black_text_heading"
-                    android:paddingTop="16sp"
-                    android:paddingLeft="32sp"
-                    android:paddingStart="32sp"
-                    android:paddingRight="32sp"
-                    android:paddingEnd="32sp"
-                    android:text="@{observable.singleNews.title}"/>
+                </LinearLayout>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/date"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title"
-                    android:paddingTop="8sp"
-                    android:paddingLeft="32sp"
-                    android:paddingStart="32sp"
-                    android:paddingRight="32sp"
-                    android:paddingEnd="32sp"
-                    android:textSize="13sp"
-                    android:textColor="@color/black_text_caption"
-                    app:customDate="@{observable.singleNews.date}"/>
+            </ScrollView>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/content"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/date"
-                    android:paddingTop="16sp"
-                    android:paddingLeft="32sp"
-                    android:paddingStart="32sp"
-                    android:paddingRight="32sp"
-                    android:paddingEnd="32sp"
-                    android:paddingBottom="32sp"
-                    android:textSize="13sp"
-                    android:textColor="@color/black_text_caption"
-                    android:text="@{observable.singleNews.content}"/>
-
-            </LinearLayout>
-
-        </ScrollView>
-
-    </android.support.constraint.ConstraintLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

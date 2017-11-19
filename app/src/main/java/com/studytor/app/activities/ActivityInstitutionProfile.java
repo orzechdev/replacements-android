@@ -121,15 +121,19 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
 
     @BindingAdapter("picassoCircleImage")
     public static void picassoCircleImage(CircleImageView view, String url) {
-        System.out.println("Picasso painted this circle picture : " + url);
-        Picasso.with(view.getContext()).load(url).into(view);
+        if(url != null && url.length() > 0) {
+            System.out.println("Picasso painted this circle picture : " + url);
+            Picasso.with(view.getContext()).load(url).into(view);
+        }
     }
 
     @BindingAdapter("picassoImage")
     public static void picassoImage(ImageView view, String url) {
-        System.out.println("Picasso painted this picture : " + url);
-        Picasso.with(view.getContext()).load(url).into(view);
-        view.invalidate();
+        if(url != null && url.length() > 0){
+            System.out.println("Picasso painted this picture : " + url);
+            Picasso.with(view.getContext()).load(url).into(view);
+            view.invalidate();
+        }
     }
 
     @BindingAdapter("android:layout_marginTop")

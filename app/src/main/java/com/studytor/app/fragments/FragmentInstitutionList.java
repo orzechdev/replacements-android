@@ -141,7 +141,9 @@ public class FragmentInstitutionList extends Fragment {
 
     @BindingAdapter("picassoImage")
     public static void picassoImage(CircleImageView view, String url) {
-        System.out.println("Picasso painted this picture : " + url);
-        Picasso.with(view.getContext()).load(url).into(view);
+        if(url != null && url.length() > 0) {
+            System.out.println("Picasso painted this picture : " + url);
+            Picasso.with(view.getContext()).load(url).into(view);
+        }
     }
 }
