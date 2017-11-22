@@ -1,5 +1,6 @@
 package com.studytor.app.fragments;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -15,10 +16,9 @@ import android.view.ViewGroup;
 import com.studytor.app.R;
 import com.studytor.app.adapters.ReplacementsListRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionProfileReplacementsBinding;
-import com.studytor.app.models.ReplacementTask;
+import com.studytor.app.repositories.models.SingleReplacementJson;
 import com.studytor.app.viewmodel.FragmentInstitutionProfileReplacementsViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -55,14 +55,23 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        List<ReplacementTask> items = new ArrayList<>();
-        items.add(new ReplacementTask(1,"1","1","repl 1",1,1));
-        items.add(new ReplacementTask(2,"2","2","repl 2",2,2));
-        items.add(new ReplacementTask(3,"3","3","repl 3",3,3));
+        viewModel.getReplacementsList().observeForever(new Observer<List<SingleReplacementJson>>() {
+            @Override
+            public void onChanged(@Nullable List<SingleReplacementJson> replacementJsonList) {
 
-        //Display RecyclerView with institutions
-        mAdapter = new ReplacementsListRecyclerViewAdapter(items);
-        recyclerView.setAdapter(mAdapter);
+                if(replacementJsonList != null){
+                    //Display RecyclerView with replacements
+                    mAdapter = new ReplacementsListRecyclerViewAdapter(replacementJsonList);
+                    recyclerView.setAdapter(mAdapter);
+
+                    nestedScroll.scrollTo(0, 0);
+                    recyclerView.scrollTo(0, 0);
+
+                    //errorContainer.setVisibility(View.GONE);
+                }
+
+            }
+        });
 
         return binding.getRoot();
     }

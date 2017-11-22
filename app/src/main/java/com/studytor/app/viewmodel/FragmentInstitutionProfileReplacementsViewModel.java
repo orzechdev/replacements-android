@@ -13,7 +13,9 @@ import android.support.annotation.Nullable;
 
 import com.studytor.app.repositories.NewsRepository;
 import com.studytor.app.repositories.models.SingleNews;
+import com.studytor.app.repositories.models.SingleReplacementJson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +24,7 @@ import java.util.List;
 
 public class FragmentInstitutionProfileReplacementsViewModel extends AndroidViewModel {
 
-//    private MutableLiveData<List<SingleReplacement>> replacementsList = null;
+    private MutableLiveData<List<SingleReplacementJson>> replacementsList = null;
 //
 //    Context context;
 //
@@ -38,13 +40,38 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
 
     public void setup(int institutionId) {
         // If setup was already done, do not do it again
-//        if(this.getReplacementsList() != null && this.getReplacementsList().getValue() != null)
-//            return;
-//
-//        this.replacementsList = new MutableLiveData<>();
-//        this.context = context;
+        if(this.getReplacementsList() != null && this.getReplacementsList().getValue() != null)
+            return;
+
+        this.replacementsList = new MutableLiveData<>();
 
         //TODO Obtain repl list from repo i.e. only from web
+
+        List<SingleReplacementJson> items = new ArrayList<>();
+
+        SingleReplacementJson singleRepl_1 = new SingleReplacementJson();
+        singleRepl_1.setId("1");
+        singleRepl_1.setDefaultField("Default 1");
+        singleRepl_1.setNumber("1");
+        singleRepl_1.setClassField("1a");
+        singleRepl_1.setReplacement("Repl 1");
+        items.add(singleRepl_1);
+        SingleReplacementJson singleRepl_2 = new SingleReplacementJson();
+        singleRepl_2.setId("2");
+        singleRepl_2.setDefaultField("Default 2");
+        singleRepl_2.setNumber("2");
+        singleRepl_2.setClassField("2a");
+        singleRepl_2.setReplacement("Repl 2");
+        items.add(singleRepl_2);
+        SingleReplacementJson singleRepl_3 = new SingleReplacementJson();
+        singleRepl_3.setId("3");
+        singleRepl_3.setDefaultField("Default 3");
+        singleRepl_3.setNumber("3");
+        singleRepl_3.setClassField("3a");
+        singleRepl_3.setReplacement("Repl 3");
+        items.add(singleRepl_3);
+
+        replacementsList.setValue(items);
 
 //        new Observer<List<SingleReplacement>>() {
 //            @Override
@@ -55,9 +82,9 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
 
     }
 
-//    public MutableLiveData<List<SingleReplacement>> getReplacementsList() {
-//        return replacementsList;
-//    }
+    public MutableLiveData<List<SingleReplacementJson>> getReplacementsList() {
+        return replacementsList;
+    }
 //
 //    public void setReplacementsList(List<SingleReplacement> list) {
 //        this.replacementsList.setValue(list);
