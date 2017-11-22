@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:orientation="vertical" android:background="@android:color/white">
+<layout>
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:gravity="center_vertical"
-        android:textSize="14sp"
-        android:paddingLeft="32dp"
-        android:paddingStart="32dp"
-        android:text="Plan Główny" />
+    <data>
+        <variable
+            name="obj"
+            type="com.studytor.app.adapters.ScheduleEntryRepresentation"/>
+    </data>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/gray_repl"
-        android:layout_margin="0dp"
-        android:padding="0dp"/>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="vertical" android:background="@android:color/white">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:paddingLeft="32dp"
+            android:paddingStart="32dp"
+            android:text="@{obj.name}" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_repl"
+            android:layout_margin="0dp"
+            android:padding="0dp"/>
+
+    </LinearLayout>
+
+</layout>

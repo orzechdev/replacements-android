@@ -1,115 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <android.support.v4.widget.NestedScrollView
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
+        android:layout_height="match_parent">
+    
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <android.support.v4.widget.NestedScrollView
+            android:layout_height="wrap_content">
+    
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp">
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                android:orientation="vertical">
+    
+                <android.support.v4.widget.NestedScrollView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        app:srcCompat="@drawable/ic_home_grey_24dp"/>
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:alpha="0.25"
-                        app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"/>
-
-                    <TextView
+                    android:paddingTop="8dp">
+                    <LinearLayout
                         android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:text="Lorem ipsum"
-                        android:textColor="@color/gray"
-                        android:gravity="center_vertical"
-                        />
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:alpha="0.25"
-                        app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
-                        android:text="Lorem ipsum"
-                        android:textStyle="bold"
-                        android:textColor="@color/gray"
-                        android:gravity="center_vertical"
-                        />
-
-
-                </LinearLayout>
-
-
-            </android.support.v4.widget.NestedScrollView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray_repl"
-                android:layout_margin="0dp"
-                android:padding="0dp"/>
-
-                <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-
-            <include layout="@layout/view_schedule_list_item"></include>
-
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-            <include layout="@layout/view_schedule_list_item"></include>
-
-            <!--<android.support.v7.widget.RecyclerView
-                android:id="@+id/RecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </android.support.v7.widget.RecyclerView>-->
-
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
-
-
-
-</LinearLayout>
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="16dp">
+    
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            app:srcCompat="@drawable/ic_home_grey_24dp"/>
+    
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:alpha="0.25"
+                            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+    
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:text="Lorem ipsum"
+                            android:textColor="@color/gray"
+                            android:gravity="center_vertical"
+                            />
+    
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:alpha="0.25"
+                            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+    
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:text="Lorem ipsum"
+                            android:textStyle="bold"
+                            android:textColor="@color/gray"
+                            android:gravity="center_vertical"
+                            />
+    
+    
+                    </LinearLayout>
+    
+    
+                </android.support.v4.widget.NestedScrollView>
+    
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_repl"
+                    android:layout_margin="0dp"
+                    android:padding="0dp"/>
+    
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/RecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+    
+                </android.support.v7.widget.RecyclerView>
+    
+            </LinearLayout>
+    
+        </android.support.v4.widget.NestedScrollView>
+    
+    
+    
+    </LinearLayout>
+</layout>
