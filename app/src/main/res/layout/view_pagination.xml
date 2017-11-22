@@ -5,7 +5,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/gray_repl">
     
         <LinearLayout
             android:layout_width="wrap_content"
@@ -42,7 +43,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp"
                 android:id="@+id/current"
-                android:background="@drawable/background_circle_black"/>
+                android:background="@drawable/background_circle_new_blue_light"/>
 
             <ImageView
                 android:layout_width="48dp"
