@@ -30,7 +30,7 @@ public class ReplacementsRepository {
     private ReplacementsCache replacementsCache;
     private WebService webService;
 
-    private MutableLiveData<List<SingleReplacementJson>> replacementsData;
+    private MutableLiveData<ReplacementsJson> replacementsData;
 
     private ReplacementsRepository(Context context) {
         this.webService = RetrofitClientSingleton.getInstance().getWebService();
@@ -46,17 +46,17 @@ public class ReplacementsRepository {
         return repositoryInstance;
     }
 
-    public MutableLiveData<List<SingleReplacementJson>> getReplacementsData() {
+    public MutableLiveData<ReplacementsJson> getReplacementsData() {
         return replacementsData;
     }
 
-    public LiveData<List<SingleReplacementJson>> getReplacements(int institutionId, String date) {
+    public LiveData<ReplacementsJson> getReplacements(int institutionId, String date) {
         Log.i(CLASS_NAME, "getReplacements 100");
 
         // TODO Check when was last update and update if there wasn't update for a long time try update
         // TODO (IMPORTANT: data currently is not updating in proper way (with using ver variable))
 
-        LiveData<List<SingleReplacementJson>> replacementCache = replacementsCache.getReplByDate(date);
+        LiveData<ReplacementsJson> replacementCache = replacementsCache.getReplByDate(date);
         if(replacementCache != null) {
             Log.i(CLASS_NAME, "getReplacements 200");
             return replacementCache;
@@ -77,7 +77,7 @@ public class ReplacementsRepository {
 
                 if(response.isSuccessful() && response.body().getReplacements() != null){
                     Log.i(CLASS_NAME, "getReplacementsFromWeb SUCCESSFUL");
-                    List<SingleReplacementJson> replacementsJson = response.body().getReplacements();
+                    ReplacementsJson replacementsJson = response.body();
 
                     replacementsData.postValue(replacementsJson);
 

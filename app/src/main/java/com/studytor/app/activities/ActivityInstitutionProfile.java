@@ -81,7 +81,9 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
 
         adapter.addFragment(new FragmentInstitutionProfileSchedule(), "Plany");
 
-        adapter.addFragment(new FragmentInstitutionProfileReplacements(), "Zastępstwa");
+        FragmentInstitutionProfileReplacements replacementsFragment = new FragmentInstitutionProfileReplacements();
+        replacementsFragment.setup(institutionId);
+        adapter.addFragment(replacementsFragment, "Zastępstwa");
 
         viewPager.setAdapter(adapter);
     }

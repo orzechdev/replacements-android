@@ -12,10 +12,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.studytor.app.R;
 import com.studytor.app.adapters.ReplacementsListRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionProfileReplacementsBinding;
+import com.studytor.app.repositories.models.ReplacementsJson;
 import com.studytor.app.repositories.models.SingleReplacementJson;
 import com.studytor.app.viewmodel.FragmentInstitutionProfileReplacementsViewModel;
 
@@ -31,6 +33,7 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
     private FragmentInstitutionProfileReplacementsBinding binding;
 
     private RecyclerView recyclerView;
+    private RelativeLayout errorContainer;
     private NestedScrollView nestedScroll;
     private RecyclerView.Adapter mAdapter;
     private int institutionId;
@@ -51,13 +54,14 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
 
         recyclerView = (RecyclerView) binding.getRoot().findViewById(R.id.recycler_view);
         nestedScroll = (NestedScrollView) binding.getRoot().findViewById(R.id.nestedScroll);
+        errorContainer = (RelativeLayout) binding.getRoot().findViewById(R.id.error_container);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        viewModel.getReplacementsList().observeForever(new Observer<List<SingleReplacementJson>>() {
+        viewModel.getReplacementsList().observeForever(new Observer<ReplacementsJson>() {
             @Override
-            public void onChanged(@Nullable List<SingleReplacementJson> replacementJsonList) {
+            public void onChanged(@Nullable ReplacementsJson replacementJsonList) {
 
                 if(replacementJsonList != null){
                     //Display RecyclerView with replacements
@@ -67,7 +71,11 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
                     nestedScroll.scrollTo(0, 0);
                     recyclerView.scrollTo(0, 0);
 
-                    //errorContainer.setVisibility(View.GONE);
+                    errorContainer.setVisibility(View.GONE);
+                }
+                else
+                {
+                    errorContainer.setVisibility(View.VISIBLE);
                 }
 
             }

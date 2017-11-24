@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.studytor.app.BR;
 import com.studytor.app.R;
 import com.studytor.app.models.ReplacementTask;
+import com.studytor.app.repositories.models.ReplacementsJson;
 import com.studytor.app.repositories.models.SingleReplacementJson;
 
 import java.text.SimpleDateFormat;
@@ -28,7 +29,7 @@ import ca.barrenechea.widget.recyclerview.decoration.StickyHeaderAdapter;
  */
 
 public class ReplacementsListRecyclerViewAdapter extends RecyclerView.Adapter<ReplacementsListRecyclerViewAdapter.ViewHolder> implements StickyHeaderAdapter<ReplacementsListRecyclerViewAdapter.HeaderHolder> {
-    private List<SingleReplacementJson> mReplacements;
+    private ReplacementsJson mReplacements;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final ViewDataBinding binding;
@@ -53,7 +54,7 @@ public class ReplacementsListRecyclerViewAdapter extends RecyclerView.Adapter<Re
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ReplacementsListRecyclerViewAdapter(List<SingleReplacementJson> myReplacements) {
+    public ReplacementsListRecyclerViewAdapter(ReplacementsJson myReplacements) {
         mReplacements = myReplacements;
         //noRepl = noReplacements;
     }
@@ -72,7 +73,7 @@ public class ReplacementsListRecyclerViewAdapter extends RecyclerView.Adapter<Re
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        SingleReplacementJson replTask = mReplacements.get(position);
+        SingleReplacementJson replTask = mReplacements.getReplacements().get(position);
         holder.bind(replTask);
 //        if(mTodayReplCount == 0 && mTomorrowReplCount == 0 && position == 0) {
 //            holder.rowRepl.setVisibility(View.GONE);
@@ -170,12 +171,12 @@ public class ReplacementsListRecyclerViewAdapter extends RecyclerView.Adapter<Re
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mReplacements.size();
+        return mReplacements.getReplacements().size();
     }
     @Override
     public long getHeaderId(int position) {
         if(mReplacements == null) return 0;
-        return mReplacements.size();
+        return mReplacements.getReplacements().size();
     }
 
     @Override
