@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.databinding.BaseObservable;
+import android.databinding.BindingAdapter;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -37,6 +38,8 @@ public class FragmentInstitutionProfileSchedulesViewModel extends AndroidViewMod
         this.institutionId = institutionId;
         this.observable.schedule = new MutableLiveData<>();
 
+        this.observable.helper = (new BindingHelper());
+
         scheduleRepository = ScheduleRepository.getInstance(this.getApplication());
 
         scheduleRepository.getScheduleData().observeForever(new Observer<Schedule>() {
@@ -53,6 +56,31 @@ public class FragmentInstitutionProfileSchedulesViewModel extends AndroidViewMod
 
         public MutableLiveData<Schedule> schedule = null;
 
+        public BindingHelper helper = null;
+
+    }
+
+    public class BindingHelper{
+        public String level0Title = "";
+        public String level1Title = "";
+
+        public BindingHelper(){}
+
+        public String getLevel0Title() {
+            return level0Title;
+        }
+
+        public void setLevel0Title(String level0Title) {
+            this.level0Title = level0Title;
+        }
+
+        public String getLevel1Title() {
+            return level1Title;
+        }
+
+        public void setLevel1Title(String level1Title) {
+            this.level1Title = level1Title;
+        }
     }
 
 }

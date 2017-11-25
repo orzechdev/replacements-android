@@ -117,8 +117,13 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
         }
     }
 
-    public void goBack(View v){
+    @Override
+    public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    public void goBack(View v){
+        onBackPressed();
     }
 
     @BindingAdapter("picassoCircleImage")

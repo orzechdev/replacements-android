@@ -58,7 +58,6 @@ public class ScheduleSelectRecyclerViewAdapter extends RecyclerView.Adapter<Sche
     public void onBindViewHolder(ScheduleSelectRecyclerViewAdapter.MyViewHolder holder, int position) {
 
         final ScheduleEntryRepresentation entry = data.get(position);
-        System.out.println("BINDING XD " + entry.getName());
         holder.bind(entry);
 
     }
