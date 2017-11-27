@@ -63,7 +63,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activities.ActivitySingleNews"></activity>
+        <activity android:name=".activities.ActivitySingleNews" />
+        <activity android:name=".activities.ActivitySingleLessonplan"></activity>
     </application>
 
 </manifest>

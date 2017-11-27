@@ -3,6 +3,7 @@ package com.studytor.app.fragments;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
@@ -21,12 +22,14 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 import com.studytor.app.R;
 import com.studytor.app.activities.ActivityMain;
+import com.studytor.app.activities.ActivitySingleLessonplan;
 import com.studytor.app.adapters.NewsListRecyclerViewAdapter;
 import com.studytor.app.adapters.ScheduleEntryRepresentation;
 import com.studytor.app.adapters.ScheduleSelectRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionProfileScheduleBinding;
 import com.studytor.app.databinding.FragmentScheduleBinding;
 import com.studytor.app.helpers.ItemClickSupport;
+import com.studytor.app.interfaces.ApplicationConstants;
 import com.studytor.app.repositories.models.Schedule;
 import com.studytor.app.repositories.models.ScheduleLessonplan;
 import com.studytor.app.repositories.models.ScheduleSection;
@@ -141,7 +144,14 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
             if(path[0] == -1) return;
             if(path[1] == -1) return;
 
-            Toast.makeText(getContext(), schedule.getLessonplans().get(path[0]).getSections().get(path[1]).getScheduleUnits().get(position).getName(), Toast.LENGTH_SHORT).show();
+            String name = schedule.getLessonplans().get(path[0]).getSections().get(path[1]).getScheduleUnits().get(position).getName();
+            String url = schedule.getLessonplans().get(path[0]).getSections().get(path[1]).getScheduleUnits().get(position).getUrl();
+
+            Intent intent = new Intent(this.getActivity().getApplicationContext(), ActivitySingleLessonplan.class);
+            intent.putExtra(ApplicationConstants.INTENT_LESSONPLAN_NAME, name);
+            intent.putExtra(ApplicationConstants.INTENT_LESSONPLAN_URL, url);
+
+            startActivity(intent);
 
         }
 
@@ -187,7 +197,6 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
 
             level++;
         }
-        System.out.println("THE LEVEL IS: " + level);
         if(tempLevel == -1){
 
             List<ScheduleEntryRepresentation> arr = new ArrayList<>();
