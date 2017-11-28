@@ -49,7 +49,7 @@ public class FragmentInstitutionProfileSchedulesViewModel extends AndroidViewMod
             }
         });
 
-        scheduleRepository.getNews(this.institutionId);
+        scheduleRepository.getSchedulesWithCacheCheck(this.institutionId);
     }
 
     public class Observable extends BaseObservable{

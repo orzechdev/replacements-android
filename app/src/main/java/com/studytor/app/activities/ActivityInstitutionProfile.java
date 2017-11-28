@@ -79,7 +79,9 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
         newsFragment.setup(institutionId);
         adapter.addFragment(newsFragment, "Aktualności");
 
-        adapter.addFragment(new FragmentInstitutionProfileSchedule(), "Plany");
+        FragmentInstitutionProfileSchedule scheduleFragment = new FragmentInstitutionProfileSchedule();
+        scheduleFragment.setup(institutionId);
+        adapter.addFragment(scheduleFragment, "Plany");
 
         FragmentInstitutionProfileReplacements replacementsFragment = new FragmentInstitutionProfileReplacements();
         replacementsFragment.setup(institutionId);

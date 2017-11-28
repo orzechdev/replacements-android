@@ -39,12 +39,14 @@ public class ActivitySingleNewsViewModel extends AndroidViewModel{
             public void onChanged(@Nullable News news) {
                 SingleNews temp = null;
                 //Look for corresponding news on the given page in the given institution
-                for(SingleNews n : news.getNewsList()){
-                    if(n.getId() == pId){
-                        temp = n;
+                if(news != null && news.getNewsList() != null && news.getNewsList().size() > 0) {
+                    for(SingleNews n : news.getNewsList()){
+                        if(n.getId() == pId){
+                            temp = n;
+                        }
                     }
+                    setSingleNews(temp);
                 }
-                setSingleNews(temp);
             }
         });
 

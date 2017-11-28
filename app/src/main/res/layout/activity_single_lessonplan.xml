@@ -32,66 +32,95 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <HorizontalScrollView
-        android:id="@+id/dayNamesScrollView"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        android:layout_width="match_parent"
-        android:background="@android:color/white"
-        android:layout_height="48dp"
-        android:scrollbars="none">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+        <RelativeLayout
+            android:id="@+id/weekDays"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:background="@color/new_blue_light"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:gravity="center"
             android:padding="4dp">
 
-            <TextView
-                android:layout_width="128dp"
+            <ImageView
+                android:id="@+id/previousDay"
+                android:layout_width="56dp"
+                android:layout_height="32dp"
+                app:srcCompat="@drawable/ic_keyboard_arrow_left_white_24dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:text="Poniedziałek"/>
+                android:orientation="horizontal"
+                android:gravity="left"
+                android:layout_toRightOf="@id/previousDay"
+                android:layout_toEndOf="@id/previousDay"
+                android:layout_toStartOf="@id/nextDay"
+                android:layout_toLeftOf="@id/nextDay">
 
-            <TextView
-                android:layout_width="128dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:text="Wtorek"/>
+                <TextView
+                    android:layout_width="240dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:text="Poniedziałek"/>
 
-            <TextView
-                android:layout_width="128dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:text="Środa"/>
+                <TextView
+                    android:layout_width="240dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:visibility="visible"
+                    android:text="Wtorek"/>
 
-            <TextView
-                android:layout_width="128dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:text="Czwartek"/>
+                <TextView
+                    android:layout_width="240dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:visibility="visible"
+                    android:text="Czwartek"/>
 
-            <TextView
-                android:layout_width="128dp"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:textAlignment="center"
-                android:text="Piątek"/>
+                <TextView
+                    android:layout_width="240dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:visibility="visible"
+                    android:text="Piątek"/>
 
-        </LinearLayout>
 
-    </HorizontalScrollView>
+
+            </LinearLayout>
+
+
+
+            <ImageView
+                android:id="@+id/nextDay"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_white_24dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+
+
+        </RelativeLayout>
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/dayNamesScrollView">
+        app:layout_constraintTop_toBottomOf="@+id/weekDays">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -207,23 +236,43 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@android:color/white"
                 android:paddingLeft="8dp"
                 android:paddingStart="8dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:columnCount="2"
+                android:rowCount="6">
 
-                <include layout="@layout/view_single_lessonplan"/>
-                <include layout="@layout/view_single_lessonplan"/>
-                <include layout="@layout/view_single_lessonplan"/>
-                <include layout="@layout/view_single_lessonplan"/>
-                <include layout="@layout/view_single_lessonplan"/>
-                <include layout="@layout/view_single_lessonplan"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <View android:layout_width="240dp" android:layout_height="68dp" />
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
+                <include layout="@layout/view_single_lessonplan" android:layout_width="240dp" android:layout_height="68dp"/>
 
 
-            </LinearLayout>
+            </GridLayout>
 
 
         </LinearLayout>
@@ -236,7 +285,7 @@
         android:layout_height="8dp"
         android:background="@drawable/toolbar_dropshadow"
         android:scaleType="centerInside"
-        app:layout_constraintTop_toBottomOf="@id/dayNamesScrollView" />
+        app:layout_constraintTop_toBottomOf="@id/weekDays" />
 
 
 </android.support.constraint.ConstraintLayout>

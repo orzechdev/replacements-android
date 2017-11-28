@@ -12,11 +12,13 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/new_white_dark"
+        >
     
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
     
             <LinearLayout
                 android:layout_width="match_parent"
@@ -24,8 +26,10 @@
                 android:orientation="vertical">
     
                 <android.support.v4.widget.NestedScrollView
+                    android:id="@+id/cookies"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/white"
                     android:paddingTop="8dp">
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -96,6 +100,39 @@
                     android:layout_height="wrap_content">
     
                 </android.support.v7.widget.RecyclerView>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/error_container"
+                    android:background="@color/new_white_dark"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_centerInParent="true"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="128dp"
+                            android:layout_height="128dp"
+                            android:layout_marginTop="128dp"
+                            app:srcCompat="@drawable/ic_cloud_off_white_128dp"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:textAlignment="center"
+                            android:textColor="@android:color/white"
+                            android:gravity="center"
+                            android:text="@string/fragment_institution_list_no_connection_header"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
     
             </LinearLayout>
     

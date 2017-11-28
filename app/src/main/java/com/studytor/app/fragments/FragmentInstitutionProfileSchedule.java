@@ -10,12 +10,14 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,8 @@ import com.studytor.app.viewmodel.FragmentScheduleViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.view.View.GONE;
+
 /**
  * Created by przemek19980102 on 21.10.2017.
  */
@@ -53,12 +57,19 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
     private int level = 0;
     private int lastIndex = 0;
     private int[] path = {-1,-1,-1};
+    int institutionId;
 
     private RecyclerView.Adapter mAdapter;
 
     RecyclerView recyclerView;
+    RelativeLayout errorContainer;
+    NestedScrollView cookies;
     TextView lvl0;
     ImageView lvlHome;
+
+    public void setup(int institutionId){
+        this.institutionId = institutionId;
+    }
 
     @Nullable
     @Override
@@ -69,13 +80,16 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_institution_profile_schedule, container, false);
 
-        viewModel.setup(1);
+        System.out.println("SCHEDULE INSTITUTION ID: " + institutionId);
+        viewModel.setup(institutionId);
 
         binding.setObj(viewModel.getObservable());
 
         recyclerView = (RecyclerView) binding.getRoot().findViewById(R.id.RecyclerView);
         lvlHome = (ImageView) binding.getRoot().findViewById(R.id.level_home);
         lvl0 = (TextView) binding.getRoot().findViewById(R.id.level_0_tv);
+        errorContainer = (RelativeLayout) binding.getRoot().findViewById(R.id.error_container);
+        cookies = (NestedScrollView) binding.getRoot().findViewById(R.id.cookies);
 
         // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -97,6 +111,14 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
                     //Display RecyclerView
                     mAdapter = new ScheduleSelectRecyclerViewAdapter(arr);
                     recyclerView.setAdapter(mAdapter);
+                    errorContainer.setVisibility(View.GONE);
+                    cookies.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }else{
+                    //Show no connection screen
+                    errorContainer.setVisibility(View.VISIBLE);
+                    cookies.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
                 }
 
             }
