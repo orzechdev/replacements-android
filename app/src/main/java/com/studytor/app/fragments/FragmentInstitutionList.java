@@ -26,6 +26,7 @@ import com.studytor.app.activities.ActivityMain;
 import com.studytor.app.activities.ActivityInstitutionProfile;
 import com.studytor.app.adapters.InstitutionRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionListBinding;
+import com.studytor.app.globals.Global;
 import com.studytor.app.helpers.ItemClickSupport;
 import com.studytor.app.interfaces.ApplicationConstants;
 import com.studytor.app.viewmodel.FragmentInstitutionListViewModel;
@@ -36,6 +37,8 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 /**
  * Created by Dawid on 19.07.2017.
  */
@@ -44,12 +47,6 @@ public class FragmentInstitutionList extends Fragment {
 
     private FragmentInstitutionListViewModel viewModel;
     private FragmentInstitutionListBinding binding;
-
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView recyclerView;
-    private RelativeLayout errorMessage;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     @Nullable
     @Override
@@ -64,72 +61,9 @@ public class FragmentInstitutionList extends Fragment {
 
         final FragmentInstitutionListViewModel.Observable observable = viewModel.getObservable();
         binding.setObservable(observable);
+        binding.setViewModel(viewModel);
 
         viewModel.setup();
-
-        //Pull to refresh implementation
-        swipeRefreshLayout = (SwipeRefreshLayout) binding.getRoot().findViewById(R.id.swipe_container);
-        swipeRefreshLayout.setRefreshing(true);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                viewModel.requestRepositoryUpdate();
-            }
-        });
-
-
-        //Recycler view implementation
-        recyclerView = (RecyclerView) binding.getRoot().findViewById(R.id.recycler_view);
-        errorMessage = (RelativeLayout) binding.getRoot().findViewById(R.id.error_container);
-
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        //Always from web for now
-        viewModel.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
-            @Override
-            public void onChanged(@Nullable List<SingleInstitution> institutions) {
-
-                List<SingleInstitution> items = institutions;
-
-                if(items != null && items.size() > 0){
-
-                    //Display RecyclerView with institutions
-                    errorMessage.setVisibility(View.INVISIBLE);
-                    mAdapter = new InstitutionRecyclerViewAdapter(items);
-                    recyclerView.setAdapter(mAdapter);
-                    recyclerView.setVisibility(View.VISIBLE);
-
-
-                }else{
-
-                    //Display no data screen
-                    recyclerView.setVisibility(View.GONE);
-                    if(errorMessage.getVisibility() != View.VISIBLE){
-                        errorMessage.setVisibility(View.VISIBLE);
-                        AlphaAnimation aa = new AlphaAnimation(0f, 1f);
-                        aa.setDuration(1000);
-                        aa.setFillAfter(true);
-                        errorMessage.startAnimation(aa);
-                    }
-
-                }
-                //Stop swipeRefreshLayout refreshing animation
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
-        //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                InstitutionRecyclerViewAdapter tempAdapter = (InstitutionRecyclerViewAdapter) mAdapter;
-                Intent intent = new Intent(getContext(), ActivityInstitutionProfile.class);
-                intent.putExtra(ApplicationConstants.INTENT_INSTITUTION_ID, viewModel.getInstitutionList().getValue().get(position).getId());
-                startActivity(intent);
-            }
-        });
 
         return binding.getRoot();
     }
@@ -144,6 +78,31 @@ public class FragmentInstitutionList extends Fragment {
         if(url != null && url.length() > 0) {
             System.out.println("Picasso painted this picture : " + url);
             Picasso.with(view.getContext()).load(url).into(view);
+        }
+    }
+
+    @BindingAdapter("setupRecyclerView")
+    public static void setupRecyclerView(final RecyclerView view, List<SingleInstitution> data){
+        final List<SingleInstitution> list = data;
+        if(list != null && list.size() > 0){
+
+            LinearLayoutManager layoutManager = new LinearLayoutManager(view.getContext());
+            view.setLayoutManager(layoutManager);
+            InstitutionRecyclerViewAdapter adapter = new InstitutionRecyclerViewAdapter(list);
+            view.setAdapter(adapter);
+
+            //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
+            ItemClickSupport.addTo(view).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                @Override
+                public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                    InstitutionRecyclerViewAdapter tempAdapter = (InstitutionRecyclerViewAdapter) recyclerView.getAdapter();
+                    Intent intent = new Intent(view.getContext(), ActivityInstitutionProfile.class);
+                    intent.putExtra(ApplicationConstants.INTENT_INSTITUTION_ID, list.get(position).getId());
+                    intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                    view.getContext().startActivity(intent);
+                }
+            });
+
         }
     }
 }

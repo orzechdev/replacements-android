@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,12 +54,6 @@ public class FragmentInstitutionProfileNews extends Fragment{
     private FragmentInstitutionProfileNewsViewModel viewModel;
     private FragmentInstitutionProfileNewsBinding binding;
 
-    private RecyclerView recyclerView;
-    private RelativeLayout errorContainer;
-    private NestedScrollView nestedScroll;
-    private LinearLayout paginationWrapper;
-    private PaginationView paginationView;
-    private RecyclerView.Adapter mAdapter;
     private int institutionId;
 
     public void setup(int institutionId){
@@ -75,60 +70,16 @@ public class FragmentInstitutionProfileNews extends Fragment{
 
         viewModel.setup(institutionId);
         binding.setHandlers(viewModel.getHandlers());
+        binding.setViewModel(viewModel);
+        binding.setObservable(viewModel.getObservable());
 
-        recyclerView = (RecyclerView) binding.getRoot().findViewById(R.id.recycler_view);
-        paginationWrapper = (LinearLayout) binding.getRoot().findViewById(R.id.paginationWrapper);
-        nestedScroll = (NestedScrollView) binding.getRoot().findViewById(R.id.nestedScroll);
-        errorContainer = (RelativeLayout) binding.getRoot().findViewById(R.id.error_container);
-        paginationView = (PaginationView) binding.getRoot().findViewById(R.id.paginationView);
+        viewModel.goToFirstPage();
 
-        // use a linear layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
+        return binding.getRoot();
+    }
 
-        viewModel.getNews().observeForever(new Observer<News>() {
-            @Override
-            public void onChanged(@Nullable News news) {
-
-
-                boolean isOk = false;
-
-                if (news == null) {
-
-                    paginationWrapper.setVisibility(View.GONE);
-                    errorContainer.setVisibility(View.VISIBLE);
-
-                } else {
-
-                    List<SingleNews> items = news.getNewsList();
-
-                    if(items == null || items.size() <= 0){
-
-                    }else{
-                        isOk = true;
-                    }
-
-                }
-
-                if(isOk){
-                    List<SingleNews> items = news.getNewsList();
-                    //Display RecyclerView with institutions
-                    mAdapter = new NewsListRecyclerViewAdapter(items);
-                    recyclerView.setAdapter(mAdapter);
-
-                    paginationWrapper.scrollTo(0, 0);
-                    nestedScroll.scrollTo(0, 0);
-                    recyclerView.scrollTo(0, 0);
-
-                    paginationView.update(news.getCurrentPage(), news.getLastPage());
-
-                    paginationWrapper.setVisibility(View.VISIBLE);
-                    errorContainer.setVisibility(View.GONE);
-                }
-
-            }
-        });
-
+    @BindingAdapter("setupPaginationView")
+    public static void setupPaginationView(PaginationView paginationView, final FragmentInstitutionProfileNewsViewModel viewModel){
         paginationView.setOnPageChangedListener(new PaginationView.OnPageChangedListener() {
             @Override
             public void onPageChanged(int action) {
@@ -146,32 +97,76 @@ public class FragmentInstitutionProfileNews extends Fragment{
                         viewModel.goToLastPage();
                         break;
                 }
+                viewModel.getObservable().scrollViewScroll.set(0);
             }
         });
 
-        viewModel.goToFirstPage();
+    }
+
+    @BindingAdapter("postPaginationData")
+    public static void postPaginationData(final PaginationView paginationView, final News news){
+        if(news != null){
+            paginationView.update(news.getCurrentPage(), news.getLastPage());
+        }
+    }
+
+    @BindingAdapter("checkScroll")
+    public static void checkScroll(NestedScrollView scrollView, int scroll){
+        scrollView.setScrollY(scroll);
+    }
+
+
+    @BindingAdapter("setupRecyclerView")
+    public static void setupRecyclerView(RecyclerView recyclerView, final News news){
+
+        // use a linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        boolean isOk = false;
+
+
+        if(news != null){
+
+            List<SingleNews> items = news.getNewsList();
+
+            if(items == null || items.size() <= 0){
+
+            }else{
+                isOk = true;
+            }
+
+        }
+
+        if(isOk){
+            List<SingleNews> items = news.getNewsList();
+            //Display RecyclerView with institutions
+            NewsListRecyclerViewAdapter a = new NewsListRecyclerViewAdapter(items);
+            recyclerView.setAdapter(a);
+
+
+            //paginationWrapper.scrollTo(0, 0);
+            //nestedScroll.scrollTo(0, 0);
+            //recyclerView.getRootView().findViewById(R.id.nestedScroll).setScrollY(0);
+
+            recyclerView.setScrollY(0);
+        }
 
         //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-                Intent intent = new Intent(getContext(), ActivitySingleNews.class);
-                intent.putExtra(ApplicationConstants.INTENT_NEWS_ID, viewModel.getNews().getValue().getNewsList().get(position).getId());
-                intent.putExtra(ApplicationConstants.INTENT_PAGE_NUMBER, viewModel.getNews().getValue().getCurrentPage());
-                intent.putExtra(ApplicationConstants.INTENT_INSTITUTION_ID, viewModel.getNews().getValue().getInstitutionId());
-                startActivity(intent);
+                Intent intent = new Intent(recyclerView.getContext(), ActivitySingleNews.class);
+                intent.putExtra(ApplicationConstants.INTENT_NEWS_ID, news.getNewsList().get(position).getId());
+                intent.putExtra(ApplicationConstants.INTENT_PAGE_NUMBER, news.getCurrentPage());
+                intent.putExtra(ApplicationConstants.INTENT_INSTITUTION_ID, news.getInstitutionId());
+                recyclerView.getContext().startActivity(intent);
 
             }
         });
 
-        return binding.getRoot();
+
     }
 
-    @BindingAdapter("picassoImage")
-    public static void picassoImage(ImageView view, String url) {
-        System.out.println("Picasso painted this picture : " + url);
-        if(url != null && !url.equals(""))
-            Picasso.with(view.getContext()).load(url).into(view);
-    }
 }

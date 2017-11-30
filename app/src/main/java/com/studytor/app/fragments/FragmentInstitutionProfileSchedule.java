@@ -2,6 +2,7 @@ package com.studytor.app.fragments;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.BindingAdapter;
@@ -43,7 +44,6 @@ import com.studytor.app.viewmodel.FragmentScheduleViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.View.GONE;
 
 /**
  * Created by przemek19980102 on 21.10.2017.
@@ -54,18 +54,8 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
     private FragmentInstitutionProfileSchedulesViewModel viewModel;
     private FragmentInstitutionProfileScheduleBinding binding;
 
-    private int level = 0;
-    private int lastIndex = 0;
-    private int[] path = {-1,-1,-1};
     int institutionId;
 
-    private RecyclerView.Adapter mAdapter;
-
-    RecyclerView recyclerView;
-    RelativeLayout errorContainer;
-    NestedScrollView cookies;
-    TextView lvl0;
-    ImageView lvlHome;
 
     public void setup(int institutionId){
         this.institutionId = institutionId;
@@ -84,140 +74,87 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
         viewModel.setup(institutionId);
 
         binding.setObj(viewModel.getObservable());
-
-        recyclerView = (RecyclerView) binding.getRoot().findViewById(R.id.RecyclerView);
-        lvlHome = (ImageView) binding.getRoot().findViewById(R.id.level_home);
-        lvl0 = (TextView) binding.getRoot().findViewById(R.id.level_0_tv);
-        errorContainer = (RelativeLayout) binding.getRoot().findViewById(R.id.error_container);
-        cookies = (NestedScrollView) binding.getRoot().findViewById(R.id.cookies);
-
-        // use a linear layout manager
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        viewModel.getObservable().schedule.observeForever(new Observer<Schedule>() {
-
-            @Override
-            public void onChanged(@Nullable Schedule schedule) {
-
-                if(schedule != null && schedule.getLessonplans() != null && schedule.getLessonplans().size() > 0){
-                    List<ScheduleEntryRepresentation> arr = new ArrayList<>();
-
-                    //Convert current level to simple ScheduleEntryRepresentation list
-                    for(ScheduleLessonplan s : schedule.getLessonplans()){
-                        arr.add(new ScheduleEntryRepresentation(s.getName()));
-                    }
-
-                    //Display RecyclerView
-                    mAdapter = new ScheduleSelectRecyclerViewAdapter(arr);
-                    recyclerView.setAdapter(mAdapter);
-                    errorContainer.setVisibility(View.GONE);
-                    cookies.setVisibility(View.VISIBLE);
-                    recyclerView.setVisibility(View.VISIBLE);
-                }else{
-                    //Show no connection screen
-                    errorContainer.setVisibility(View.VISIBLE);
-                    cookies.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.GONE);
-                }
-
-            }
-
-        });
-
-        //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-
-                route(level, position);
-
-            }
-        });
-
-        lvlHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goHome(view);
-            }
-        });
-
-        lvl0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goLevel0(view);
-            }
-        });
-
+        binding.setViewModel(viewModel);
 
         return binding.getRoot();
-
     }
 
-    public void route(int tempLevel, int position){
-        level = tempLevel;
-        if(level >= 0 && level < 2)path[level] = position;
+    public static void route(RecyclerView recyclerView, FragmentInstitutionProfileSchedulesViewModel viewModel, int tempLevel, int position){
+        viewModel.getObservable().level.set(tempLevel);
+        if(viewModel.getObservable().level.get() >= 0 && viewModel.getObservable().level.get() < 2)viewModel.path[viewModel.getObservable().level.get()] = position;
 
-        Schedule schedule = viewModel.getObservable().schedule.getValue();
-        if(position != -1)lastIndex = position;
+        if(position != -1)viewModel.lastIndex = position;
 
+
+        System.out.println("UPDATING ROUTING PATH AT " + position + " WITH LEVEL " + tempLevel);
+
+        //Setup Layout Manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        Schedule schedule = viewModel.getObservable().schedule.get();
         //Selecting a plan!
-        if(level == 2){
-            if(path[0] == -1) return;
-            if(path[1] == -1) return;
+        if(viewModel.getObservable().level.get() == 2){
+            if(viewModel.path[0] == -1) return;
+            if(viewModel.path[1] == -1) return;
 
-            String name = schedule.getLessonplans().get(path[0]).getSections().get(path[1]).getScheduleUnits().get(position).getName();
-            String url = schedule.getLessonplans().get(path[0]).getSections().get(path[1]).getScheduleUnits().get(position).getUrl();
+            String name = schedule.getLessonplans().get(viewModel.path[0]).getSections().get(viewModel.path[1]).getScheduleUnits().get(position).getName();
+            String url = schedule.getLessonplans().get(viewModel.path[0]).getSections().get(viewModel.path[1]).getScheduleUnits().get(position).getUrl();
 
-            Intent intent = new Intent(this.getActivity().getApplicationContext(), ActivitySingleLessonplan.class);
+            Intent intent = new Intent(recyclerView.getContext(), ActivitySingleLessonplan.class);
             intent.putExtra(ApplicationConstants.INTENT_LESSONPLAN_NAME, name);
             intent.putExtra(ApplicationConstants.INTENT_LESSONPLAN_URL, url);
 
-            startActivity(intent);
+            recyclerView.getContext().startActivity(intent);
 
         }
 
         //Selected a Section
-        if(level == 1){
-            if(path[0] == -1) return;
+        if(viewModel.getObservable().level.get() == 1){
+            if(viewModel.path[0] == -1) return;
 
-            path[1] = position;
+            viewModel.path[1] = position;
 
             List<ScheduleEntryRepresentation> arr = new ArrayList<>();
             //Convert current level to simple ScheduleEntryRepresentation list
-            for(ScheduleUnit s : schedule.getLessonplans().get(path[0]).getSections().get(path[1]).getScheduleUnits()){
+            for(ScheduleUnit s : schedule.getLessonplans().get(viewModel.path[0]).getSections().get(viewModel.path[1]).getScheduleUnits()){
                 arr.add(new ScheduleEntryRepresentation(s.getName()));
             }
             //Display RecyclerView with institutions
-            mAdapter = new ScheduleSelectRecyclerViewAdapter(arr);
+            ScheduleSelectRecyclerViewAdapter mAdapter = new ScheduleSelectRecyclerViewAdapter(arr);
             recyclerView.setAdapter(mAdapter);
+            recyclerView.invalidate();
 
             //Apply breadcrumbs
-            viewModel.getObservable().helper.setLevel1Title(schedule.getLessonplans().get(path[0]).getSections().get(path[1]).getName());
+            viewModel.getObservable().helper.setLevel1Title(schedule.getLessonplans().get(viewModel.path[0]).getSections().get(viewModel.path[1]).getName());
             viewModel.getObservable().notifyChange();
 
-            level++;
+            viewModel.getObservable().level.set(viewModel.getObservable().level.get()+1);
         }
 
         //Selected a lessonplan
-        if(level == 0){
-            path[0] = position;
+        if(viewModel.getObservable().level.get() == 0){
+            viewModel.path[0] = position;
+
+
 
             List<ScheduleEntryRepresentation> arr = new ArrayList<>();
             //Convert current level to simple ScheduleEntryRepresentation list
-            for(ScheduleSection s : schedule.getLessonplans().get(path[0]).getSections()){
+            for(ScheduleSection s : schedule.getLessonplans().get(viewModel.path[0]).getSections()){
                 arr.add(new ScheduleEntryRepresentation(s.getName()));
             }
+
             //Display RecyclerView with institutions
-            mAdapter = new ScheduleSelectRecyclerViewAdapter(arr);
+            ScheduleSelectRecyclerViewAdapter mAdapter = new ScheduleSelectRecyclerViewAdapter(arr);
             recyclerView.setAdapter(mAdapter);
+            recyclerView.invalidate();
 
             //Apply breadcrumbs
-            viewModel.getObservable().helper.setLevel0Title(schedule.getLessonplans().get(path[0]).getName());
+            viewModel.getObservable().helper.setLevel0Title(schedule.getLessonplans().get(viewModel.path[0]).getName());
             viewModel.getObservable().helper.setLevel1Title(null);
             viewModel.getObservable().notifyChange();
 
-            level++;
+            viewModel.getObservable().level.set(viewModel.getObservable().level.get()+1);
         }
         if(tempLevel == -1){
 
@@ -233,15 +170,16 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
             viewModel.getObservable().notifyChange();
 
             //Display RecyclerView
-            mAdapter = new ScheduleSelectRecyclerViewAdapter(arr);
+            ScheduleSelectRecyclerViewAdapter mAdapter = new ScheduleSelectRecyclerViewAdapter(arr);
             recyclerView.setAdapter(mAdapter);
+            recyclerView.invalidate();
 
-            level = 0;
+            viewModel.getObservable().level.set(0);
         }
 
     }
 
-    public void goHome(View v){
+    /*public void goHome(View v){
         path[0] = -1;
         path[1] = -1;
 
@@ -252,7 +190,64 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
         path[1] = -1;
 
         route(0 ,path[0]);
+    }*/
+    public static boolean firstTime = true;
+
+    @BindingAdapter("setupSchedule")
+    public static void setupRouting(final RecyclerView recyclerView, final Schedule schedule){
+
+        System.out.println("UPDATING SOMETHING CHECK");
+
+        if(schedule != null && schedule.getLessonplans() != null && schedule.getLessonplans().size() > 0 && firstTime) {
+
+            // use a linear layout manager
+            LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
+            recyclerView.setLayoutManager(layoutManager);
+
+            System.out.println("UPDATING SOMETHING CHANGED");
+            List<ScheduleEntryRepresentation> arr = new ArrayList<>();
+
+            //Convert current level to simple ScheduleEntryRepresentation list
+            for (ScheduleLessonplan s : schedule.getLessonplans()) {
+                arr.add(new ScheduleEntryRepresentation(s.getName()));
+            }
+
+            //Display RecyclerView
+            ScheduleSelectRecyclerViewAdapter a = new ScheduleSelectRecyclerViewAdapter(arr);
+            recyclerView.setAdapter(a);
+
+            firstTime = false;
+
+        }
     }
+
+    @BindingAdapter({"setupViewModel", "setupLevel"})
+    public static void doRoute(final RecyclerView recyclerView, final FragmentInstitutionProfileSchedulesViewModel viewModel, final Integer level){
+        //final int level = viewModel.level.get();
+        System.out.println("UPDATING XD LEVEL " + level);
+        //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+
+                System.out.println("UPDATING ROUTING WITH LEVEL "+ level + " AND POSITION " + position);
+                route(recyclerView, viewModel, level, position);
+
+            }
+        });
+
+        if(level == ApplicationConstants.ROUTE_HOME){
+            viewModel.path[0] = -1;
+            viewModel.path[1] = -1;
+
+            route(recyclerView, viewModel, -1, 0);
+        }else if(level == ApplicationConstants.ROUTE_LEVEL_0){
+            viewModel.path[1] = -1;
+
+            route(recyclerView, viewModel, 0, viewModel.path[0]);
+        }
+    }
+
 
     @BindingAdapter("setText")
     public static void setText(TextView view, MutableLiveData<String> mtb) {

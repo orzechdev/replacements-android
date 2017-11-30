@@ -3,9 +3,13 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="observable"
             type="com.studytor.app.viewmodel.FragmentInstitutionListViewModel.Observable"/>
+        <variable
+            name="viewModel"
+            type="com.studytor.app.viewmodel.FragmentInstitutionListViewModel"/>
         <variable
             name="singleInstitution"
             type="com.studytor.app.repositories.models.SingleInstitution"/>
@@ -22,24 +26,29 @@
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:refreshing="@{observable.isRefreshing}"
+            app:onRefreshListener="@{() -> viewModel.requestRepositoryUpdate()}">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view"
                     android:scrollbars="none"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    app:setupRecyclerView="@{observable.institutionList}"
+                    android:visibility="@{(observable.institutionList != null  &amp;&amp; observable.institutionList.size() &gt; 0)? View.VISIBLE:View.GONE}"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/error_container"
-                    android:visibility="gone">
+                    android:visibility="@{(observable.institutionList == null || observable.institutionList.size() &lt;= 0)? View.VISIBLE:View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"

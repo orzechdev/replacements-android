@@ -39,6 +39,10 @@ public interface ApplicationConstants {
     static final String GOOGLE_PROJ_ID = "670012122702";
     static final String MSG_KEY = "m";
 
+    //Schedule list constants
+    static final int ROUTE_HOME = -786342765;
+    static final int ROUTE_LEVEL_0 = -218312;
+
     //Intent constants
     static final String INTENT_INSTITUTION_ID = "INTENT_INSTITUTION_ID";
     static final String INTENT_PAGE_NUMBER = "INTENT_PAGE_NUMBER";

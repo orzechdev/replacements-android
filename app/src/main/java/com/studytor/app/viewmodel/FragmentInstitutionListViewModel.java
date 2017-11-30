@@ -52,13 +52,19 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
         fragmentInstitutionRepository.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
             @Override
             public void onChanged(@Nullable List<SingleInstitution> institutions) {
+                System.out.println("REPO CHANGED");
                 setInstitutionList(institutions);
+                observable.isRefreshing.set(false);
+                observable.notifyChange();
             }
         });
     }
 
     public void requestRepositoryUpdate(){
+        System.out.println("UPDATING");
         fragmentInstitutionRepository.refreshData();
+        observable.isRefreshing.set(true);
+        observable.notifyChange();
     }
 
     public MutableLiveData<List<SingleInstitution>> getInstitutionList() {
@@ -75,6 +81,7 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
     public class Observable extends BaseObservable {
 
         public final ObservableField<List<SingleInstitution>> institutionList = new ObservableField<>();
+        public final ObservableField<Boolean> isRefreshing = new ObservableField<>();
 
     }
 

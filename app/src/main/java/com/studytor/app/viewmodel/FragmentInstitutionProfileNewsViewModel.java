@@ -18,6 +18,7 @@ import com.studytor.app.repositories.NewsRepository;
 import com.studytor.app.repositories.models.News;
 import com.studytor.app.repositories.models.SingleInstitution;
 import com.studytor.app.repositories.models.SingleNews;
+import com.studytor.app.views.PaginationView;
 
 import java.util.List;
 
@@ -72,17 +73,36 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
 
     public void setNews(News news) {
         this.news.setValue(news);
-        observable.newsList.set(news);
+        observable.news.set(news);
     }
 
     // Class handled by Data Binding library
     public class Observable extends BaseObservable {
 
-        public final ObservableField<News> newsList = new ObservableField<>();
+        public final ObservableField<News> news = new ObservableField<>();
+        public final ObservableField<Integer> scrollViewScroll = new ObservableField<>();
 
     }
 
     public class Handlers{
+
+        public void onPageChangedListener(){
+            int action = PaginationView.ACTION_NEXT;
+            switch(action){
+                case PaginationView.ACTION_FIRST:
+                    goToFirstPage();
+                    break;
+                case PaginationView.ACTION_PREVIOUS:
+                    goToPreviousPage();
+                    break;
+                case PaginationView.ACTION_NEXT:
+                    goToNextPage();
+                    break;
+                case PaginationView.ACTION_LAST:
+                    goToLastPage();
+                    break;
+            }
+        }
 
     }
 
