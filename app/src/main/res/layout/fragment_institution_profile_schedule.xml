@@ -27,72 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-    
-                <android.support.v4.widget.NestedScrollView
-                    android:id="@+id/cookies"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    android:paddingTop="8dp"
-                    android:visibility="@{(obj.schedule != null &amp;&amp; obj.schedule.getLessonplans().size() &gt; 0)?View.VISIBLE:View.GONE}">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="16dp">
-    
-                        <ImageView
-                            android:id="@+id/level_home"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:onClick="@{viewModel::goToHome}"
-                            app:srcCompat="@drawable/ic_home_grey_24dp" />
-    
-                        <ImageView
-                            android:id="@+id/level_0_arrow"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:alpha="0.25"
-                            android:visibility="@{(obj.helper.level0Title == null) || (obj.helper.level0Title.equals(``) ) ? View.GONE : View.VISIBLE}"
-                            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"/>
-    
-                        <TextView
-                            android:id="@+id/level_0_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="24dp"
-                            app:setText="@{obj.helper.level0Title}"
-                            android:textColor="@color/gray"
-                            android:gravity="center_vertical"
-                            app:setBold="@{(obj.helper.level1Title == null) &amp;&amp; (obj.helper.level0Title != null ) ? true : false}"
-                            android:onClick="@{viewModel::goToLevel0}"
-                            android:visibility="@{(obj.helper.level0Title == null) || (obj.helper.level0Title.equals(``) ) ? View.GONE : View.VISIBLE}"
-                            />
 
-                        <ImageView
-                            android:id="@+id/level_1_arrow"
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:alpha="0.25"
-                            android:visibility="@{(obj.helper.level1Title == null) || (obj.helper.level1Title.equals(``) ) ? View.GONE : View.VISIBLE}"
-                            app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"/>
-    
-                        <TextView
-                            android:id="@+id/level_1_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="24dp"
-                            app:setText="@{obj.helper.level1Title}"
-                            android:textColor="@color/gray"
-                            android:gravity="center_vertical"
-                            app:setBold="@{(obj.helper.level1Title != null) &amp;&amp; (obj.helper.level0Title != null ) ? true : false}"
-                            android:visibility="@{(obj.helper.level1Title == null) || (obj.helper.level1Title.equals(``) ) ? View.GONE : View.VISIBLE}"
-                            />
-    
-    
-                    </LinearLayout>
-    
-    
-                </android.support.v4.widget.NestedScrollView>
-    
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -105,9 +40,7 @@
                     android:id="@+id/RecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:setupViewModel="@{viewModel}"
-                    app:setupSchedule="@{obj.schedule}"
-                    app:setupLevel="@{obj.level}"
+                    app:setupRecycleView="@{obj.schedule}"
                     android:visibility="@{(obj.schedule != null &amp;&amp; obj.schedule.getLessonplans.size() &gt; 0)?View.VISIBLE:View.GONE}">
     
                 </android.support.v7.widget.RecyclerView>

@@ -1,6 +1,7 @@
 package com.studytor.app.repositories.models;
 
 import android.arch.persistence.room.Entity;
+import android.databinding.BaseObservable;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,7 +12,7 @@ import java.util.List;
  */
 
 @Entity
-public class ScheduleSection {
+public class ScheduleSection extends BaseObservable{
 
     @SerializedName("name")
     private String name;
@@ -27,6 +28,7 @@ public class ScheduleSection {
 
     public void setName(String name) {
         this.name = name;
+        notifyChange();
     }
 
     public List<ScheduleUnit> getScheduleUnits() {
@@ -35,5 +37,6 @@ public class ScheduleSection {
 
     public void setScheduleUnits(List<ScheduleUnit> scheduleUnits) {
         this.scheduleUnits = scheduleUnits;
+        notifyChange();
     }
 }

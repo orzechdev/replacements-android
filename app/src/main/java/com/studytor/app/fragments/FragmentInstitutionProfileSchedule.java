@@ -4,9 +4,12 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,15 +17,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
+import com.studytor.app.BR;
 import com.studytor.app.R;
 import com.studytor.app.activities.ActivityMain;
 import com.studytor.app.activities.ActivitySingleLessonplan;
@@ -30,7 +38,6 @@ import com.studytor.app.adapters.NewsListRecyclerViewAdapter;
 import com.studytor.app.adapters.ScheduleEntryRepresentation;
 import com.studytor.app.adapters.ScheduleSelectRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionProfileScheduleBinding;
-import com.studytor.app.databinding.FragmentScheduleBinding;
 import com.studytor.app.helpers.ItemClickSupport;
 import com.studytor.app.interfaces.ApplicationConstants;
 import com.studytor.app.repositories.models.Schedule;
@@ -40,6 +47,8 @@ import com.studytor.app.repositories.models.ScheduleUnit;
 import com.studytor.app.viewmodel.ActivityMainViewModel;
 import com.studytor.app.viewmodel.FragmentInstitutionProfileSchedulesViewModel;
 import com.studytor.app.viewmodel.FragmentScheduleViewModel;
+
+import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +63,8 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
     private FragmentInstitutionProfileSchedulesViewModel viewModel;
     private FragmentInstitutionProfileScheduleBinding binding;
 
+    public static boolean firstTime = true;
+
     int institutionId;
 
 
@@ -64,7 +75,7 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        firstTime = true;
         viewModel = ViewModelProviders.of(this).get(FragmentInstitutionProfileSchedulesViewModel.class);
 
 
@@ -76,10 +87,11 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
         binding.setObj(viewModel.getObservable());
         binding.setViewModel(viewModel);
 
+
         return binding.getRoot();
     }
 
-    public static void route(RecyclerView recyclerView, FragmentInstitutionProfileSchedulesViewModel viewModel, int tempLevel, int position){
+    /*public static void route(RecyclerView recyclerView, FragmentInstitutionProfileSchedulesViewModel viewModel, int tempLevel, int position){
         viewModel.getObservable().level.set(tempLevel);
         if(viewModel.getObservable().level.get() >= 0 && viewModel.getObservable().level.get() < 2)viewModel.path[viewModel.getObservable().level.get()] = position;
 
@@ -177,7 +189,7 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
             viewModel.getObservable().level.set(0);
         }
 
-    }
+    }*/
 
     /*public void goHome(View v){
         path[0] = -1;
@@ -191,9 +203,9 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
 
         route(0 ,path[0]);
     }*/
-    public static boolean firstTime = true;
 
-    @BindingAdapter("setupSchedule")
+
+    /*@BindingAdapter("setupSchedule")
     public static void setupRouting(final RecyclerView recyclerView, final Schedule schedule){
 
         System.out.println("UPDATING SOMETHING CHECK");
@@ -219,34 +231,127 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
             firstTime = false;
 
         }
-    }
+    }*/
 
-    @BindingAdapter({"setupViewModel", "setupLevel"})
-    public static void doRoute(final RecyclerView recyclerView, final FragmentInstitutionProfileSchedulesViewModel viewModel, final Integer level){
-        //final int level = viewModel.level.get();
-        System.out.println("UPDATING XD LEVEL " + level);
-        //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
-        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+    @BindingAdapter("setupRecycleView")
+    public static void setupRecyclerView(final RecyclerView recyclerView, final Schedule schedule){
 
-                System.out.println("UPDATING ROUTING WITH LEVEL "+ level + " AND POSITION " + position);
-                route(recyclerView, viewModel, level, position);
+        if(schedule != null && schedule.getLessonplans() != null && schedule.getLessonplans().size() > 0) {
 
-            }
-        });
+            // use a linear layout manager
+            LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
+            recyclerView.setLayoutManager(layoutManager);
 
-        if(level == ApplicationConstants.ROUTE_HOME){
-            viewModel.path[0] = -1;
-            viewModel.path[1] = -1;
+            System.out.println("UPDATING SOMETHING CHANGED");
+            List<ScheduleEntryRepresentation> arr = new ArrayList<>();
 
-            route(recyclerView, viewModel, -1, 0);
-        }else if(level == ApplicationConstants.ROUTE_LEVEL_0){
-            viewModel.path[1] = -1;
+            //Display RecyclerView
+            ScheduleSelectRecyclerViewAdapter a = new ScheduleSelectRecyclerViewAdapter(schedule.getLessonplans());
+            recyclerView.setAdapter(a);
 
-            route(recyclerView, viewModel, 0, viewModel.path[0]);
+            firstTime = false;
+
         }
+
     }
+
+    @BindingAdapter("bindImage")
+    public static void bindImage(final ImageView imageView, final int resId){
+
+        imageView.setImageResource(resId);
+        imageView.invalidate();
+
+    }
+
+    @BindingAdapter("buildScheduleSections")
+    public static void buildScheduleSections(final LinearLayout linearLayout, final List<ScheduleSection> sections){
+
+        if(sections != null && sections.size() > 0){
+            linearLayout.removeAllViews();
+            for(ScheduleSection s : sections){
+
+                LayoutInflater layoutInflater = LayoutInflater.from(linearLayout.getContext());
+                ViewDataBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.view_schedule_list_item_section, linearLayout, false);
+                binding.setVariable(BR.section, s);
+
+
+
+                linearLayout.addView(binding.getRoot());
+            }
+            linearLayout.invalidate();
+
+        }
+
+    }
+
+    @BindingAdapter("buildScheduleUnits")
+    public static void buildScheduleUnits(final FlowLayout flowLayout, final List<ScheduleUnit> scheduleUnits){
+
+        if(scheduleUnits != null && scheduleUnits.size() > 0){
+            flowLayout.removeAllViews();
+            for(final ScheduleUnit u : scheduleUnits){
+                FrameLayout frame = new FrameLayout(flowLayout.getContext());
+
+                TextView temp = new TextView(new ContextThemeWrapper(flowLayout.getContext(), R.style.ScheduleListBadge), null, 0);
+                temp.setText(u.getName());
+
+                frame.addView(temp);
+
+                //Apply frame padding
+                Resources r = flowLayout.getResources();
+                frame.setPadding(
+                        (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, r.getDisplayMetrics()),
+                        (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics()),
+                        (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, r.getDisplayMetrics()),
+                        (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4, r.getDisplayMetrics())
+                );
+
+                frame.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //TODO: Start activity with params!
+                        Intent intent = new Intent(flowLayout.getContext(), ActivitySingleLessonplan.class);
+                        flowLayout.getContext().startActivity(intent);
+                    }
+                });
+
+                flowLayout.addView(frame);
+                flowLayout.postInvalidate();
+            }
+        }
+
+    }
+
+    /*@BindingAdapter({"setupViewModel", "setupLevel"})
+    public static void doRoute(final RecyclerView recyclerView, final FragmentInstitutionProfileSchedulesViewModel viewModel, final Integer level){
+
+        Schedule schedule = viewModel.getObservable().schedule.get();
+        if(schedule != null && schedule.getLessonplans() != null && schedule.getLessonplans().size() > 0) {
+            //final int level = viewModel.level.get();
+            System.out.println("UPDATING XD LEVEL " + level);
+            //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/
+            ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                @Override
+                public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+
+                    System.out.println("UPDATING ROUTING WITH LEVEL " + level + " AND POSITION " + position);
+                    route(recyclerView, viewModel, level, position);
+
+                }
+            });
+
+            if (level == ApplicationConstants.ROUTE_HOME) {
+                viewModel.path[0] = -1;
+                viewModel.path[1] = -1;
+
+                route(recyclerView, viewModel, -1, 0);
+            } else if (level == ApplicationConstants.ROUTE_LEVEL_0 && viewModel.path[0] != -1) {
+                viewModel.path[1] = -1;
+
+                route(recyclerView, viewModel, 0, viewModel.path[0]);
+            }
+        }
+    }*/
 
 
     @BindingAdapter("setText")

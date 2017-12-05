@@ -87,6 +87,7 @@ public class ScheduleRepository {
                     schedule.setInstitutionId(institutionId);
                     System.out.println("SCHEDULE JAKIES_DZIWNE_INSTITUTION: " + institutionId);
 
+                    scheduleData.postValue(schedule);
                     scheduleListCache.updateOrAddNews(institutionId, schedule);
 
                 }else{

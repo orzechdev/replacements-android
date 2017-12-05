@@ -43,7 +43,8 @@ public class FragmentInstitutionProfileSchedulesViewModel extends AndroidViewMod
 
         this.institutionId = institutionId;
         this.observable.schedule = new ObservableField<>();
-        observable.level.set(0);
+
+        observable.level.set(ApplicationConstants.ROUTE_HOME);
 
         this.observable.helper = (new BindingHelper());
 
@@ -53,10 +54,12 @@ public class FragmentInstitutionProfileSchedulesViewModel extends AndroidViewMod
             @Override
             public void onChanged(@Nullable Schedule s) {
                 observable.schedule.set(s);
+                observable.level.set(ApplicationConstants.ROUTE_HOME);
             }
         });
 
         scheduleRepository.getSchedulesWithCacheCheck(this.institutionId);
+        //scheduleRepository.getSchedules(this.institutionId);
     }
 
     public class Observable extends BaseObservable{

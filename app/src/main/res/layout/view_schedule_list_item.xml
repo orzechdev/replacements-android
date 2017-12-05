@@ -1,33 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="obj"
-            type="com.studytor.app.adapters.ScheduleEntryRepresentation"/>
+            type="com.studytor.app.repositories.models.ScheduleLessonplan"/>
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="vertical" android:background="@android:color/white">
+        android:orientation="vertical" android:background="@drawable/recycler_item_simple"
+        android:paddingBottom="1dp"
+        android:paddingTop="1dp">
 
-        <TextView
-            android:id="@+id/title"
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:textSize="14sp"
-            android:paddingLeft="32dp"
-            android:paddingStart="32dp"
-            android:text="@{obj.name}" />
+            android:background="@drawable/recycler_item_simple">
 
-        <View
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:paddingEnd="32dp"
+                android:paddingRight="32dp"
+                android:paddingLeft="20dp"
+                android:paddingStart="20dp"
+                android:text="@{obj.name}" />
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="8dp"
+                android:alpha="0.5"
+                app:bindImage="@{(obj.isExpanded == false)? obj.ARROW_DOWN_RES:obj.ARROW_UP_RES}"
+
+                android:onClick="@{(view) -> obj.toggleExpansion()}"/>
+
+        </RelativeLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/gray_repl"
-            android:layout_margin="0dp"
-            android:padding="0dp"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            app:buildScheduleSections="@{obj.getSections()}"
+            android:visibility="@{(obj.isExpanded == true)? View.VISIBLE : View.GONE}">
+
+        </LinearLayout>
 
     </LinearLayout>
+
 
 </layout>

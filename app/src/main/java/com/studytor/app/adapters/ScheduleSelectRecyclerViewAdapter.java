@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.studytor.app.BR;
 import com.studytor.app.R;
 import com.studytor.app.RecyclerItemClickListener;
+import com.studytor.app.repositories.models.ScheduleLessonplan;
 import com.studytor.app.repositories.models.SingleInstitution;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 
 public class ScheduleSelectRecyclerViewAdapter extends RecyclerView.Adapter<ScheduleSelectRecyclerViewAdapter.MyViewHolder>{
-    private List<ScheduleEntryRepresentation> data;
+    private List<ScheduleLessonplan> data;
     RecyclerItemClickListener.OnItemClickListener onItemClickListener;
 
     // Provide a reference to the views for each data item
@@ -40,7 +41,7 @@ public class ScheduleSelectRecyclerViewAdapter extends RecyclerView.Adapter<Sche
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ScheduleSelectRecyclerViewAdapter(List<ScheduleEntryRepresentation> myDataset) {
+    public ScheduleSelectRecyclerViewAdapter(List<ScheduleLessonplan> myDataset) {
         data = myDataset;
     }
 
@@ -57,7 +58,7 @@ public class ScheduleSelectRecyclerViewAdapter extends RecyclerView.Adapter<Sche
     @Override
     public void onBindViewHolder(ScheduleSelectRecyclerViewAdapter.MyViewHolder holder, int position) {
 
-        final ScheduleEntryRepresentation entry = data.get(position);
+        final ScheduleLessonplan entry = data.get(position);
         holder.bind(entry);
 
     }
@@ -69,7 +70,7 @@ public class ScheduleSelectRecyclerViewAdapter extends RecyclerView.Adapter<Sche
         return data.size();
     }
 
-    public ScheduleEntryRepresentation getItemAt(int position){
+    public ScheduleLessonplan getItemAt(int position){
         if(position < 0) return null;
         if(position >= this.getItemCount()) return null;
         if(data == null) return  null;
