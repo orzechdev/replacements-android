@@ -75,6 +75,13 @@ public class FragmentInstitutionProfileNews extends Fragment{
 
         viewModel.goToFirstPage();
 
+        viewModel.liveData.observe(this, new Observer<News>() {
+            @Override
+            public void onChanged(@Nullable News news) {
+                System.out.println("NEWS XD IN FRAGMEnt XD");
+            }
+        });
+
         return binding.getRoot();
     }
 
@@ -112,7 +119,7 @@ public class FragmentInstitutionProfileNews extends Fragment{
 
     @BindingAdapter("checkScroll")
     public static void checkScroll(NestedScrollView scrollView, int scroll){
-        scrollView.setScrollY(scroll);
+        scrollView.scrollTo(0, 0);
     }
 
 
@@ -123,33 +130,12 @@ public class FragmentInstitutionProfileNews extends Fragment{
         LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        boolean isOk = false;
-
-
-        if(news != null){
-
-            List<SingleNews> items = news.getNewsList();
-
-            if(items == null || items.size() <= 0){
-
-            }else{
-                isOk = true;
-            }
-
-        }
-
-        if(isOk){
+        if(news != null && news.getNewsList() != null && news.getNewsList().size() > 0){
             List<SingleNews> items = news.getNewsList();
             //Display RecyclerView with institutions
             NewsListRecyclerViewAdapter a = new NewsListRecyclerViewAdapter(items);
             recyclerView.setAdapter(a);
 
-
-            //paginationWrapper.scrollTo(0, 0);
-            //nestedScroll.scrollTo(0, 0);
-            //recyclerView.getRootView().findViewById(R.id.nestedScroll).setScrollY(0);
-
-            recyclerView.setScrollY(0);
         }
 
         //Bind item click in recycler view based on https://www.littlerobots.nl/blog/Handle-Android-RecyclerView-Clicks/

@@ -1,9 +1,12 @@
 package com.studytor.app.viewmodel;
 
 import android.app.Application;
+import android.arch.core.util.Function;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
@@ -31,6 +34,7 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
     private NewsRepository newsRepository;
 
     private MutableLiveData<News> news = null;
+    public LiveData<News> liveData;
 
     private FragmentInstitutionProfileNewsViewModel.Observable observable = new FragmentInstitutionProfileNewsViewModel.Observable();
     private Handlers handlers = new Handlers();
@@ -50,20 +54,45 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
 
     public void setup(int institutionId) {
         // If setup was already done, do not do it again
-        if(this.getNews() != null && this.getNews().getValue() != null)
+        if(this.observable.news.get() != null)
             return;
 
         this.institutionId = institutionId;
         this.news = new MutableLiveData<>();
         newsRepository = NewsRepository.getInstance(this.getApplication());
 
-        newsRepository.getNewsData().observeForever(new Observer<News>() {
+        this.news = newsRepository.getNewsData();
+
+        liveData = Transformations.switchMap(this.news, new Function<News, LiveData<News>>() {
+            @Override
+            public LiveData<News> apply(News input) {
+                if(news != null)setLastPageNum(input.getLastPage());
+                setNews(input);
+                observable.scrollViewScroll.notifyChange();
+                return liveData;
+            }
+        });
+
+       /* news = Transformations.switchMap(newsRepository.getNewsData(), new Function<News, MutableLiveData<News>>() {
+            @Override
+            public MutableLiveData<News> apply(News input) {
+                if(input.getNewsList().isEmpty()){
+                    return new MutableLiveData<>();
+                }
+                return newsRepository
+            }
+        });*/
+
+
+        /*newsRepository.getNewsData().observeForever(new Observer<News>() {
             @Override
             public void onChanged(@Nullable News news) {
                 setNews(news);
-                if(news != null)lastPageNum = news.getLastPage();
+                if (news != null) lastPageNum = news.getLastPage();
             }
-        });
+        });*/
+
+        newsRepository.getNewsWithCacheCheck(institutionId, currentPageNum);
 
     }
 
@@ -72,7 +101,7 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
     }
 
     public void setNews(News news) {
-        this.news.setValue(news);
+        //this.news.setValue(news);
         observable.news.set(news);
     }
 
