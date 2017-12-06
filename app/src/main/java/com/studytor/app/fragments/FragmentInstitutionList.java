@@ -65,7 +65,19 @@ public class FragmentInstitutionList extends Fragment {
 
         viewModel.setup();
 
+        setupObservablesForBinding();
+
         return binding.getRoot();
+    }
+
+    private void setupObservablesForBinding(){
+        viewModel.getInstitutionList().observe(this, new Observer<List<SingleInstitution>>() {
+            @Override
+            public void onChanged(@Nullable List<SingleInstitution> singleInstitutions) {
+                binding.getObservable().institutionList.set(singleInstitutions);
+                binding.getObservable().isRefreshing.set(false);
+            }
+        });
     }
 
     @BindingAdapter("imageRes")

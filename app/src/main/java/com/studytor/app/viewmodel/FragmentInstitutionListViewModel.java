@@ -1,9 +1,12 @@
 package com.studytor.app.viewmodel;
 
 import android.app.Application;
+import android.arch.core.util.Function;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
@@ -29,7 +32,8 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
 
     private InstitutionRepository fragmentInstitutionRepository;
 
-    private MutableLiveData<List<SingleInstitution>> institutionList = null;
+    private MutableLiveData<List<SingleInstitution>> institutionListVM = null;
+    private LiveData<List<SingleInstitution>> institutionList = null;
 
     private Observable observable = new Observable();
 
@@ -46,18 +50,32 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
         if(this.getInstitutionList() != null && this.getInstitutionList().getValue() != null)
             return;
 
-        this.institutionList = new MutableLiveData<>();
         fragmentInstitutionRepository = InstitutionRepository.getInstance(this.getApplication());
 
-        fragmentInstitutionRepository.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
+        this.institutionListVM = fragmentInstitutionRepository.getInstitutionList();
+        institutionList = Transformations.switchMap(institutionListVM, new Function<List<SingleInstitution>, LiveData<List<SingleInstitution>>>() {
             @Override
-            public void onChanged(@Nullable List<SingleInstitution> institutions) {
-                System.out.println("REPO CHANGED");
-                setInstitutionList(institutions);
-                observable.isRefreshing.set(false);
-                observable.notifyChange();
+            public LiveData<List<SingleInstitution>> apply(List<SingleInstitution> input) {
+                System.out.println("REPO CHANGED newest apply");
+                if (input.isEmpty()) {
+                    return new MutableLiveData<>();
+                }
+                return fragmentInstitutionRepository.getInstitutionListFromCache();
             }
         });
+
+        //institutionListVM = fragmentInstitutionRepository.getInstitutionList();
+
+//        fragmentInstitutionRepository.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
+//            @Override
+//            public void onChanged(@Nullable List<SingleInstitution> institutions) {
+//                System.out.println("REPO CHANGED");
+//                //setInstitutionList(institutions);
+//                observable.institutionList.set(institutions);
+//                observable.isRefreshing.set(false);
+//                observable.notifyChange();
+//            }
+//        });
     }
 
     public void requestRepositoryUpdate(){
@@ -67,12 +85,16 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
         observable.notifyChange();
     }
 
-    public MutableLiveData<List<SingleInstitution>> getInstitutionList() {
+    public LiveData<List<SingleInstitution>> getInstitutionList() {
+//        observable.institutionList.set(institutionList.getValue());
+//        observable.isRefreshing.set(false);
+//        observable.notifyChange();
+
         return institutionList;
     }
 
     public void setInstitutionList(List<SingleInstitution> list) {
-        this.institutionList.setValue(list);
+        //this.institutionList.setValue(list);
         observable.institutionList.set(list);
         Log.i("FragmentInstitutionVM","set institution list");
     }
