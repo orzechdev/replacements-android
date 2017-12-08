@@ -44,6 +44,9 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
     private int currentPageNum = 1;
     private int lastPageNum = 1;
 
+    // DIFFERENT APPROACH
+    private LiveData<Integer> currentPageNumLiveData;
+
     public FragmentInstitutionProfileNewsViewModel.Observable getObservable() {
         return observable;
     }
@@ -63,13 +66,34 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
 
         this.news = newsRepository.getNewsData();
 
-        liveData = Transformations.switchMap(this.news, new Function<News, LiveData<News>>() {
+//        liveData = Transformations.switchMap(this.news, new Function<News, LiveData<News>>() {
+//            @Override
+//            public LiveData<News> apply(News input) {
+//                if(news != null)setLastPageNum(input.getLastPage());
+//                setNews(input);
+//                observable.scrollViewScroll.notifyChange();
+//                return liveData;
+//            }
+//        });
+
+        final int institId = institutionId;
+
+        //////DIFFERENT APPROACH
+//        liveData = Transformations.switchMap(currentPageNumLiveData, new Function<Integer, LiveData<News>>() {
+//            @Override
+//            public LiveData<News> apply(Integer input) {
+//                // inne ustawienia zmiennych
+//                return newsRepository.getNewsWithCacheCheck(institId, currentPageNum);
+//            }
+//        });
+
+        liveData = Transformations.map(this.news, new Function<News, News>() {
             @Override
-            public LiveData<News> apply(News input) {
+            public News apply(News input) {
                 if(news != null)setLastPageNum(input.getLastPage());
-                setNews(input);
-                observable.scrollViewScroll.notifyChange();
-                return liveData;
+                //setNews(input);
+                //observable.scrollViewScroll.notifyChange();
+                return input;
             }
         });
 

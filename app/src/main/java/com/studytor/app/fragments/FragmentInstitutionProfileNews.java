@@ -79,6 +79,8 @@ public class FragmentInstitutionProfileNews extends Fragment{
             @Override
             public void onChanged(@Nullable News news) {
                 System.out.println("NEWS XD IN FRAGMEnt XD");
+                binding.getObservable().news.set(news);
+                binding.getObservable().scrollViewScroll.notifyChange();
             }
         });
 
