@@ -5,6 +5,7 @@ import com.studytor.app.repositories.models.News;
 import com.studytor.app.repositories.models.ReplacementsJson;
 import com.studytor.app.repositories.models.Schedule;
 import com.studytor.app.repositories.models.ScheduleLessonplan;
+import com.studytor.app.repositories.models.ScheduleTimetable;
 import com.studytor.app.repositories.models.UserReplacementsJson;
 
 import okhttp3.ResponseBody;
@@ -59,7 +60,7 @@ public interface WebService {
     @GET("json/school/{id}/lessonplan/list.json")
     Call<Schedule> getSchedules(@Path("id") int institutionId);
 
-    /* Lessonplans have custom URLs, so we need to declare a full path to the remote JSON data. */
+    /* Timetables have custom URLs, so we need to declare a full path to the remote JSON data. */
     @GET
-    Call<ScheduleLessonplan> getLessonPlan(@Url String url);
+    Call<ScheduleTimetable> getScheduleTimetable(@Url String url);
 }

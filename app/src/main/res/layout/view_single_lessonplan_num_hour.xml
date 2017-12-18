@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="num"
+            type="String"/>
+        <variable
+            name="hours"
+            type="String"/>
+    </data>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+        android:layout_height="68dp" android:orientation="horizontal" >
+
+        <TextView
+            style="@style/SingleLessonplanLessonNumber"
+            android:text="@{num}" />
+
+        <TextView
+            style="@style/SingleLessonplanHours"
+            android:text="@{hours}"/>
+
+    </LinearLayout>
+</layout>

@@ -3,14 +3,13 @@ package com.studytor.app.viewmodel;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.studytor.app.repositories.FragmentScheduleRepository;
+import com.studytor.app.repositories.AssistantScheduleRepository;
 
 /**
  * Created by Dawid on 19.07.2017.
@@ -19,7 +18,7 @@ import com.studytor.app.repositories.FragmentScheduleRepository;
 // Class handled by architecture component called ViewModel
 public class FragmentScheduleViewModel extends AndroidViewModel {
 
-    private FragmentScheduleRepository fragmentScheduleRepository;
+    private AssistantScheduleRepository assistantScheduleRepository;
 
     private MutableLiveData<String> text = new MutableLiveData<>();
 
@@ -42,7 +41,7 @@ public class FragmentScheduleViewModel extends AndroidViewModel {
         prepareStrings(this.getApplication());
         this.setText(mainText);
 
-        fragmentScheduleRepository = FragmentScheduleRepository.getInstance();
+        assistantScheduleRepository = AssistantScheduleRepository.getInstance();
     }
 
     public MutableLiveData<String> getText() {

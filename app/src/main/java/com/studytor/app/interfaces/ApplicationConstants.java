@@ -47,7 +47,8 @@ public interface ApplicationConstants {
     static final String INTENT_INSTITUTION_ID = "INTENT_INSTITUTION_ID";
     static final String INTENT_PAGE_NUMBER = "INTENT_PAGE_NUMBER";
     static final String INTENT_NEWS_ID = "INTENT_NEWS_ID";
+
     static final String INTENT_LESSONPLAN_URL = "INTENT_LESSONPLAN_URL";
-    static final String INTENT_LESSONPLAN_NAME = "INTENT_LESSONPLAN_URL";
+    static final String INTENT_LESSONPLAN_NAME = "INTENT_LESSONPLAN_NAME";
 
 }

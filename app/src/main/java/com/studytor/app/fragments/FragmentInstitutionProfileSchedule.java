@@ -1,20 +1,14 @@
 package com.studytor.app.fragments;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
@@ -25,28 +19,19 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
 import com.studytor.app.BR;
 import com.studytor.app.R;
-import com.studytor.app.activities.ActivityMain;
-import com.studytor.app.activities.ActivitySingleLessonplan;
-import com.studytor.app.adapters.NewsListRecyclerViewAdapter;
+import com.studytor.app.activities.ActivityScheduleTimetable;
 import com.studytor.app.adapters.ScheduleEntryRepresentation;
 import com.studytor.app.adapters.ScheduleSelectRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionProfileScheduleBinding;
-import com.studytor.app.helpers.ItemClickSupport;
 import com.studytor.app.interfaces.ApplicationConstants;
 import com.studytor.app.repositories.models.Schedule;
-import com.studytor.app.repositories.models.ScheduleLessonplan;
 import com.studytor.app.repositories.models.ScheduleSection;
 import com.studytor.app.repositories.models.ScheduleUnit;
-import com.studytor.app.viewmodel.ActivityMainViewModel;
 import com.studytor.app.viewmodel.FragmentInstitutionProfileSchedulesViewModel;
-import com.studytor.app.viewmodel.FragmentScheduleViewModel;
 
 import org.apmem.tools.layouts.FlowLayout;
 
@@ -160,8 +145,9 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
                 frame.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //TODO: Start activity with params!
-                        Intent intent = new Intent(flowLayout.getContext(), ActivitySingleLessonplan.class);
+                        Intent intent = new Intent(flowLayout.getContext(), ActivityScheduleTimetable.class);
+                        intent.putExtra(ApplicationConstants.INTENT_LESSONPLAN_URL, u.getUrl());
+                        intent.putExtra(ApplicationConstants.INTENT_LESSONPLAN_NAME, u.getName());
                         flowLayout.getContext().startActivity(intent);
                     }
                 });

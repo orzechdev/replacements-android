@@ -90,7 +90,7 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
         liveData = Transformations.map(this.news, new Function<News, News>() {
             @Override
             public News apply(News input) {
-                if(news != null)setLastPageNum(input.getLastPage());
+                if(input != null)setLastPageNum(input.getLastPage());
                 //setNews(input);
                 //observable.scrollViewScroll.notifyChange();
                 return input;

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="observable"
+            type="com.studytor.app.viewmodel.ActivityScheduleTimetableViewModel.Observable"/>
+        <variable
+            name="handler"
+            type="com.studytor.app.viewmodel.ActivityScheduleTimetableViewModel.Handler"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray_repl"
+        tools:context="com.studytor.app.activities.ActivityScheduleTimetable">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:background="@color/new_blue_light">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:onClick="goBack"
+                app:srcCompat="@drawable/activity_institution_back_arrow"/>
+
+            <com.studytor.app.AutoFitTextView
+                android:layout_width="240dp"
+                android:layout_height="match_parent"
+                android:text="@{observable.schedule.get().name}"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:paddingLeft="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:paddingRight="16dp"/>
+
+        </android.support.v7.widget.Toolbar>
+
+            <RelativeLayout
+                android:id="@+id/weekDays"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:orientation="horizontal"
+                android:background="@color/new_blue_light"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                android:gravity="center"
+                android:padding="4dp">
+
+                <ImageView
+                    android:id="@+id/previousDay"
+                    android:layout_width="56dp"
+                    android:layout_height="32dp"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_left_white_24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:alpha="@{observable.currentItem == 0? 0.5f : 1f}"
+                    android:onClick="@{()->handler.arrowLeft()}"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="left"
+                    android:layout_toRightOf="@id/previousDay"
+                    android:layout_toEndOf="@id/previousDay"
+                    android:layout_toStartOf="@id/nextDay"
+                    android:layout_toLeftOf="@id/nextDay"
+                    app:setupDayList="@{observable}"
+                    android:scrollX="@{observable.currentItem*observable.maxItemWidth}"
+                    android:id="@+id/linearLayout">
+
+                    <TextView
+                        android:layout_width="240dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Poniedziałek"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:layout_width="240dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:visibility="visible"
+                        android:text="Wtorek"/>
+
+                    <TextView
+                        android:layout_width="240dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:visibility="visible"
+                        android:text="Środa"/>
+
+                    <TextView
+                        android:layout_width="240dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:visibility="visible"
+                        android:text="Czwartek"/>
+
+                    <TextView
+                        android:layout_width="240dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:visibility="visible"
+                        android:text="Piątek"/>
+
+
+
+                </LinearLayout>
+
+
+
+                <ImageView
+                    android:id="@+id/nextDay"
+                    android:layout_width="56dp"
+                    android:layout_height="32dp"
+                    app:srcCompat="@drawable/ic_keyboard_arrow_right_white_24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:alpha="@{observable.currentItem >= (observable.maxItemCount-2)? 0.5f : 1f}"
+                    android:onClick="@{()->handler.arrowRight()}"/>
+
+
+
+            </RelativeLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            app:layout_constraintTop_toBottomOf="@+id/weekDays">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="56dp"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/white"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    app:setupNumsAndHours="@{observable}">
+
+                </LinearLayout>
+
+                <GridLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/white"
+                    android:columnCount="6"
+                    android:orientation="vertical"
+                    android:paddingLeft="4dp"
+                    android:paddingStart="4dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginEnd="60dp"
+                    android:rowCount="1"
+                    app:setupLessons="@{observable}"
+                    android:scrollX="@{observable.currentItem*observable.maxItemWidth}">
+
+                    <include
+                        layout="@layout/view_single_lessonplan"
+                        android:layout_width="@dimen/timetable_lesson_width"
+                        android:layout_height="68dp"
+                        android:layout_alignLeft="@+id/linearLayout"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignStart="@+id/linearLayout" />
+
+                    <include
+                        layout="@layout/view_single_lessonplan"
+                        android:layout_width="@dimen/timetable_lesson_width"
+                        android:layout_height="68dp" />
+
+                    <include
+                        layout="@layout/view_single_lessonplan"
+                        android:layout_width="@dimen/timetable_lesson_width"
+                        android:layout_height="68dp" />
+
+                    <include
+                        layout="@layout/view_single_lessonplan"
+                        android:layout_width="@dimen/timetable_lesson_width"
+                        android:layout_height="68dp" />
+
+                    <include
+                        layout="@layout/view_single_lessonplan"
+                        android:layout_width="@dimen/timetable_lesson_width"
+                        android:layout_height="68dp" />
+
+                    <include
+                        layout="@layout/view_single_lessonplan"
+                        android:layout_width="@dimen/timetable_lesson_width"
+                        android:layout_height="68dp" />
+
+                    <include
+                        layout="@layout/view_single_lessonplan"
+                        android:layout_width="@dimen/timetable_lesson_width"
+                        android:layout_height="68dp" />
+
+                </GridLayout>
+
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!-- Image Dark Vignette -->
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@drawable/toolbar_dropshadow"
+            android:scaleType="centerInside"
+            app:layout_constraintTop_toBottomOf="@id/weekDays" />
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>
