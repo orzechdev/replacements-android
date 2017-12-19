@@ -33,12 +33,6 @@
             android:layout_marginRight="16dp"
             app:buildScheduleUnits="@{section.getScheduleUnits()}">
 
-            <!--This will disappear in the app, only for visual help to understand the layout -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Andrzej Kamil Przykładowski"
-                style="@style/ScheduleListBadge"/>
 
         </org.apmem.tools.layouts.FlowLayout>
 

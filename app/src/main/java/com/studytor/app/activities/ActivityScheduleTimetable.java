@@ -1,5 +1,6 @@
 package com.studytor.app.activities;
 
+import android.animation.ValueAnimator;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -10,6 +11,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Point;
 import android.renderscript.ScriptGroup;
 import android.support.annotation.Nullable;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -175,6 +177,22 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
 
             }
         }
+    }
+
+    @BindingAdapter("android:scrollX")
+    public static void scrollX(final View v, final int scroll){
+        ValueAnimator va = ValueAnimator.ofInt(v.getScrollX(), scroll);
+        va.setInterpolator(new FastOutSlowInInterpolator());
+        va.setDuration(1000);
+
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                v.setScrollX((Integer)valueAnimator.getAnimatedValue());
+            }
+        });
+
+        va.start();
     }
 
     public static float convertDpToPixel(float dp, Context context){

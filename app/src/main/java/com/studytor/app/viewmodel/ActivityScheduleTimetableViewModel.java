@@ -97,7 +97,7 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
 
         if (observable.currentItem.get() + 1 <= (observable.schedule.get().getDays().size() - observable.itemsPerPage.get())) {
             observable.currentItem.set(observable.currentItem.get()+1);
-            observable.notifyChange();
+            observable.currentItem.notifyChange();
         }
 
     }
@@ -112,7 +112,7 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
 
         if (observable.currentItem.get() - 1 >= 0) {
             observable.currentItem.set(observable.currentItem.get()-1);
-            observable.notifyChange();
+            observable.currentItem.notifyChange();
         }
 
     }
