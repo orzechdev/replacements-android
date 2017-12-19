@@ -66,6 +66,9 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
 
         binding.setObservable(viewModel.getObservable());
         binding.setHandler(viewModel.getHandler());
+
+        //Set current item to 0 to prevent display bugs when rotating screen
+        viewModel.getObservable().currentItem.set(0);
     }
 
     public void goBack(View v){
@@ -147,7 +150,7 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
         int leftWidth = width - (int)convertDpToPixel(120, gl.getContext());
 
         //Let's see how much elements will fit on the screen
-        int baseElementWidth = (int)convertDpToPixel(240, gl.getContext());
+        int baseElementWidth = (int)convertDpToPixel(220, gl.getContext());
         int maxElementCount = leftWidth/baseElementWidth;
 
         //Calculate width of each element to fill left space
