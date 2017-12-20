@@ -41,4 +41,9 @@
 
     <color name="black_text_heading">#dd000000</color>
     <color name="black_text_caption">#8a000000</color>
+
+    <color name="colorPrimary">#216CC7</color>
+    <color name="colorPrimaryDark">#1b5ba9</color>
+    <color name="colorAccent">#216CC7</color>
+
 </resources>

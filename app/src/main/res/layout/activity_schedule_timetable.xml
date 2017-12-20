@@ -17,6 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gray_repl"
+        app:theme="@style/blueStatusBar"
+        android:statusBarColor="@color/new_blue"
         tools:context="com.studytor.app.activities.ActivityScheduleTimetable">
 
             <android.support.v7.widget.Toolbar
@@ -149,8 +151,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/white"
-            android:fillViewport="true"
-            android:fitsSystemWindows="true"
             android:layout_below="@id/weekDays">
 
             <LinearLayout

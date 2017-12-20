@@ -19,6 +19,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 
@@ -69,6 +70,7 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
 
         //Set current item to 0 to prevent display bugs when rotating screen
         viewModel.getObservable().currentItem.set(0);
+
     }
 
     public void goBack(View v){
