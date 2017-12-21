@@ -33,7 +33,7 @@
         android:key="pref_app_dev_settings">
         <EditTextPreference
             android:title="@string/pref_main_file_name"
-            android:defaultValue="@string/schedule_main_file"
+            android:defaultValue="lista.html"
             android:key="schedule_main_file"
             android:imeOptions="actionDone"/>
         <EditTextPreference

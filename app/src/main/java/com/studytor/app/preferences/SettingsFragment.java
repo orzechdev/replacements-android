@@ -84,13 +84,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 				String schoolName;
 				switch (prefs.getInt("chosenSchool", 0)){
 					case 1:
-						schoolName = getString(R.string.school_name_1);
+						schoolName = "Gimnazjum";
 						break;
 					case 2:
-						schoolName = getString(R.string.school_name_2);
+						schoolName = "Zespół Szkół";
 						break;
 					default:
-						schoolName = getString(R.string.school_name_0);
+						schoolName = "no school selected";
 						break;
 				}
 				paramPreference.setSummary(schoolName);
