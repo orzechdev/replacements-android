@@ -124,6 +124,7 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
         public ObservableField<Integer> maxItemWidth = new ObservableField<>();
         public ObservableField<Integer> currentItem = new ObservableField<>();
         public ObservableField<Integer> maxItemCount = new ObservableField<>();
+        public ObservableField<Integer> maxDayTVWidth = new ObservableField<>();
 
     }
 

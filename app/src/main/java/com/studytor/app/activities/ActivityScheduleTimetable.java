@@ -33,6 +33,7 @@ import com.studytor.app.interfaces.ApplicationConstants;
 import com.studytor.app.repositories.models.ScheduleTimetable;
 import com.studytor.app.viewmodel.ActivityScheduleTimetableViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityScheduleTimetable extends AppCompatActivity {
@@ -108,7 +109,7 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
 
         //Calculate left space for day names
         //left arrow + right arrow = around 120dp
-        int leftWidth = width - (int)convertDpToPixel(120, ll.getContext());
+        int leftWidth = width - (int)convertDpToPixel(56, ll.getContext());
 
         //Let's see how much elements will fit on the screen
         int baseElementWidth = (int)convertDpToPixel(220, ll.getContext());
@@ -118,15 +119,27 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
         int maxElementWidth = leftWidth/maxElementCount;
 
         observable.itemsPerPage.set(maxElementCount);
-        observable.maxItemWidth.set(maxElementWidth);
+        observable.maxDayTVWidth.set(maxElementWidth);
         observable.maxItemCount.set(observable.schedule.get().getDays().size());
 
         String[] arr = ll.getContext().getResources().getStringArray(R.array.weekdays);
+
+        int index = 0;
         for(ScheduleTimetable.ScheduleTimetableDay d : observable.schedule.get().getDays()){
             ViewSingleLessonplanWeekdayBinding b = DataBindingUtil.inflate(inflater, R.layout.view_single_lessonplan_weekday, ll, true);
             //b.setWidth(maxElementWidth);
             b.setText(arr[d.getDay()]);
             b.getRoot().getLayoutParams().width = maxElementWidth;
+
+            b.getRoot().setPadding(0,0,0,0);
+            if(maxElementCount > 1){
+                b.getRoot().setPadding((int)convertDpToPixel(16, ll.getContext()), 0,0,0);
+            }else{
+                b.getRoot().setPadding(0,0,(int)convertDpToPixel(60, ll.getContext()),0);
+            }
+
+            b.invalidateAll();
+            index++;
         }
 
     }
@@ -148,8 +161,8 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
         int width = metrics.widthPixels;
 
         //Calculate left space for lesson entries
-        //number + hours + padding = around 60dp
-        int leftWidth = width - (int)convertDpToPixel(120, gl.getContext());
+        //number + hours + padding = around 120dp
+        int leftWidth = width - (int)convertDpToPixel(56, gl.getContext());
 
         //Let's see how much elements will fit on the screen
         int baseElementWidth = (int)convertDpToPixel(220, gl.getContext());
@@ -165,21 +178,76 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
         for(ScheduleTimetable.ScheduleTimetableDay d : observable.schedule.get().getDays()){
             if(d.getLessons().size() >= 0){
 
-                List<ScheduleTimetable.ScheduleTimetableLesson> arr = d.getLessons();
-                int arrSize  = arr.size();
-                for(int i = 0; i < arrSize; i++){
-                    if(i == 0){
-                        for(int j = 1; j < arr.get(i).getNumber(); j++){
-                             inflater.inflate(R.layout.view_single_lessonplan_placeholder, gl);
+                /*
+                * NEW CODE BASED ON ARRAY OF NULLS
+                * EVERYTHING IS A NULL EXCEPT THE HOURS WHEN THERE IS A LESSON
+                * CLEAN AND SIMPLE AS FUCK
+                 */
+                List<ScheduleTimetable.ScheduleTimetableLesson> arr = new ArrayList<>();
+                for(int i = 0; i < observable.schedule.get().getHours().size(); i++){
+                    arr.add(null);
+                }
 
-                        }
-                    }
-                    if(maxElementWidth > 0){
+                for(ScheduleTimetable.ScheduleTimetableLesson l : d.getLessons()){
+                    arr.set(l.getNumber()-1, l);
+                }
+
+                for(ScheduleTimetable.ScheduleTimetableLesson l : arr){
+                    if(arr == null){
+                        inflater.inflate(R.layout.view_single_lessonplan_placeholder, gl, true);
+                        View v = gl.getChildAt(gl.getChildCount() - 1);
+
+                        if (v != null) v.getLayoutParams().width = maxElementWidth;
+                    }else{
                         ViewSingleLessonplanBinding b = DataBindingUtil.inflate(inflater, R.layout.view_single_lessonplan, gl, true);
-                        b.setLesson(arr.get(i));
+                        b.setLesson(l);
                         b.getRoot().getLayoutParams().width = maxElementWidth;
                     }
                 }
+
+                //TODO: THIS IS OLD CODE, IT SHOULD BE DELETED AFTER TESTING THAT ONE ABOVE
+                /*int index = 0;
+                for(int i = 0; i < arrSize; i++){
+
+                    //Draw items before first lesson
+                    if(i == 0) {
+                        for (int j = 1; j < arr.get(i).getNumber(); j++) {
+                            inflater.inflate(R.layout.view_single_lessonplan_placeholder, gl, true);
+                            View v = gl.getChildAt(gl.getChildCount() - 1);
+
+                            if (v != null) v.getLayoutParams().width = maxElementWidth;
+                            index++;
+                        }
+                    }
+
+                    //Draw items related to lessons
+                    System.out.println(arr.get(i).getNumber() + " DRAWING XD");
+                    if(arr.get(i).getNumber() == index){
+                        ViewSingleLessonplanBinding b = DataBindingUtil.inflate(inflater, R.layout.view_single_lessonplan, gl, true);
+                        b.setLesson(arr.get(i));
+                        b.getRoot().getLayoutParams().width = maxElementWidth;
+                        index ++;
+                    }else{
+                        inflater.inflate(R.layout.view_single_lessonplan_placeholder, gl, true);
+                        View v = gl.getChildAt(gl.getChildCount() - 1);
+
+                        if (v != null) v.getLayoutParams().width = maxElementWidth;
+                        index++;
+                    }
+
+                    //Draw items after last lesson
+                    if(i == arrSize - 1){
+                        for(int j = index; j < observable.schedule.get().getHours().size(); j++){
+                            inflater.inflate(R.layout.view_single_lessonplan_placeholder, gl, true);
+                            View v = gl.getChildAt(gl.getChildCount() - 1);
+
+                            if (v != null) v.getLayoutParams().width = maxElementWidth;
+                        }
+                    }
+
+
+                }*/
+                /* END OF OLD SHITTY CODE! */
 
             }
         }

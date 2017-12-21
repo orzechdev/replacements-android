@@ -16,7 +16,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gray_repl"
+        android:background="@android:color/white"
         app:theme="@style/blueStatusBar"
         android:statusBarColor="@color/app_blue_dark"
         tools:context="com.studytor.app.activities.ActivityScheduleTimetable">
@@ -80,7 +80,7 @@
                 android:layout_toStartOf="@id/nextDay"
                 android:gravity="left"
                 android:orientation="horizontal"
-                android:scrollX="@{observable.currentItem*observable.maxItemWidth}"
+                android:scrollX="@{observable.currentItem*observable.maxDayTVWidth}"
                 app:setupDayList="@{observable}">
 
                 <TextView
@@ -154,16 +154,16 @@
             android:layout_below="@id/weekDays">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="56dp"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/white"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
+                    android:background="#d2d2d2"
                     app:setupNumsAndHours="@{observable}">
 
                 </LinearLayout>
@@ -171,14 +171,10 @@
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="60dp"
-                    android:layout_marginRight="60dp"
-                    android:background="@android:color/white"
+                    android:background="#d2d2d2"
                     android:columnCount="6"
                     android:orientation="vertical"
-                    android:paddingLeft="4dp"
-                    android:paddingStart="4dp"
-                    android:rowCount="1"
+                    android:rowCount="3"
                     android:scrollX="@{observable.currentItem*observable.maxItemWidth}"
                     app:setupLessons="@{observable}">
 
