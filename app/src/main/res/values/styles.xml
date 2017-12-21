@@ -2,9 +2,9 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/new_blue_light</item>
-        <item name="colorPrimaryDark">@color/new_blue</item>
-        <item name="colorAccent">@color/new_blue_light</item>
+        <item name="colorPrimary">@color/app_blue</item>
+        <item name="colorPrimaryDark">@color/app_blue_dark</item>
+        <item name="colorAccent">@color/app_blue</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
@@ -12,8 +12,8 @@
     </style>
 
     <style name="TabTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryDark">@color/blue_dark</item>
+        <item name="colorPrimary">@color/app_blue</item>
+        <item name="colorPrimaryDark">@color/app_blue_dark</item>
         <item name="colorAccent">@color/primary_material_light</item>
     </style>
 
@@ -24,9 +24,9 @@
     </style>
 
     <style name="blueStatusBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/new_blue_light</item>
-        <item name="colorPrimaryDark">@color/new_blue</item>
-        <item name="colorAccent">@color/new_blue_light</item>
+        <item name="colorPrimary">@color/app_blue</item>
+        <item name="colorPrimaryDark">@color/app_blue_dark</item>
+        <item name="colorAccent">@color/app_blue</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

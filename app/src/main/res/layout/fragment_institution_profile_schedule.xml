@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/new_white_dark"
+        android:background="@color/white_dark"
         >
     
         <android.support.v4.widget.NestedScrollView
@@ -49,7 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/error_container"
-                    android:background="@color/new_white_dark"
+                    android:background="@color/white_dark"
                     android:visibility="@{(obj.schedule == null || obj.schedule.getLessonplans.size() &lt;= 0)?View.VISIBLE:View.GONE}">
 
                     <LinearLayout

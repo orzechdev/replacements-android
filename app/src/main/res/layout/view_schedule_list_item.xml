@@ -52,6 +52,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:paddingTop="16dp"
+            android:background="@color/white_mid"
             android:orientation="vertical"
             app:buildScheduleSections="@{obj.getSections()}"
             app:expand="@{(obj.isExpanded == true)? View.VISIBLE : View.GONE}">

@@ -2,10 +2,10 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimary">@color/new_blue_light</item>
-        <item name="android:colorPrimaryDark">@color/new_blue</item>
-        <item name="android:colorAccent">@color/new_blue_light</item>
-        <item name="android:colorControlActivated">@color/new_blue_light</item>
+        <item name="android:colorPrimary">@color/app_blue</item>
+        <item name="android:colorPrimaryDark">@color/app_blue_dark</item>
+        <item name="android:colorAccent">@color/app_blue</item>
+        <item name="android:colorControlActivated">@color/app_blue</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/semi_transparent</item>
         <item name="android:windowNoTitle">true</item>
@@ -15,17 +15,17 @@
     </style>
 
     <style name="blueStatusBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/new_blue_light</item>
-        <item name="colorPrimaryDark">@color/new_blue</item>
-        <item name="colorAccent">@color/new_blue_light</item>
-        <item name="android:colorControlActivated">@color/new_blue_light</item>
-        <item name="android:statusBarColor">@color/new_blue</item>
+        <item name="colorPrimary">@color/app_blue</item>
+        <item name="colorPrimaryDark">@color/app_blue_dark</item>
+        <item name="colorAccent">@color/app_blue</item>
+        <item name="android:colorControlActivated">@color/app_blue</item>
+        <item name="android:statusBarColor">@color/app_blue_dark</item>
     </style>
 
     <style name="ActivityInstitutionProfile" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorAccent">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:colorPrimaryDark">@color/new_blue_light</item>
+        <item name="android:colorPrimaryDark">@color/app_blue</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
@@ -34,8 +34,8 @@
     <style name="TranslucentStatusBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorAccent">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:colorPrimaryDark">@color/new_blue_light</item>
-        <item name="android:statusBarColor">@color/new_blue_light</item>
+        <item name="android:colorPrimaryDark">@color/app_blue</item>
+        <item name="android:statusBarColor">@color/app_blue</item>
     </style>
 
     <style name="ScheduleListBadge">

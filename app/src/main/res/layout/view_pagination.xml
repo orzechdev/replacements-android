@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/new_white_dark">
+        android:background="@color/white_dark">
     
         <LinearLayout
             android:layout_width="wrap_content"

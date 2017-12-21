@@ -7,7 +7,7 @@
         android:id="@+id/row_none"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:background="@color/blue_light_dark"
+        android:background="@color/app_blue"
         android:visibility="gone"
         android:layout_centerInParent="true">
         <RelativeLayout

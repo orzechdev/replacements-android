@@ -34,7 +34,7 @@ public abstract class BaseDecorationFragment extends Fragment {
         final DividerDecoration divider = new DividerDecoration.Builder(this.getActivity())
                 .setHeight(R.dimen.card_padding)
                 .setPadding(R.dimen.card_padding)
-                .setColorResource(R.color.blue)
+                .setColorResource(R.color.app_blue_dark)
                 .build();
 
         mList.setHasFixedSize(true);

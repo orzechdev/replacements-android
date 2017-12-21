@@ -187,7 +187,7 @@ public class ActivityMain extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor(ContextCompat.getColor(this, R.color.new_blue));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.app_blue_dark));
         }
     }
 

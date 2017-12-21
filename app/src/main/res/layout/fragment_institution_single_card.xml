@@ -30,7 +30,7 @@
                 android:layout_width="56dp"
                 android:layout_height="56dp"
                 android:minHeight="80dp"
-                android:src="@color/accent_blue"
+                android:src="@color/app_blue"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:picassoImage="@{obj.logoUrl}" />

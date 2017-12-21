@@ -126,8 +126,8 @@ public class FcmListenerService extends FirebaseMessagingService {
 
         //Ponizszy kod dziala tylko w API >= 16, wiec jest usuniety
         //mNotifyBuilder.setPriority(Notification.PRIORITY_DEFAULT);
-        mNotifyBuilder.setLights(ContextCompat.getColor(getApplicationContext(), R.color.blue_led_light), 600, 2400);
-        mNotifyBuilder.setColor(ContextCompat.getColor(getApplicationContext(), R.color.blue));
+        mNotifyBuilder.setLights(ContextCompat.getColor(getApplicationContext(), R.color.LED_blue), 600, 2400);
+        mNotifyBuilder.setColor(ContextCompat.getColor(getApplicationContext(), R.color.app_blue_dark));
         mNotifyBuilder.setAutoCancel(true);
 
         // Post a notification

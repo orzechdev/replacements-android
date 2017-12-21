@@ -307,7 +307,7 @@ public class ReplacementsFragment extends Fragment {
                 holder.rowNone.setVisibility(View.VISIBLE);
                 holder.rowNone.getLayoutParams().height = getActivity().findViewById(R.id.main_content_container).getHeight();
                 holder.rowNoneInside.setVisibility(View.VISIBLE);
-                holder.rowView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.blue_light));
+                holder.rowView.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.app_blue));
             }else if(mTodayReplCount == 0 && mTomorrowReplCount == 0 && position == 1) {
                 holder.rowRepl.setVisibility(View.GONE);
                 holder.rowNone.setVisibility(View.GONE);
@@ -590,7 +590,7 @@ public class ReplacementsFragment extends Fragment {
                  }
              }
         );
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.blue);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.app_blue_dark);
 
 
         currentTime = System.currentTimeMillis();
