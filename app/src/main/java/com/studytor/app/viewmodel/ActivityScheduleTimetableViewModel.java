@@ -75,7 +75,7 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
             });
 
 
-            repository.getSchedules(dataURL);
+            repository.getSchedulesWithCacheCheck(dataURL);
         }
     }
 

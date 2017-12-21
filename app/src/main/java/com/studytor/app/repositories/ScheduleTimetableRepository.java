@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.studytor.app.repositories.cache.ScheduleListCache;
+import com.studytor.app.repositories.cache.ScheduleTimetableCache;
 import com.studytor.app.repositories.models.Schedule;
 import com.studytor.app.repositories.models.ScheduleTimetable;
 import com.studytor.app.repositories.webservices.RetrofitClientSingleton;
@@ -27,7 +28,7 @@ public class ScheduleTimetableRepository {
     private static final String CLASS_NAME = NewsRepository.class.getName();
 
     private static ScheduleTimetableRepository repositoryInstance;
-    //private ScheduleListCache scheduleListCache;
+    private ScheduleTimetableCache scheduleTimetableCache;
     private WebService webService;
 
     private MutableLiveData<ScheduleTimetable> scheduleData;
@@ -35,7 +36,7 @@ public class ScheduleTimetableRepository {
     public ScheduleTimetableRepository(){
         this.webService = RetrofitClientSingleton.getInstance().getWebService();
         this.scheduleData = new MutableLiveData<>();
-        //this.scheduleListCache = ScheduleListCache.getInstance();
+        this.scheduleTimetableCache = ScheduleTimetableCache.getInstance();
     }
 
     public static ScheduleTimetableRepository getInstance() {
@@ -46,30 +47,34 @@ public class ScheduleTimetableRepository {
         return repositoryInstance;
     }
 
-    /*public void getSchedulesWithCacheCheck(final int institutionId){
+    public void getSchedulesWithCacheCheck(final String url){
 
-        scheduleListCache.getData().observeForever(new Observer<List<Schedule>>() {
+        scheduleTimetableCache.getData().observeForever(new Observer<List<ScheduleTimetable>>() {
             @Override
-            public void onChanged(@Nullable List<Schedule> schedules) {
-                System.out.println("SCHEDULE REPO CACHE CHANGED");
-                Schedule temp = null;
+            public void onChanged(@Nullable List<ScheduleTimetable> schedules) {
+                System.out.println("REPO TIMETABLE CACHE CHANGED");
+                ScheduleTimetable temp = null;
                 if(schedules == null){
-                    getSchedules(institutionId);
+                    getSchedules(url);
+                    return;
                 }
-                for(Schedule n : schedules){
-                    if(n.getInstitutionId() == institutionId){
+                for(ScheduleTimetable n : schedules){
+                    if(n.getUrl().equals(url)){
                         temp = n;
+                        break;
                     }
                 }
                 if(temp != null){
+                    System.out.println("REPO TIMETABLE CACHE FOUND");
                     scheduleData.postValue(temp);
                 }else{
-                    getSchedules(institutionId);
+                    System.out.println("REPO TIMETABLE CACHE DOWNLOADING");
+                    getSchedules(url);
                 }
             }
         });
 
-    }*/
+    }
 
     public void getSchedules(@NonNull final String timetableURL) {
 
@@ -86,8 +91,9 @@ public class ScheduleTimetableRepository {
 
                     timetable.setUrl(timetableURL);
 
-                    scheduleData.postValue(timetable);
-                    //scheduleListCache.updateOrAddNews(institutionId, schedule);
+                    //scheduleData.postValue(timetable);
+
+                    scheduleTimetableCache.updateOrAddNews(timetableURL, timetable);
 
                 }else{
                     System.out.println("REPO TIMETABLE GET DATA FROM WEB IS NULL 1" + response.toString());

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/timetable_lesson_width" android:layout_height="68dp">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</FrameLayout>
+    <data>
+    </data>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="@dimen/timetable_lesson_width" android:layout_height="68dp">
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

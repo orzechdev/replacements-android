@@ -18,13 +18,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="64dp"
             android:background="@drawable/recycler_item_simple"
             android:onClick="@{(view) -> obj.toggleExpansion()}">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:textSize="14sp"
                 android:layout_alignParentLeft="true"
@@ -40,7 +40,7 @@
                 android:layout_height="32dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_margin="8dp"
+                android:layout_margin="16dp"
                 android:alpha="0.5"
                 app:bindImage="@{(obj.isExpanded == false)? obj.ARROW_DOWN_RES:obj.ARROW_UP_RES}" />
 

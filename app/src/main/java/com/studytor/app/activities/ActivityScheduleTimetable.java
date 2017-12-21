@@ -170,7 +170,8 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
                 for(int i = 0; i < arrSize; i++){
                     if(i == 0){
                         for(int j = 1; j < arr.get(i).getNumber(); j++){
-                            inflater.inflate(R.layout.view_single_lessonplan_placeholder, gl);
+                             inflater.inflate(R.layout.view_single_lessonplan_placeholder, gl);
+
                         }
                     }
                     if(maxElementWidth > 0){
