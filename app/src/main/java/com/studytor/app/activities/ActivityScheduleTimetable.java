@@ -189,7 +189,7 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
                 }
 
                 for(ScheduleTimetable.ScheduleTimetableLesson l : d.getLessons()){
-                    arr.set(l.getNumber()-1, l);
+                    if(l.getNumber()-1 >= 0 && l.getNumber()-1 < arr.size()) arr.set(l.getNumber()-1, l);
                 }
 
                 for(ScheduleTimetable.ScheduleTimetableLesson l : arr){
