@@ -1,6 +1,7 @@
 package com.studytor.app.repositories.cache;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import com.studytor.app.repositories.models.News;
 import com.studytor.app.repositories.models.SingleInstitution;
@@ -45,7 +46,7 @@ public class NewsCache {
                         return false;
                     }
                 }
-                System.out.println("INSERTED SOMETHING");
+                Log.i("Studytor","INSERTED SOMETHING");
                 cachedNews.getValue().add(news);
             }
         }

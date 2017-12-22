@@ -1,6 +1,7 @@
 package com.studytor.app.repositories.cache;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import com.studytor.app.repositories.models.Schedule;
 import com.studytor.app.repositories.models.ScheduleLessonplan;
@@ -37,25 +38,25 @@ public class ScheduleTimetableCache {
     }
 
     public boolean updateOrAddTimetable(String url, ScheduleTimetable lessonplan){
-        System.out.println("REPO TIMETABLE BLABLA");
+        Log.i("Studytor","REPO TIMETABLE BLABLA");
         if(cachedTimetables != null){
-            System.out.println("REPO TIMETABLE BLABLA 2");
+            Log.i("Studytor","REPO TIMETABLE BLABLA 2");
 
             if(cachedTimetables.getValue() == null) {
                 cachedTimetables.setValue(new ArrayList<ScheduleTimetable>());
             }
 
-            System.out.println("REPO TIMETABLE BLABLA 3");
+            Log.i("Studytor","REPO TIMETABLE BLABLA 3");
             List<ScheduleTimetable> temp = cachedTimetables.getValue();
             for(int i = 0; i < cachedTimetables.getValue().size(); i++){
                 if(cachedTimetables.getValue().get(i).getUrl().equals(url)){
-                    System.out.println("REPO TIMETABLE CACHE UPDATED SOMETHING WITH " + url);
+                    Log.i("Studytor","REPO TIMETABLE CACHE UPDATED SOMETHING WITH " + url);
                     temp.set(i, lessonplan);
                     cachedTimetables.postValue(temp);
                     return false;
                 }
             }
-            System.out.println("REPO TIMETABLE CACHE INSERTED SOMETHING WITH " + url);
+            Log.i("Studytor","REPO TIMETABLE CACHE INSERTED SOMETHING WITH " + url);
             temp.add(lessonplan);
             cachedTimetables.postValue(temp);
 

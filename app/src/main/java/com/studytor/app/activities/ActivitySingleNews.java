@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -51,7 +52,7 @@ public class ActivitySingleNews extends AppCompatActivity {
 
     @BindingAdapter("picassoImage")
     public static void picassoImage(ImageView view, String url) {
-        System.out.println("Picasso painted this picture : " + url);
+        Log.i("Studytor","Picasso painted this picture : " + url);
         if(url != null && !url.equals(""))
             Picasso.with(view.getContext()).load(url).into(view);
     }

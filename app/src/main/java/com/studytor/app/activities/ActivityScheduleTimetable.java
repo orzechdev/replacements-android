@@ -220,7 +220,7 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
                     }
 
                     //Draw items related to lessons
-                    System.out.println(arr.get(i).getNumber() + " DRAWING XD");
+                    Log.i("Studytor",arr.get(i).getNumber() + " DRAWING XD");
                     if(arr.get(i).getNumber() == index){
                         ViewSingleLessonplanBinding b = DataBindingUtil.inflate(inflater, R.layout.view_single_lessonplan, gl, true);
                         b.setLesson(arr.get(i));

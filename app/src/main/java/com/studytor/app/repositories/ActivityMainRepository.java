@@ -51,7 +51,7 @@ public class ActivityMainRepository {
                 try {
                     //NullPointerException Fix
                     if(response.isSuccessful() && response.body().string() != null){
-                        //System.out.println(response.body().string());//convert reponse to string
+                        //Log.i("Studytor",response.body().string());//convert reponse to string
                         data.setValue(response.body().string());
                         Log.i("ActivityMainRepository", "1");
                         Log.i("ActivityMainRepository", response.body().string());

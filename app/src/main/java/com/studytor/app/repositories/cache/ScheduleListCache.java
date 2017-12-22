@@ -1,6 +1,7 @@
 package com.studytor.app.repositories.cache;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.util.Log;
 
 import com.studytor.app.repositories.models.News;
 import com.studytor.app.repositories.models.Schedule;
@@ -46,7 +47,7 @@ public class ScheduleListCache {
                         return false;
                     }
                 }
-                System.out.println("INSERTED SOMETHING");
+                Log.i("Studytor","INSERTED SOMETHING");
                 List<Schedule> temp = cachedSchedules.getValue();
                 temp.add(schedule);
                 cachedSchedules.postValue(temp);

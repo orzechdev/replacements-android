@@ -12,6 +12,7 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 
 import com.studytor.app.activities.ActivityInstitutionProfile;
@@ -45,7 +46,7 @@ public class ActivityInstitutionProfileViewModel extends AndroidViewModel{
         //this.institutionList = new MutableLiveData<>();
         if(institutionId != -1)this.institutionId = institutionId;
 
-        System.out.println("GOT INSTITUTION WITH ID " + this.institutionId);
+        Log.i("Studytor","GOT INSTITUTION WITH ID " + this.institutionId);
         institutionRepository = InstitutionRepository.getInstance(this.getApplication());
 
         institutionRepository.getInstitutionListFromCache().observeForever(new Observer<List<SingleInstitution>>() {

@@ -11,6 +11,7 @@ import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.studytor.app.repositories.ScheduleRepository;
 import com.studytor.app.repositories.ScheduleTimetableRepository;
@@ -78,7 +79,7 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
 
             });
 
-            System.out.println("REPO TIMETABLE URL XD " + dataURL);
+            Log.i("Studytor","REPO TIMETABLE URL XD " + dataURL);
             //repository.getSchedulesWithCacheCheck(dataURL);
             repository.getSchedules(dataURL);
         }

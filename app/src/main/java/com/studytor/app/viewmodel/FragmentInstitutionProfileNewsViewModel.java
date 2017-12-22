@@ -194,23 +194,23 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
     public void goToFirstPage(){
         newsRepository.getNewsWithCacheCheck(this.institutionId, this.firstPageNum);
         this.currentPageNum = this.firstPageNum;
-        System.out.println("PAGE NUMBER IS " + this.currentPageNum);
+        Log.i("Studytor","PAGE NUMBER IS " + this.currentPageNum);
     }
 
     public void goToLastPage(){
         newsRepository.getNewsWithCacheCheck(this.institutionId, this.lastPageNum);
         this.currentPageNum = this.lastPageNum;
-        System.out.println("PAGE NUMBER IS " + this.currentPageNum);
+        Log.i("Studytor","PAGE NUMBER IS " + this.currentPageNum);
     }
 
     public void goToNextPage(){
         if(isNextPageAvailable()) newsRepository.getNewsWithCacheCheck(this.institutionId, ++this.currentPageNum);
-        System.out.println("PAGE NUMBER IS " + this.currentPageNum);
+        Log.i("Studytor","PAGE NUMBER IS " + this.currentPageNum);
     }
 
     public void goToPreviousPage(){
         if(isPreviousPageAvailable()) newsRepository.getNewsWithCacheCheck(this.institutionId, --this.currentPageNum);
-        System.out.println("PAGE NUMBER IS " + this.currentPageNum);
+        Log.i("Studytor","PAGE NUMBER IS " + this.currentPageNum);
     }
 
     public boolean isNextPageAvailable(){

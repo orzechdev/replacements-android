@@ -56,7 +56,7 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
         institutionList = Transformations.switchMap(institutionListVM, new Function<List<SingleInstitution>, LiveData<List<SingleInstitution>>>() {
             @Override
             public LiveData<List<SingleInstitution>> apply(List<SingleInstitution> input) {
-                System.out.println("REPO CHANGED newest apply");
+                Log.i("Studytor","REPO CHANGED newest apply");
                 if (input.isEmpty()) {
                     return new MutableLiveData<>();
                 }
@@ -69,7 +69,7 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
 //        fragmentInstitutionRepository.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
 //            @Override
 //            public void onChanged(@Nullable List<SingleInstitution> institutions) {
-//                System.out.println("REPO CHANGED");
+//                Log.i("Studytor","REPO CHANGED");
 //                //setInstitutionList(institutions);
 //                observable.institutionList.set(institutions);
 //                observable.isRefreshing.set(false);
@@ -79,7 +79,7 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
     }
 
     public void requestRepositoryUpdate(){
-        System.out.println("UPDATING");
+        Log.i("Studytor","UPDATING");
         fragmentInstitutionRepository.refreshData();
         observable.isRefreshing.set(true);
         observable.notifyChange();

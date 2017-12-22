@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.studytor.app.repositories.cache.ScheduleListCache;
 import com.studytor.app.repositories.models.News;
@@ -23,8 +24,6 @@ import retrofit2.Response;
  */
 
 public class ScheduleRepository {
-
-    private static final String CLASS_NAME = NewsRepository.class.getName();
 
     private static ScheduleRepository repositoryInstance;
     private ScheduleListCache scheduleListCache;
@@ -51,7 +50,7 @@ public class ScheduleRepository {
         scheduleListCache.getData().observeForever(new Observer<List<Schedule>>() {
             @Override
             public void onChanged(@Nullable List<Schedule> schedules) {
-                System.out.println("SCHEDULE REPO CACHE CHANGED");
+                Log.i("Studytor","SCHEDULE REPO CACHE CHANGED");
                 Schedule temp = null;
                 if(schedules == null){
                     getSchedules(institutionId);
@@ -73,28 +72,28 @@ public class ScheduleRepository {
 
     public void getSchedules(@NonNull final int institutionId) {
 
-        System.out.println("REPO SCHEDULE CALLING WEB");
+        Log.i("Studytor","REPO SCHEDULE CALLING WEB");
 
         this.webService.getSchedules(institutionId).enqueue(new Callback<Schedule>() {
             @Override
             public void onResponse(Call<Schedule> call, final Response<Schedule> response) {
-                System.out.println("REPO SCHEDULE GET DATA FROM WEB ENQUEUED");
+                Log.i("Studytor","REPO SCHEDULE GET DATA FROM WEB ENQUEUED");
 
                 if(response.isSuccessful() && response.body().getLessonplans() != null){
-                    System.out.println("REPO SCHEDULE GET DATA FROM WEB SUCCESSFUL");
+                    Log.i("Studytor","REPO SCHEDULE GET DATA FROM WEB SUCCESSFUL");
                     Schedule schedule = response.body();
 
                     schedule.setInstitutionId(institutionId);
-                    System.out.println("SCHEDULE JAKIES_DZIWNE_INSTITUTION: " + institutionId);
+                    Log.i("Studytor","SCHEDULE JAKIES_DZIWNE_INSTITUTION: " + institutionId);
 
                     scheduleData.postValue(schedule);
                     scheduleListCache.updateOrAddNews(institutionId, schedule);
 
                 }else{
                     if(response.body().getLessonplans() == null){
-                        System.out.println("REPO SCHEDULE GET DATA FROM WEB NO LESSONPLANS!" + response.toString());
+                        Log.i("Studytor","REPO SCHEDULE GET DATA FROM WEB NO LESSONPLANS!" + response.toString());
                     }
-                    System.out.println("REPO SCHEDULE GET DATA FROM WEB IS NULL 1" + response.toString());
+                    Log.i("Studytor","REPO SCHEDULE GET DATA FROM WEB IS NULL 1" + response.toString());
                     scheduleData.postValue(null);
                 }
 
@@ -102,7 +101,7 @@ public class ScheduleRepository {
 
             @Override
             public void onFailure(Call<Schedule> call, Throwable t) {
-                System.out.println("REPO SCHEDULE GET DATA FROM WEB IS NULL 2");
+                Log.i("Studytor","REPO SCHEDULE GET DATA FROM WEB IS NULL 2");
 
                 scheduleData.postValue(null);
 

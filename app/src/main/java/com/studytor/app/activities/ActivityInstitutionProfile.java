@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -141,7 +142,7 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
     @BindingAdapter("picassoCircleImage")
     public static void picassoCircleImage(CircleImageView view, String url) {
         if(url != null && url.length() > 0) {
-            System.out.println("Picasso painted this circle picture : " + url);
+            Log.i("Studytor","Picasso painted this circle picture : " + url);
             Picasso.with(view.getContext()).load(url).into(view);
         }
     }
@@ -149,7 +150,7 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
     @BindingAdapter("picassoImage")
     public static void picassoImage(ImageView view, String url) {
         if(url != null && url.length() > 0){
-            System.out.println("Picasso painted this picture : " + url);
+            Log.i("Studytor","Picasso painted this picture : " + url);
             Picasso.with(view.getContext()).load(url).into(view);
             view.invalidate();
         }

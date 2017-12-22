@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.studytor.app.repositories.cache.ScheduleListCache;
 import com.studytor.app.repositories.cache.ScheduleTimetableCache;
@@ -24,8 +25,6 @@ import retrofit2.Response;
  */
 
 public class ScheduleTimetableRepository {
-
-    private static final String CLASS_NAME = NewsRepository.class.getName();
 
     private static ScheduleTimetableRepository repositoryInstance;
     private ScheduleTimetableCache scheduleTimetableCache;
@@ -54,7 +53,7 @@ public class ScheduleTimetableRepository {
         scheduleTimetableCache.getData().observeForever(new Observer<List<ScheduleTimetable>>() {
             @Override
             public void onChanged(@Nullable List<ScheduleTimetable> schedules) {
-                System.out.println("REPO TIMETABLE CACHE CHANGED");
+                Log.i("Studytor","REPO TIMETABLE CACHE CHANGED");
                 ScheduleTimetable temp = null;
                 if(schedules == null){
                     getSchedules(url);
@@ -67,10 +66,10 @@ public class ScheduleTimetableRepository {
                     }
                 }
                 if(temp != null){
-                    System.out.println("REPO TIMETABLE CACHE FOUND");
+                    Log.i("Studytor","REPO TIMETABLE CACHE FOUND");
                     scheduleData.postValue(temp);
                 }else{
-                    System.out.println("REPO TIMETABLE CACHE DOWNLOADING");
+                    Log.i("Studytor","REPO TIMETABLE CACHE DOWNLOADING");
                     getSchedules(url);
                 }
             }
@@ -80,7 +79,7 @@ public class ScheduleTimetableRepository {
 
     public void getSchedules(@NonNull final String timetableURL) {
 
-        System.out.println("REPO TIMETABLE CALLING WEB");
+        Log.i("Studytor","REPO TIMETABLE CALLING WEB");
 
         if(cachedTimetable.getUrl() != null && cachedTimetable.getUrl().equals(timetableURL)){
             scheduleData.postValue(cachedTimetable);
@@ -90,10 +89,10 @@ public class ScheduleTimetableRepository {
         this.webService.getScheduleTimetable(timetableURL).enqueue(new Callback<ScheduleTimetable>() {
             @Override
             public void onResponse(Call<ScheduleTimetable> call, Response<ScheduleTimetable> response) {
-                System.out.println("REPO TIMETABLE GET DATA FROM WEB ENQUEUED");
+                Log.i("Studytor","REPO TIMETABLE GET DATA FROM WEB ENQUEUED");
 
                 if(response.isSuccessful() && response.body().getDays() != null){
-                    System.out.println("REPO TIMETABLE GET DATA FROM WEB SUCCESSFUL");
+                    Log.i("Studytor","REPO TIMETABLE GET DATA FROM WEB SUCCESSFUL");
                     ScheduleTimetable timetable = response.body();
 
                     timetable.setUrl(timetableURL);
@@ -103,14 +102,14 @@ public class ScheduleTimetableRepository {
                     //scheduleTimetableCache.updateOrAddTimetable(timetableURL, timetable);
 
                 }else{
-                    System.out.println("REPO TIMETABLE GET DATA FROM WEB IS NULL 1" + response.toString());
+                    Log.i("Studytor","REPO TIMETABLE GET DATA FROM WEB IS NULL 1" + response.toString());
                     scheduleData.postValue(null);
                 }
             }
 
             @Override
             public void onFailure(Call<ScheduleTimetable> call, Throwable t) {
-                System.out.println("REPO TIMETABLE GET DATA FROM WEB IS NULL 2");
+                Log.i("Studytor","REPO TIMETABLE GET DATA FROM WEB IS NULL 2");
 
                 scheduleData.postValue(null);
 

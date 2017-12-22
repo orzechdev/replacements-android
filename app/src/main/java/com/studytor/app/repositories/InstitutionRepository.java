@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.studytor.app.repositories.models.Institutions;
 import com.studytor.app.repositories.models.SingleInstitution;
@@ -27,7 +28,6 @@ import retrofit2.Response;
  */
 
 public class InstitutionRepository {
-    private static final String CLASS_NAME = InstitutionRepository.class.getName();
 
     private static InstitutionRepository repositoryInstance;
 
@@ -51,7 +51,7 @@ public class InstitutionRepository {
 
     private void observeDatabase(){
 
-        System.out.println("REPO CHECK DATABASE");
+        Log.i("Studytor","REPO CHECK DATABASE");
 
         this.institutionDao.loadAll().getValue();
 
@@ -70,7 +70,7 @@ public class InstitutionRepository {
 
         final MutableLiveData<List<SingleInstitution>> returnData = new MutableLiveData<>();
 
-        System.out.println("REPO AUTO GET");
+        Log.i("Studytor","REPO AUTO GET");
 
         refreshData();
 
@@ -82,7 +82,7 @@ public class InstitutionRepository {
         institutionCache.getData().observeForever(new Observer<List<SingleInstitution>>() {
             @Override
             public void onChanged(@Nullable List<SingleInstitution> institutions) {
-                System.out.println("REPO RETURN OBSERVED CACHE");
+                Log.i("Studytor","REPO RETURN OBSERVED CACHE");
                 returnData.postValue(institutions);
             }
         });
@@ -99,7 +99,7 @@ public class InstitutionRepository {
         institutionCache.getData().observeForever(new Observer<List<SingleInstitution>>() {
             @Override
             public void onChanged(@Nullable List<SingleInstitution> institutions) {
-                System.out.println("REPO RETURN OBSERVED CACHE");
+                Log.i("Studytor","REPO RETURN OBSERVED CACHE");
                 returnData.postValue(institutions);
             }
         });
@@ -120,7 +120,7 @@ public class InstitutionRepository {
         institutionCache.getData().observeForever(new Observer<List<SingleInstitution>>() {
             @Override
             public void onChanged(@Nullable List<SingleInstitution> institutions) {
-                System.out.println("REPO RETURN OBSERVED CACHE");
+                Log.i("Studytor","REPO RETURN OBSERVED CACHE");
                 returnData.postValue(institutions);
             }
         });
@@ -132,15 +132,15 @@ public class InstitutionRepository {
     //Load InstitutionList from web using retrofit
     public void refreshData(){
 
-        System.out.println("REPO GET DATA FROM WEB");
+        Log.i("Studytor","REPO GET DATA FROM WEB");
 
         this.webService.getAllInstitutions().enqueue(new Callback<Institutions>() {
             @Override
             public void onResponse(Call<Institutions> call, final Response<Institutions> response) {
-                System.out.println("REPO GET DATA FROM WEB ENQUEUED");
+                Log.i("Studytor","REPO GET DATA FROM WEB ENQUEUED");
 
                 if(response.isSuccessful() && response.body().getInstitutions() != null){
-                    System.out.println("REPO GET DATA FROM WEB SUCCESSFUL");
+                    Log.i("Studytor","REPO GET DATA FROM WEB SUCCESSFUL");
 
                     //Save data to local database
                     Thread thread = new Thread(new Runnable() {
@@ -159,7 +159,7 @@ public class InstitutionRepository {
 
 
                 }else{
-                    System.out.println("REPO GET DATA FROM WEB IS NULL 1");
+                    Log.i("Studytor","REPO GET DATA FROM WEB IS NULL 1");
 
                     //Reobserve Database if already observed to force data check
                     observeDatabase();
@@ -170,7 +170,7 @@ public class InstitutionRepository {
 
             @Override
             public void onFailure(Call<Institutions> call, Throwable t) {
-                System.out.println("REPO GET DATA FROM WEB IS NULL 2");
+                Log.i("Studytor","REPO GET DATA FROM WEB IS NULL 2");
 
                 //Reobserve Database if already observed to force data check
                 observeDatabase();

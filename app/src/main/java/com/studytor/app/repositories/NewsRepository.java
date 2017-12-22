@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.studytor.app.repositories.cache.InstitutionCache;
 import com.studytor.app.repositories.cache.NewsCache;
@@ -29,8 +30,6 @@ import retrofit2.Response;
  */
 
 public class NewsRepository {
-
-    private static final String CLASS_NAME = NewsRepository.class.getName();
 
     private static NewsRepository repositoryInstance;
 
@@ -61,11 +60,11 @@ public class NewsRepository {
 
     public void getNewsWithCacheCheck(final int institutionId, final int pageNum){
 
-        System.out.println("NEWS REPO CHECK CACHE");
+        Log.i("Studytor","NEWS REPO CHECK CACHE");
         newsCache.getData().observeForever(new Observer<List<News>>() {
             @Override
             public void onChanged(@Nullable List<News> news) {
-                System.out.println("NEWS REPO CACHE CHANGED");
+                Log.i("Studytor","NEWS REPO CACHE CHANGED");
                 News temp = null;
                 if(news == null){
                     getNews(institutionId, pageNum);
@@ -88,15 +87,15 @@ public class NewsRepository {
 
     public void getNews(final int institutionId, final int pageNum) {
 
-        System.out.println("REPO NEWS CALLING WEB");
+        Log.i("Studytor","REPO NEWS CALLING WEB");
 
         this.webService.getAllNews(institutionId, pageNum).enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, final Response<News> response) {
-                System.out.println("REPO NEWS GET DATA FROM WEB ENQUEUED");
+                Log.i("Studytor","REPO NEWS GET DATA FROM WEB ENQUEUED");
 
                 if(response.isSuccessful() && response.body().getNewsList() != null){
-                    System.out.println("REPO NEWS GET DATA FROM WEB SUCCESSFUL");
+                    Log.i("Studytor","REPO NEWS GET DATA FROM WEB SUCCESSFUL");
                     News news = response.body();
                     news.setCurrentPage(pageNum);
                     news.setInstitutionId(institutionId);
@@ -105,7 +104,7 @@ public class NewsRepository {
 
                     newsData.postValue(news);
                 }else{
-                    System.out.println("REPO NEWS GET DATA FROM WEB IS NULL 1" + response.toString());
+                    Log.i("Studytor","REPO NEWS GET DATA FROM WEB IS NULL 1" + response.toString());
                     newsData.postValue(null);
                 }
 
@@ -113,7 +112,7 @@ public class NewsRepository {
 
             @Override
             public void onFailure(Call<News> call, Throwable t) {
-                System.out.println("REPO NEWS GET DATA FROM WEB IS NULL 2");
+                Log.i("Studytor","REPO NEWS GET DATA FROM WEB IS NULL 2");
 
                 newsData.postValue(null);
 

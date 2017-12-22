@@ -82,7 +82,7 @@ public class ProfileRegister extends IntentService {
         }
         localEditor.apply();
         params.put("regId", regId);
-        System.out.println("Reg Id = " + regId);
+        Log.i("Studytor","Reg Id = " + regId);
         String urlServer;
         if(!url.equals("")) {
             urlServer = url + ApplicationConstants.APP_SERVER_URL_INSERT_USER;
@@ -158,7 +158,7 @@ public class ProfileRegister extends IntentService {
         }
         Log.i("GcmUserUnregistration","removeRegIdfromServer");
         params.put("regId", regId);
-        System.out.println("To remove Reg Id = " + regId);
+        Log.i("Studytor","To remove Reg Id = " + regId);
         String urlServer;
         final String urlDomain;
         if(!url.equals("")) {
