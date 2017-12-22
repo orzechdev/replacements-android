@@ -19,7 +19,6 @@
         android:layout_height="match_parent"
         android:background="@android:color/white"
         app:theme="@style/blueStatusBar"
-        android:statusBarColor="@color/app_blue_dark"
         tools:context="com.studytor.app.activities.ActivityScheduleTimetable">
 
             <android.support.v7.widget.Toolbar
@@ -28,12 +27,6 @@
                 android:layout_height="58dp"
                 android:background="@color/app_blue">
 
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:onClick="goBack"
-                    app:srcCompat="@drawable/activity_institution_back_arrow"/>
-
                 <com.studytor.app.AutoFitTextView
                     android:layout_width="240dp"
                     android:layout_height="match_parent"
@@ -41,12 +34,34 @@
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
                     android:gravity="center_vertical"
-                    android:paddingLeft="16dp"
-                    android:paddingStart="16dp"
+                    android:paddingLeft="40dp"
+                    android:paddingStart="40dp"
                     android:paddingEnd="16dp"
                     android:paddingRight="16dp"/>
 
             </android.support.v7.widget.Toolbar>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="false">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:onClick="goBack"
+                    app:srcCompat="@drawable/activity_institution_back_arrow"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="@drawable/transparent_ripple"/>
+
+            </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/weekDays"
