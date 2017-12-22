@@ -22,6 +22,7 @@
         android:paddingEnd="16dp"
         android:paddingLeft="16dp"
         android:paddingStart="16dp"
+        android:paddingTop="6dp"
         android:layout_marginBottom="1dp">
 
         <TextView
@@ -38,45 +39,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:visibility="invisible"
-            android:text="Dr Jan Nowak"
-            app:layout_constraintTop_toBottomOf="@id/lessonName"/>
-
-        <TextView
-            android:id="@+id/strikedTeacher"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
             android:text="@{lesson.teacher}"
-            app:layout_constraintTop_toBottomOf="@id/teacher" />
+            app:layout_constraintTop_toBottomOf="@id/lessonName" />
 
         <TextView
             android:id="@+id/classroom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="12sp"
-            android:text="Dr Jan Nowak"
-            android:visibility="invisible"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lessonName"/>
-
-        <TextView
-            android:id="@+id/strikedClassroom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
             android:text="@{lesson.room}"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/classroom" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:visibility="gone"
-            android:background="@color/gray_repl"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/lessonName" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

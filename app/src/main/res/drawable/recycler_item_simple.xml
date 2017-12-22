@@ -3,7 +3,7 @@
     <item>
         <shape android:shape="rectangle">
             <!-- draw a 4 dp width border around the rectangle shape -->
-            <stroke android:color="#d2d2d2" android:width="4dp"/>
+            <stroke android:color="@color/divider_item_decoration" android:width="4dp"/>
         </shape>
     </item>
     <!--

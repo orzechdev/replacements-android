@@ -9,6 +9,7 @@
         <item name="android:windowActionBar">false</item>
         <item name="windowActionBar">false</item>
         <item name="colorControlNormal">@color/white</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
 
     <style name="TabTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -27,6 +28,7 @@
         <item name="colorPrimary">@color/app_blue</item>
         <item name="colorPrimaryDark">@color/app_blue_dark</item>
         <item name="colorAccent">@color/app_blue</item>
+        <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -59,6 +61,13 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="CustomActivityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
 </resources>

@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ import com.studytor.app.adapters.ScheduleEntryRepresentation;
 import com.studytor.app.adapters.ScheduleSelectRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionProfileScheduleBinding;
 import com.studytor.app.interfaces.ApplicationConstants;
+import com.studytor.app.interfaces.Functions;
 import com.studytor.app.repositories.models.Schedule;
 import com.studytor.app.repositories.models.ScheduleSection;
 import com.studytor.app.repositories.models.ScheduleUnit;
@@ -107,6 +109,15 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
 
         if(sections != null && sections.size() > 0 && linearLayout.getChildCount() <= 0){
             linearLayout.removeAllViews();
+
+            View v = new View(linearLayout.getContext());
+            linearLayout.addView(v);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(0,0,0, (int)Functions.convertDpToPixel(16, linearLayout.getContext()));
+            lp.height = (int)Functions.convertDpToPixel(1, linearLayout.getContext());
+            v.setLayoutParams(lp);
+            v.setBackgroundColor(linearLayout.getContext().getResources().getColor(R.color.divider_item_decoration));
+
             for(ScheduleSection s : sections){
 
                 LayoutInflater layoutInflater = LayoutInflater.from(linearLayout.getContext());

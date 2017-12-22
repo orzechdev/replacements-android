@@ -4,6 +4,7 @@
 
     <data>
         <import type="android.view.View"/>
+        <import type="com.studytor.app.R" />
         <variable
             name="obj"
             type="com.studytor.app.repositories.models.ScheduleLessonplan"/>
@@ -19,7 +20,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:background="@drawable/recycler_item_simple"
+            android:background="@color/white"
             android:onClick="@{(view) -> obj.toggleExpansion()}">
 
             <TextView
@@ -49,10 +50,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:paddingTop="16dp"
             android:background="@color/white_mid"
             android:orientation="vertical"
             app:buildScheduleSections="@{obj.getSections()}"

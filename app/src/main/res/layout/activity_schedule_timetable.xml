@@ -78,14 +78,17 @@
 
             <ImageView
                 android:id="@+id/previousDay"
-                android:layout_width="56dp"
+                android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:layout_marginLeft="24dp"
+                android:layout_marginStart="24dp"
                 android:layout_centerVertical="true"
                 android:alpha="@{observable.currentItem == 0? 0.5f : 1f}"
                 android:onClick="@{()->handler.arrowLeft()}"
-                app:srcCompat="@drawable/ic_keyboard_arrow_left_white_24dp" />
+                app:srcCompat="@drawable/ic_keyboard_arrow_left_white_24dp"
+                android:foreground="@drawable/transparent_ripple"/>
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -105,14 +108,17 @@
 
             <ImageView
                 android:id="@+id/nextDay"
-                android:layout_width="56dp"
+                android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="24dp"
+                android:layout_marginEnd="24dp"
                 android:layout_centerVertical="true"
                 android:alpha="@{observable.currentItem >= (observable.maxItemCount-observable.itemsPerPage)? 0.5f : 1f}"
                 android:onClick="@{()->handler.arrowRight()}"
-                app:srcCompat="@drawable/ic_keyboard_arrow_right_white_24dp" />
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_white_24dp"
+                android:foreground="@drawable/transparent_ripple"/>
 
 
         </RelativeLayout>

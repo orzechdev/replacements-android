@@ -33,6 +33,7 @@ import com.studytor.app.databinding.ViewSingleLessonplanBinding;
 import com.studytor.app.databinding.ViewSingleLessonplanNumHourBinding;
 import com.studytor.app.databinding.ViewSingleLessonplanWeekdayBinding;
 import com.studytor.app.interfaces.ApplicationConstants;
+import com.studytor.app.interfaces.Functions;
 import com.studytor.app.repositories.models.ScheduleTimetable;
 import com.studytor.app.viewmodel.ActivityScheduleTimetableViewModel;
 
@@ -108,10 +109,10 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
 
         //Calculate left space for day names
         //left arrow + right arrow = around 120dp
-        int leftWidth = width - (int)convertDpToPixel(56, ll.getContext());
+        int leftWidth = width - (int) Functions.convertDpToPixel(56, ll.getContext());
 
         //Let's see how much elements will fit on the screen
-        int baseElementWidth = (int)convertDpToPixel(220, ll.getContext());
+        int baseElementWidth = (int) Functions.convertDpToPixel(220, ll.getContext());
         int maxElementCount = leftWidth/baseElementWidth;
 
         //Calculate width of each element to fill left space
@@ -132,9 +133,9 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
 
             b.getRoot().setPadding(0,0,0,0);
             if(maxElementCount > 1){
-                b.getRoot().setPadding((int)convertDpToPixel(16, ll.getContext()), 0,0,0);
+                b.getRoot().setPadding((int) Functions.convertDpToPixel(16, ll.getContext()), 0,0,0);
             }else{
-                b.getRoot().setPadding(0,0,(int)convertDpToPixel(60, ll.getContext()),0);
+                b.getRoot().setPadding(0,0,(int) Functions.convertDpToPixel(60, ll.getContext()),0);
             }
 
             b.invalidateAll();
@@ -161,10 +162,10 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
 
         //Calculate left space for lesson entries
         //number + hours + padding = around 120dp
-        int leftWidth = width - (int)convertDpToPixel(56, gl.getContext());
+        int leftWidth = width - (int) Functions.convertDpToPixel(56, gl.getContext());
 
         //Let's see how much elements will fit on the screen
-        int baseElementWidth = (int)convertDpToPixel(220, gl.getContext());
+        int baseElementWidth = (int) Functions.convertDpToPixel(220, gl.getContext());
         int maxElementCount = leftWidth/baseElementWidth;
 
         //Calculate width of each element to fill left space
@@ -268,10 +269,4 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
         va.start();
     }
 
-    public static float convertDpToPixel(float dp, Context context){
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return px;
-    }
 }

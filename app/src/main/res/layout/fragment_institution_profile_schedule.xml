@@ -41,6 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:setupRecycleView="@{obj.schedule}"
+                    android:background="#d2d2d2"
                     android:visibility="@{(obj.schedule != null &amp;&amp; obj.schedule.getLessonplans.size() &gt; 0)?View.VISIBLE:View.GONE}">
     
                 </android.support.v7.widget.RecyclerView>
