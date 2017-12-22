@@ -51,12 +51,12 @@ dependencies {
     compile 'com.android.volley:volley:1.0.0'
     //compile fileTree(dir: 'libs', include: ['*.jar'])
     // Support libraries
-    compile 'com.android.support:support-fragment:27.0.1'
-    compile 'com.android.support:appcompat-v7:27.0.1'
-    compile 'com.android.support:cardview-v7:27.0.1'
-    compile 'com.android.support:recyclerview-v7:27.0.1'
-    compile 'com.android.support:design:27.0.1'
-    compile 'com.android.support:support-vector-drawable:27.0.1'
+    compile 'com.android.support:support-fragment:27.0.2'
+    compile 'com.android.support:appcompat-v7:27.0.2'
+    compile 'com.android.support:cardview-v7:27.0.2'
+    compile 'com.android.support:recyclerview-v7:27.0.2'
+    compile 'com.android.support:design:27.0.2'
+    compile 'com.android.support:support-vector-drawable:27.0.2'
     // Others, some of them are maybe not used and maybe should be deleted
     compile 'ca.barrenechea.header-decor:header-decor:0.2.5'
     compile 'com.afollestad.material-dialogs:core:0.9.5.0'
@@ -66,9 +66,9 @@ dependencies {
     // Design
     compile 'de.hdodenhof:circleimageview:2.2.0'
     // Firebase service
-    compile 'com.google.firebase:firebase-messaging:11.6.0'
-    compile 'com.google.firebase:firebase-appindexing:11.6.0'
-    compile 'com.google.firebase:firebase-core:11.6.0'
+    compile 'com.google.firebase:firebase-messaging:11.8.0'
+    compile 'com.google.firebase:firebase-appindexing:11.8.0'
+    compile 'com.google.firebase:firebase-core:11.8.0'
     // For Lifecycles, LiveData, and ViewModel Architecture Components
     compile 'android.arch.lifecycle:runtime:1.0.3'
     compile 'android.arch.lifecycle:extensions:1.0.0'
