@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="observable"
             type="com.studytor.app.viewmodel.ActivityScheduleTimetableViewModel.Observable"/>
@@ -55,6 +56,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/toolbar"
             android:background="@color/app_blue"
+            android:visibility="@{(observable.schedule.get() == null) ? View.GONE : View.VISIBLE}"
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="4dp">
@@ -83,51 +85,6 @@
                 android:scrollX="@{observable.currentItem*observable.maxDayTVWidth}"
                 app:setupDayList="@{observable}">
 
-                <TextView
-                    android:layout_width="240dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Poniedziałek"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white" />
-
-                <TextView
-                    android:layout_width="240dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Wtorek"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:visibility="visible" />
-
-                <TextView
-                    android:layout_width="240dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Środa"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:visibility="visible" />
-
-                <TextView
-                    android:layout_width="240dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Czwartek"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:visibility="visible" />
-
-                <TextView
-                    android:layout_width="240dp"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="Piątek"
-                    android:textAlignment="center"
-                    android:textColor="@android:color/white"
-                    android:visibility="visible" />
-
-
             </LinearLayout>
 
 
@@ -149,7 +106,7 @@
         <ScrollView
             android:id="@+id/scroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@android:color/white"
             android:layout_below="@id/weekDays">
 
@@ -161,9 +118,10 @@
                 <LinearLayout
                     android:layout_width="56dp"
                     android:layout_height="wrap_content"
+                    android:background="#d2d2d2"
                     android:gravity="center_horizontal"
                     android:orientation="vertical"
-                    android:background="#d2d2d2"
+                    android:visibility="@{(observable.schedule.get() == null) ? View.GONE : View.VISIBLE}"
                     app:setupNumsAndHours="@{observable}">
 
                 </LinearLayout>
@@ -176,9 +134,39 @@
                     android:orientation="vertical"
                     android:rowCount="3"
                     android:scrollX="@{observable.currentItem*observable.maxItemWidth}"
+                    android:visibility="@{(observable.schedule.get() == null) ? View.GONE : View.VISIBLE}"
                     app:setupLessons="@{observable}">
 
                 </GridLayout>
+
+                <!-- Error Screen -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{(observable.schedule.get() == null) ? View.VISIBLE : View.GONE}"
+                    android:gravity="center"
+                    android:alpha="0.35"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="128dp"
+                        android:layout_height="128dp"
+                        android:layout_marginTop="128dp"
+                        app:srcCompat="@drawable/ic_cloud_off_black_128dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/activity_schedule_timetable_no_data_message"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+
+                </LinearLayout>
+
+                <!-- END Error Screen -->
 
 
             </LinearLayout>

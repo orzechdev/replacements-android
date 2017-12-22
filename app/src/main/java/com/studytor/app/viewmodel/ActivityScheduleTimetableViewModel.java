@@ -56,6 +56,7 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
             this.observable.currentItem.set(0);
             this.observable.itemsPerPage.set(1);
             this.observable.maxItemCount.set(1);
+            this.observable.schedule.set(new ScheduleTimetable());
 
             repository = ScheduleTimetableRepository.getInstance();
 
@@ -63,8 +64,11 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
 
                 @Override
                 public ScheduleTimetable apply(ScheduleTimetable input) {
-                    input.setUrl(dataURL);
-                    input.setName(timetableName);
+
+                    if(input != null){
+                        input.setUrl(dataURL);
+                        input.setName(timetableName);
+                    }
 
                     observable.schedule.set(input);
                     observable.notifyChange();
@@ -74,8 +78,9 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
 
             });
 
-
-            repository.getSchedulesWithCacheCheck(dataURL);
+            System.out.println("REPO TIMETABLE URL XD " + dataURL);
+            //repository.getSchedulesWithCacheCheck(dataURL);
+            repository.getSchedules(dataURL);
         }
     }
 

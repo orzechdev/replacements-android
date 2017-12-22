@@ -1,9 +1,11 @@
 package com.studytor.app.activities;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.databinding.BindingAdapter;
@@ -12,6 +14,7 @@ import android.graphics.Point;
 import android.renderscript.ScriptGroup;
 import android.support.annotation.Nullable;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -54,10 +57,7 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
         url = thisIntent.getStringExtra(ApplicationConstants.INTENT_LESSONPLAN_URL);
         name = thisIntent.getStringExtra(ApplicationConstants.INTENT_LESSONPLAN_NAME);
 
-        System.out.println(name + " URL: " + url);
-
         viewModel.setup(url, name);
-
 
         viewModel.liveData.observe(this, new Observer<ScheduleTimetable>() {
             @Override
@@ -71,7 +71,6 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
 
         //Set current item to 0 to prevent display bugs when rotating screen
         viewModel.getObservable().currentItem.set(0);
-
     }
 
     public void goBack(View v){

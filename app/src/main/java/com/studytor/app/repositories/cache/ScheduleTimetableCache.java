@@ -36,22 +36,29 @@ public class ScheduleTimetableCache {
         cachedTimetables.postValue(list);
     }
 
-    public boolean updateOrAddNews(String url, ScheduleTimetable lessonplan){
+    public boolean updateOrAddTimetable(String url, ScheduleTimetable lessonplan){
+        System.out.println("REPO TIMETABLE BLABLA");
         if(cachedTimetables != null){
-            if(cachedTimetables.getValue() != null){
-                List<ScheduleTimetable> temp = cachedTimetables.getValue();
-                for(int i = 0; i < cachedTimetables.getValue().size(); i++){
-                    if(cachedTimetables.getValue().get(i).getUrl().equals(url)){
-                        System.out.println("REPO TIMETABLE CACHE UPDATED SOMETHING");
-                        temp.set(i, lessonplan);
-                        cachedTimetables.postValue(temp);
-                        return false;
-                    }
-                }
-                System.out.println("REPO TIMETABLE CACHE INSERTED SOMETHING");
-                temp.add(lessonplan);
-                cachedTimetables.postValue(temp);
+            System.out.println("REPO TIMETABLE BLABLA 2");
+
+            if(cachedTimetables.getValue() == null) {
+                cachedTimetables.setValue(new ArrayList<ScheduleTimetable>());
             }
+
+            System.out.println("REPO TIMETABLE BLABLA 3");
+            List<ScheduleTimetable> temp = cachedTimetables.getValue();
+            for(int i = 0; i < cachedTimetables.getValue().size(); i++){
+                if(cachedTimetables.getValue().get(i).getUrl().equals(url)){
+                    System.out.println("REPO TIMETABLE CACHE UPDATED SOMETHING WITH " + url);
+                    temp.set(i, lessonplan);
+                    cachedTimetables.postValue(temp);
+                    return false;
+                }
+            }
+            System.out.println("REPO TIMETABLE CACHE INSERTED SOMETHING WITH " + url);
+            temp.add(lessonplan);
+            cachedTimetables.postValue(temp);
+
         }
         return true;
     }

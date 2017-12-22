@@ -32,11 +32,13 @@ public class ScheduleTimetableRepository {
     private WebService webService;
 
     private MutableLiveData<ScheduleTimetable> scheduleData;
+    private static ScheduleTimetable cachedTimetable;
 
     public ScheduleTimetableRepository(){
         this.webService = RetrofitClientSingleton.getInstance().getWebService();
         this.scheduleData = new MutableLiveData<>();
         this.scheduleTimetableCache = ScheduleTimetableCache.getInstance();
+        cachedTimetable = new ScheduleTimetable();
     }
 
     public static ScheduleTimetableRepository getInstance() {
@@ -80,6 +82,11 @@ public class ScheduleTimetableRepository {
 
         System.out.println("REPO TIMETABLE CALLING WEB");
 
+        if(cachedTimetable.getUrl() != null && cachedTimetable.getUrl().equals(timetableURL)){
+            scheduleData.postValue(cachedTimetable);
+            return;
+        }
+
         this.webService.getScheduleTimetable(timetableURL).enqueue(new Callback<ScheduleTimetable>() {
             @Override
             public void onResponse(Call<ScheduleTimetable> call, Response<ScheduleTimetable> response) {
@@ -91,9 +98,9 @@ public class ScheduleTimetableRepository {
 
                     timetable.setUrl(timetableURL);
 
-                    //scheduleData.postValue(timetable);
-
-                    scheduleTimetableCache.updateOrAddNews(timetableURL, timetable);
+                    scheduleData.postValue(timetable);
+                    cachedTimetable = timetable;
+                    //scheduleTimetableCache.updateOrAddTimetable(timetableURL, timetable);
 
                 }else{
                     System.out.println("REPO TIMETABLE GET DATA FROM WEB IS NULL 1" + response.toString());
