@@ -18,10 +18,6 @@
 -keepattributes JavascriptInterface
 -keep class android.support.v4.** { *; }
 #-keep interface android.support.v4.** { *; }
--keep class org.jsoup.** { *; }
-#-keep interface org.jsoup.** { *; }
--keep class com.android.volley.** { *; }
-#-keep interface com.android.volley.** { *; }
 -keep class com.loopj.android.http.** { *; }
 #-keep interface com.loopj.android.http.** { *; }
 -keep class com.google.** { *; }
