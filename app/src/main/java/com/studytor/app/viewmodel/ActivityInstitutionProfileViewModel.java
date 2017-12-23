@@ -49,7 +49,8 @@ public class ActivityInstitutionProfileViewModel extends AndroidViewModel{
         Log.i("Studytor","GOT INSTITUTION WITH ID " + this.institutionId);
         institutionRepository = InstitutionRepository.getInstance(this.getApplication());
 
-        institutionRepository.getInstitutionListFromCache().observeForever(new Observer<List<SingleInstitution>>() {
+        // WAS getInstitutionListFromCache()
+        institutionRepository.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
             @Override
             public void onChanged(@Nullable List<SingleInstitution> institutions) {
                 for(int i = 0; i < institutions.size(); i++){

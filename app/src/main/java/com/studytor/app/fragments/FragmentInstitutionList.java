@@ -53,6 +53,8 @@ public class FragmentInstitutionList extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        Log.i("FragmentInstitutionList", "onCreateView Start");
+
         viewModel = ViewModelProviders.of(this).get(FragmentInstitutionListViewModel.class);
         //ActivityMainViewModel parentViewModel = ViewModelProviders.of(this).get(ActivityMainViewModel.class);
         ActivityMainViewModel parentViewModel = ((ActivityMain)getActivity()).getViewModel();
@@ -68,6 +70,8 @@ public class FragmentInstitutionList extends Fragment {
 
         setupObservablesForBinding();
 
+        Log.i("FragmentInstitutionList", "onCreateView End");
+
         return binding.getRoot();
     }
 
@@ -76,14 +80,18 @@ public class FragmentInstitutionList extends Fragment {
             @Override
             public void onChanged(@Nullable List<SingleInstitution> singleInstitutions) {
                 binding.getObservable().institutionList.set(singleInstitutions);
-                binding.getObservable().isRefreshing.set(false);
+                Log.i("FragmentInstitutionList", "Observer getInstitutionList");
             }
         });
-    }
-
-    @BindingAdapter("imageRes")
-    public static void bindImage(ImageView view, int r) {
-        view.setImageResource(r);
+        viewModel.isRefreshing().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                binding.getObservable().isRefreshing.set(aBoolean);
+                Log.i("FragmentInstitutionList", "Observer isRefreshing");
+                if(aBoolean != null)
+                    Log.i("FragmentInstitutionList", "Observer isRefreshing " + ((aBoolean)? "true" : "false"));
+            }
+        });
     }
 
     @BindingAdapter("picassoImage")

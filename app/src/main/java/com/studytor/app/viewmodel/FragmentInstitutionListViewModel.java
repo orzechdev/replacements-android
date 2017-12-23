@@ -5,19 +5,12 @@ import android.arch.core.util.Function;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.databinding.BaseObservable;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.databinding.ObservableField;
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.studytor.app.R;
 import com.studytor.app.repositories.models.SingleInstitution;
 import com.studytor.app.repositories.InstitutionRepository;
 
@@ -32,8 +25,11 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
 
     private InstitutionRepository fragmentInstitutionRepository;
 
-    private MutableLiveData<List<SingleInstitution>> institutionListVM = null;
+    private LiveData<List<SingleInstitution>> institutionListRepo = null;
     private LiveData<List<SingleInstitution>> institutionList = null;
+
+    private LiveData<Boolean> isRefreshingRepo = null;
+    private LiveData<Boolean> isRefreshing = null;
 
     private Observable observable = new Observable();
 
@@ -43,28 +39,46 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
 
     public FragmentInstitutionListViewModel(@NonNull Application application){
         super(application);
+        Log.i("FragmentInstitutListVM", "FragmentInstitutionListViewModel");
     }
 
     public void setup() {
+        Log.i("FragmentInstitutListVM", "setup Start");
         // If setup was already done, do not do it again
         if(this.getInstitutionList() != null && this.getInstitutionList().getValue() != null)
             return;
 
         fragmentInstitutionRepository = InstitutionRepository.getInstance(this.getApplication());
 
-        this.institutionListVM = fragmentInstitutionRepository.getInstitutionList();
-        institutionList = Transformations.switchMap(institutionListVM, new Function<List<SingleInstitution>, LiveData<List<SingleInstitution>>>() {
+        institutionListRepo = fragmentInstitutionRepository.getInstitutionList();
+        isRefreshingRepo = fragmentInstitutionRepository.isRefreshing();
+
+//        institutionList = Transformations.switchMap(institutionListRepo, new Function<List<SingleInstitution>, LiveData<List<SingleInstitution>>>() {
+//            @Override
+//            public LiveData<List<SingleInstitution>> apply(List<SingleInstitution> input) {
+//                Log.i("Studytor","REPO CHANGED newest apply");
+//                if (input.isEmpty()) {
+//                    return new MutableLiveData<>();
+//                }
+//                return fragmentInstitutionRepository.getInstitutionListFromCache();
+//            }
+//        });
+
+        institutionList = Transformations.map(institutionListRepo, new Function<List<SingleInstitution>, List<SingleInstitution>>() {
             @Override
-            public LiveData<List<SingleInstitution>> apply(List<SingleInstitution> input) {
-                Log.i("Studytor","REPO CHANGED newest apply");
-                if (input.isEmpty()) {
-                    return new MutableLiveData<>();
-                }
-                return fragmentInstitutionRepository.getInstitutionListFromCache();
+            public List<SingleInstitution> apply(List<SingleInstitution> input) {
+                return input;
             }
         });
 
-        //institutionListVM = fragmentInstitutionRepository.getInstitutionList();
+        isRefreshing = Transformations.map(isRefreshingRepo, new Function<Boolean, Boolean>() {
+            @Override
+            public Boolean apply(Boolean input) {
+                return input;
+            }
+        });
+
+        //institutionListRepo = fragmentInstitutionRepository.getInstitutionList();
 
 //        fragmentInstitutionRepository.getInstitutionList().observeForever(new Observer<List<SingleInstitution>>() {
 //            @Override
@@ -76,27 +90,24 @@ public class FragmentInstitutionListViewModel extends AndroidViewModel {
 //                observable.notifyChange();
 //            }
 //        });
+        Log.i("FragmentInstitutListVM", "setup End");
     }
 
     public void requestRepositoryUpdate(){
-        Log.i("Studytor","UPDATING");
+        Log.i("FragmentInstitutListVM", "requestRepositoryUpdate 1");
         fragmentInstitutionRepository.refreshData();
-        observable.isRefreshing.set(true);
-        observable.notifyChange();
+        // DAWID: --- info about refreshing is now taken from livedata
+        //observable.isRefreshing.set(true);
+        //observable.notifyChange();
+        Log.i("FragmentInstitutListVM", "requestRepositoryUpdate 2");
     }
 
     public LiveData<List<SingleInstitution>> getInstitutionList() {
-//        observable.institutionList.set(institutionList.getValue());
-//        observable.isRefreshing.set(false);
-//        observable.notifyChange();
-
         return institutionList;
     }
 
-    public void setInstitutionList(List<SingleInstitution> list) {
-        //this.institutionList.setValue(list);
-        observable.institutionList.set(list);
-        Log.i("FragmentInstitutionVM","set institution list");
+    public LiveData<Boolean> isRefreshing() {
+        return isRefreshing;
     }
 
     // Class handled by Data Binding library
