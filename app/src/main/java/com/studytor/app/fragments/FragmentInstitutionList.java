@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,10 +50,12 @@ public class FragmentInstitutionList extends Fragment {
 
     private FragmentInstitutionListViewModel viewModel;
     private FragmentInstitutionListBinding binding;
+    static FragmentInstitutionList instance;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        instance = this;
 
         Log.i("FragmentInstitutionList", "onCreateView Start");
 
@@ -116,11 +120,24 @@ public class FragmentInstitutionList extends Fragment {
             ItemClickSupport.addTo(view).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                 @Override
                 public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                    InstitutionRecyclerViewAdapter tempAdapter = (InstitutionRecyclerViewAdapter) recyclerView.getAdapter();
                     Intent intent = new Intent(view.getContext(), ActivityInstitutionProfile.class);
                     intent.putExtra(ApplicationConstants.INTENT_INSTITUTION_ID, list.get(position).getId());
                     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                    view.getContext().startActivity(intent);
+
+                    //Shared view animation based on current fragment static instance
+                    ActivityOptionsCompat options = null;
+                    try{
+                        options = ActivityOptionsCompat.
+                                makeSceneTransitionAnimation(instance.getActivity(), (View)v.findViewById(R.id.institution_logo), "profile");
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }finally {
+                        if(Build.VERSION.SDK_INT >= 21){
+                            if(options != null)view.getContext().startActivity(intent, options.toBundle());
+                        }else{
+                            view.getContext().startActivity(intent);
+                        }
+                    }
                 }
             });
 
