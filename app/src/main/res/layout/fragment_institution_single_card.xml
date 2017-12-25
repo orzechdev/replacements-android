@@ -53,7 +53,8 @@
             android:layout_weight="0.3"
             android:id="@+id/schoolText1"
             android:textSize="18sp"
-            android:textColor="@color/black_text_heading"/>
+            android:textColor="@color/black_text_heading"
+            android:transitionName="name"/>
 
         <RelativeLayout
             android:id="@+id/institution_sub_star_container"

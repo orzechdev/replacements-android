@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -127,8 +128,10 @@ public class FragmentInstitutionList extends Fragment {
                     //Shared view animation based on current fragment static instance
                     ActivityOptionsCompat options = null;
                     try{
+                        Pair<View, String> p1 = Pair.create((View)v.findViewById(R.id.institution_logo), "profile");
+                        Pair<View, String> p2 = Pair.create((View)v.findViewById(R.id.schoolText1), "name");
                         options = ActivityOptionsCompat.
-                                makeSceneTransitionAnimation(instance.getActivity(), (View)v.findViewById(R.id.institution_logo), "profile");
+                                makeSceneTransitionAnimation(instance.getActivity(),p1, p2);
                     }catch (Exception e){
                         e.printStackTrace();
                     }finally {
