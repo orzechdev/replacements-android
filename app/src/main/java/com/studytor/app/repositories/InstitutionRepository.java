@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.studytor.app.repositories.models.Institutions;
 import com.studytor.app.repositories.models.SingleInstitution;
-import com.studytor.app.repositories.cache.InstitutionCache;
 import com.studytor.app.repositories.database.DatabaseSingleton;
 import com.studytor.app.repositories.database.InstitutionDao;
 import com.studytor.app.repositories.webservices.RetrofitClientSingleton;
@@ -184,7 +183,9 @@ public class InstitutionRepository {
             public void onResponse(Call<Institutions> call, final Response<Institutions> response) {
                 Log.i("InstitutionRepository", "refreshData onResponse");
 
-                if(response.isSuccessful() && response.body().getInstitutions() != null){
+                Institutions institutionsResponse = response.body();
+
+                if(response.isSuccessful() && institutionsResponse != null && institutionsResponse.getInstitutions() != null){
                     Log.i("InstitutionRepository", "refreshData onResponse SUCCESSFUL 1");
 
                     //Save data to local database
@@ -192,7 +193,7 @@ public class InstitutionRepository {
                         @Override
                         public void run() {
                             Log.i("InstitutionRepository", "refreshData onResponse SUCCESSFUL thread 1");
-                            List<SingleInstitution> institutionList = response.body().getInstitutions();
+                            List<SingleInstitution> institutionList = institutionsResponse.getInstitutions();
                             if(institutionList != null){
 
                                 Log.i("InstitutionRepository", "refreshData onResponse SUCCESSFUL thread 2");

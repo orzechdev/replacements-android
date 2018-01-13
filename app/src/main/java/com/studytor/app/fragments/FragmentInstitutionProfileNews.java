@@ -76,7 +76,13 @@ public class FragmentInstitutionProfileNews extends Fragment{
 
         viewModel.goToFirstPage();
 
-        viewModel.liveData.observe(this, new Observer<News>() {
+        setupObservablesForBinding();
+
+        return binding.getRoot();
+    }
+
+    private void setupObservablesForBinding(){
+        viewModel.getNews().observe(this, new Observer<News>() {
             @Override
             public void onChanged(@Nullable News news) {
                 Log.i("Studytor","NEWS XD IN FRAGMEnt XD");
@@ -84,8 +90,15 @@ public class FragmentInstitutionProfileNews extends Fragment{
                 binding.getObservable().scrollViewScroll.notifyChange();
             }
         });
-
-        return binding.getRoot();
+        viewModel.isRefreshing().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                binding.getObservable().isRefreshing.set(aBoolean);
+                Log.i("FragmentInstitutionList", "Observer isRefreshing");
+                if(aBoolean != null)
+                    Log.i("FragmentInstitutionList", "Observer isRefreshing " + ((aBoolean)? "true" : "false"));
+            }
+        });
     }
 
     @BindingAdapter("setupPaginationView")

@@ -33,8 +33,8 @@ public class ActivitySingleNewsViewModel extends AndroidViewModel{
         if(this.getObservable() != null && this.getObservable().singleNews.get() != null)
             return;
 
-        newsRepository = NewsRepository.getInstance(this.getApplication());
-        newsRepository.getNewsData().observeForever(new Observer<News>() {
+        newsRepository = NewsRepository.getInstance();
+        newsRepository.getNews(instId, pgNum).observeForever(new Observer<News>() {
             @Override
             public void onChanged(@Nullable News news) {
                 SingleNews temp = null;
@@ -50,7 +50,7 @@ public class ActivitySingleNewsViewModel extends AndroidViewModel{
             }
         });
 
-        newsRepository.getNewsWithCacheCheck(instId, pgNum);
+        newsRepository.getNews(instId, pgNum);
 
     }
 

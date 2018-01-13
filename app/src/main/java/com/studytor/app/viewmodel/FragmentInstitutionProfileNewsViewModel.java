@@ -33,8 +33,11 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
 
     private NewsRepository newsRepository;
 
-    private MutableLiveData<News> news = null;
-    public LiveData<News> liveData;
+    private LiveData<News> newsRepo = null;
+    private LiveData<News> news = null;
+
+    private LiveData<Boolean> isRefreshingRepo = null;
+    private LiveData<Boolean> isRefreshing = null;
 
     private FragmentInstitutionProfileNewsViewModel.Observable observable = new FragmentInstitutionProfileNewsViewModel.Observable();
     private Handlers handlers = new Handlers();
@@ -61,10 +64,11 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
             return;
 
         this.institutionId = institutionId;
-        this.news = new MutableLiveData<>();
-        newsRepository = NewsRepository.getInstance(this.getApplication());
 
-        this.news = newsRepository.getNewsData();
+        newsRepository = NewsRepository.getInstance();
+
+        newsRepo = newsRepository.getNews(institutionId, currentPageNum);
+        isRefreshingRepo = newsRepository.isRefreshing();
 
 //        liveData = Transformations.switchMap(this.news, new Function<News, LiveData<News>>() {
 //            @Override
@@ -87,12 +91,18 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
 //            }
 //        });
 
-        liveData = Transformations.map(this.news, new Function<News, News>() {
+        news = Transformations.map(newsRepo, new Function<News, News>() {
             @Override
             public News apply(News input) {
-                if(input != null)setLastPageNum(input.getLastPage());
-                //setNews(input);
-                //observable.scrollViewScroll.notifyChange();
+                if(input != null)
+                    setLastPageNum(input.getLastPage());
+                return input;
+            }
+        });
+
+        isRefreshing = Transformations.map(isRefreshingRepo, new Function<Boolean, Boolean>() {
+            @Override
+            public Boolean apply(Boolean input) {
                 return input;
             }
         });
@@ -116,17 +126,22 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
             }
         });*/
 
-        newsRepository.getNewsWithCacheCheck(institutionId, currentPageNum);
-
     }
 
-    public MutableLiveData<News> getNews() {
+    public LiveData<News> getNews() {
         return news;
     }
 
-    public void setNews(News news) {
-        //this.news.setValue(news);
-        observable.news.set(news);
+    public void requestRepositoryUpdate(){
+        Log.i("FragInstProfNewsVM", "requestRepositoryUpdate 1");
+        newsRepository.forceRefreshData(institutionId, currentPageNum);
+        Log.i("FragInstProfNewsVM", "requestRepositoryUpdate 2");
+    }
+
+    // DAWID --- Very huge advantage of having this variable in repo - even if we switch between screens and return to list of institutions,
+    // --------- if the refreshing is not yet ended we will see, that it is refreshing, and any change of the screen does not cause that this refreshing will not be visible! :)
+    public LiveData<Boolean> isRefreshing() {
+        return isRefreshing;
     }
 
     // Class handled by Data Binding library
@@ -134,6 +149,7 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
 
         public final ObservableField<News> news = new ObservableField<>();
         public final ObservableField<Integer> scrollViewScroll = new ObservableField<>();
+        public final ObservableField<Boolean> isRefreshing = new ObservableField<>();
 
     }
 
@@ -192,24 +208,24 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
     }
 
     public void goToFirstPage(){
-        newsRepository.getNewsWithCacheCheck(this.institutionId, this.firstPageNum);
+        newsRepository.getNews(this.institutionId, this.firstPageNum);
         this.currentPageNum = this.firstPageNum;
         Log.i("Studytor","PAGE NUMBER IS " + this.currentPageNum);
     }
 
     public void goToLastPage(){
-        newsRepository.getNewsWithCacheCheck(this.institutionId, this.lastPageNum);
+        newsRepository.getNews(this.institutionId, this.lastPageNum);
         this.currentPageNum = this.lastPageNum;
         Log.i("Studytor","PAGE NUMBER IS " + this.currentPageNum);
     }
 
     public void goToNextPage(){
-        if(isNextPageAvailable()) newsRepository.getNewsWithCacheCheck(this.institutionId, ++this.currentPageNum);
+        if(isNextPageAvailable()) newsRepository.getNews(this.institutionId, ++this.currentPageNum);
         Log.i("Studytor","PAGE NUMBER IS " + this.currentPageNum);
     }
 
     public void goToPreviousPage(){
-        if(isPreviousPageAvailable()) newsRepository.getNewsWithCacheCheck(this.institutionId, --this.currentPageNum);
+        if(isPreviousPageAvailable()) newsRepository.getNews(this.institutionId, --this.currentPageNum);
         Log.i("Studytor","PAGE NUMBER IS " + this.currentPageNum);
     }
 

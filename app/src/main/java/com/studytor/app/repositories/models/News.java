@@ -1,5 +1,7 @@
 package com.studytor.app.repositories.models;
 
+import android.support.annotation.NonNull;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

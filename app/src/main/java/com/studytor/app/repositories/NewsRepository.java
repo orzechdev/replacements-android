@@ -1,25 +1,17 @@
 package com.studytor.app.repositories;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.studytor.app.repositories.cache.InstitutionCache;
-import com.studytor.app.repositories.cache.NewsCache;
-import com.studytor.app.repositories.database.DatabaseSingleton;
-import com.studytor.app.repositories.database.InstitutionDao;
-import com.studytor.app.repositories.database.NewsDao;
-import com.studytor.app.repositories.models.Institutions;
 import com.studytor.app.repositories.models.News;
-import com.studytor.app.repositories.models.SingleInstitution;
-import com.studytor.app.repositories.models.SingleNews;
 import com.studytor.app.repositories.webservices.RetrofitClientSingleton;
 import com.studytor.app.repositories.webservices.WebService;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,90 +25,129 @@ public class NewsRepository {
 
     private static NewsRepository repositoryInstance;
 
-    private NewsCache newsCache;
+    private Map<Integer, News> newsListCache = new TreeMap<>();
+    private MutableLiveData<News> news = null;
+    private MutableLiveData<Boolean> isRefreshing = null;
+    private int currentInstitutId = 0;
+
     private WebService webService;
-    private NewsDao newsDao;
 
-    private MutableLiveData<News> newsData;
+    //private MutableLiveData<News> news;
 
-    private NewsRepository(Context context) {
+    private NewsRepository() {
         this.webService = RetrofitClientSingleton.getInstance().getWebService();
-        this.newsDao = DatabaseSingleton.getInstance(context).getMainDatabase().newsDao();
-        this.newsCache = NewsCache.getInstance();
-        this.newsData = new MutableLiveData<>();
+
+        news = new MutableLiveData<>();
+
+        // DAWID --- checking whether refreshing is in progress
+        isRefreshing = new MutableLiveData<>();
+        isRefreshing.setValue(false);
     }
 
-    public static NewsRepository getInstance(Context context) {
+    public static NewsRepository getInstance() {
         if (repositoryInstance == null){ //if there is no instance available... create new one
-            repositoryInstance = new NewsRepository(context);
+            repositoryInstance = new NewsRepository();
         }
 
         return repositoryInstance;
     }
 
-    public MutableLiveData<News> getNewsData() {
-        return newsData;
+    // DAWID --- Very huge advantage of having this variable in repo - even if we switch between screens and return to list of institutions,
+    // --------- if the refreshing is not yet ended we will see, that it is refreshing, and any change of the screen does not cause that this refreshing will not be visible! :)
+    public LiveData<Boolean> isRefreshing() {
+        return isRefreshing;
     }
 
-    public void getNewsWithCacheCheck(final int institutionId, final int pageNum){
+    // DAWID --- We are retrieving one page of news list
+    public LiveData<News> getNews(final int institutionId, final int pageNum) {
+        // If new institution selected
+        if(currentInstitutId != institutionId){
+            currentInstitutId = institutionId;
+            newsListCache.clear();
+            news.setValue(null);
+            refreshData(institutionId, pageNum);
+            return news;
+        }
 
-        Log.i("Studytor","NEWS REPO CHECK CACHE");
-        newsCache.getData().observeForever(new Observer<List<News>>() {
-            @Override
-            public void onChanged(@Nullable List<News> news) {
-                Log.i("Studytor","NEWS REPO CACHE CHANGED");
-                News temp = null;
-                if(news == null){
-                    getNews(institutionId, pageNum);
-                }
-                for(News n : news){
-                    if(n.getInstitutionId() == institutionId && n.getCurrentPage() == pageNum){
-                        temp = n;
-                    }
-                }
-                if(temp != null){
-                    newsData.postValue(temp);
-                }else{
-                    getNews(institutionId, pageNum);
-                }
+        Log.i("NewsRepository", "getNewsList 1");
+        // DAWID --- 1st check if there is cached institution list - if yes return it
+        News newsCache = newsListCache.get(pageNum);
+        if(newsCache != null){
+            news.setValue(newsCache);
+            return news;
+        }
 
-            }
-        });
+        Log.i("NewsRepository", "getNewsList 2");
 
+        // DAWID --- 2nd if cached institution list doesn't exist - take it from database ( single source of truth - there is not other way from which live data is taken )
+        // --------- HERE WE HAVE NOT DATABASE, SO WE OMIT THIS STEP
+        //institutionListCache = institutionDao.loadAll();
+        //Log.i("InstitutionRepository", "getInstitutionList 3");
+
+        // DAWID --- 3rd if institution list wasn't in database - call to take it from the web
+        // --------- HERE WE HAVE NOT DATABASE, SO WE OMIT IF CLAUSE
+        // if(institutionListCache == null)
+        refreshData(institutionId, pageNum);
+        Log.i("NewsRepository", "getNewsList 4");
+
+        // DAWID --- 3rd do not wait until it will be taken from the web, but return live data object
+        return news;
     }
 
-    public void getNews(final int institutionId, final int pageNum) {
+    public void forceRefreshData(final int institutionId, final int pageNum) {
+        newsListCache.clear();
+        refreshData(institutionId, pageNum);
+    }
 
-        Log.i("Studytor","REPO NEWS CALLING WEB");
+    private void refreshData(final int institutionId, final int pageNum) {
+
+        Log.i("NewsRepository", "refreshData");
+
+        isRefreshing.setValue(true);
 
         this.webService.getAllNews(institutionId, pageNum).enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, final Response<News> response) {
-                Log.i("Studytor","REPO NEWS GET DATA FROM WEB ENQUEUED");
+                Log.i("NewsRepository", "refreshData onResponse");
 
-                if(response.isSuccessful() && response.body().getNewsList() != null){
-                    Log.i("Studytor","REPO NEWS GET DATA FROM WEB SUCCESSFUL");
-                    News news = response.body();
-                    news.setCurrentPage(pageNum);
-                    news.setInstitutionId(institutionId);
+                News newsResponse = response.body();
 
-                    newsCache.insertOrAddNews(institutionId, pageNum, news);
+                if(response.isSuccessful() && newsResponse != null && newsResponse.getNewsList() != null){
+                    Log.i("NewsRepository", "refreshData onResponse SUCCESSFUL 1");
 
-                    newsData.postValue(news);
+                    newsResponse.setCurrentPage(pageNum);
+                    newsResponse.setInstitutionId(institutionId);
+
+                    // DAWID --- Set news for cache
+                    newsListCache.put(pageNum, newsResponse);
+
+                    // DAWID --- Set news for liveData available for viewModel
+                    news.postValue(newsResponse);
+
+                    Log.i("NewsRepository", "refreshData onResponse SUCCESSFUL 2");
                 }else{
-                    Log.i("Studytor","REPO NEWS GET DATA FROM WEB IS NULL 1" + response.toString());
-                    newsData.postValue(null);
+                    Log.i("NewsRepository", "refreshData onResponse IS NULL");
+
+                    newsListCache.remove(pageNum);
+
+                    news.postValue(null);
                 }
+
+                isRefreshing.setValue(false);
 
             }
 
             @Override
             public void onFailure(Call<News> call, Throwable t) {
-                Log.i("Studytor","REPO NEWS GET DATA FROM WEB IS NULL 2");
+                Log.i("NewsRepository", "refreshData onFailure");
 
-                newsData.postValue(null);
+                newsListCache.remove(pageNum);
+
+                news.postValue(null);
 
                 t.printStackTrace();
+
+                isRefreshing.setValue(false);
             }
         });
 
