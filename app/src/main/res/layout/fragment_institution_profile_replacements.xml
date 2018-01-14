@@ -4,7 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="android.view.View"/>
+        <variable
+            name="observable"
+            type="com.studytor.app.viewmodel.FragmentInstitutionProfileReplacementsViewModel.Observable"/>
     </data>
 
     <RelativeLayout
@@ -27,12 +30,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:visibility="@{(observable.replacements != null)? View.VISIBLE:View.GONE}"
                     android:id="@+id/paginationWrapper">
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        app:setupRecyclerView="@{observable.replacements}">
 
                     </android.support.v7.widget.RecyclerView>
 
@@ -42,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/error_container"
-                    android:visibility="gone">
+                    android:visibility="@{(observable.replacements == null)? View.VISIBLE:View.GONE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"

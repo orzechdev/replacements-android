@@ -60,7 +60,9 @@ public class NewsRepository {
 
     // DAWID --- We are retrieving one page of news list
     public LiveData<News> getNews(final int institutionId, final int pageNum) {
-        // If new institution selected
+        Log.i("NewsRepository", "getNews 0");
+
+        // If new institution selected - clear cache and download again for new institution
         if(currentInstitutId != institutionId){
             currentInstitutId = institutionId;
             newsListCache.clear();
@@ -69,7 +71,7 @@ public class NewsRepository {
             return news;
         }
 
-        Log.i("NewsRepository", "getNewsList 1");
+        Log.i("NewsRepository", "getNews 1");
         // DAWID --- 1st check if there is cached institution list - if yes return it
         News newsCache = newsListCache.get(pageNum);
         if(newsCache != null){
@@ -77,7 +79,7 @@ public class NewsRepository {
             return news;
         }
 
-        Log.i("NewsRepository", "getNewsList 2");
+        Log.i("NewsRepository", "getNews 2");
 
         // DAWID --- 2nd if cached institution list doesn't exist - take it from database ( single source of truth - there is not other way from which live data is taken )
         // --------- HERE WE HAVE NOT DATABASE, SO WE OMIT THIS STEP
@@ -88,7 +90,7 @@ public class NewsRepository {
         // --------- HERE WE HAVE NOT DATABASE, SO WE OMIT IF CLAUSE
         // if(institutionListCache == null)
         refreshData(institutionId, pageNum);
-        Log.i("NewsRepository", "getNewsList 4");
+        Log.i("NewsRepository", "getNews 4");
 
         // DAWID --- 3rd do not wait until it will be taken from the web, but return live data object
         return news;

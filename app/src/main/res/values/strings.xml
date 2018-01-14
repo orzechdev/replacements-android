@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Studytor</string>
+    <string name="app_name" translatable="false">Studytor</string>
 
     <!-- following strings are for new app order -->
     <string name="fragment_institution_list_no_connection_header">Can\'t connect\nTry again later</string>
@@ -30,5 +30,7 @@
         <item quantity="other">"Institutions"</item>
     </plurals>
 
+    <!-- Replacements -->
+    <string name="lesson">lesson</string>
 
 </resources>

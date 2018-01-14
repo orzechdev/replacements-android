@@ -1,6 +1,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="obj"
             type="com.studytor.app.repositories.models.SingleReplacementJson"/>
@@ -30,7 +31,8 @@
                 android:paddingLeft="12dp"
                 android:paddingTop="0dp"
                 android:paddingBottom="0dp"
-                android:paddingRight="5dp">
+                android:paddingRight="5dp"
+                android:visibility="@{(obj.number != null)? View.VISIBLE:View.GONE}">
                 <com.studytor.app.AutoFitTextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -69,7 +71,7 @@
                             android:paddingRight="12dp"
                             android:paddingTop="8dp"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="@{obj.classField + ` - ` + obj.replacement}"
+                            android:text="@{(obj.classField != null)? obj.classField + ` - ` + obj.replacement : obj.replacement}"
                             android:id="@+id/row_class_repl"
                             android:layout_gravity="center_vertical"
                             android:textSize="15sp"/>

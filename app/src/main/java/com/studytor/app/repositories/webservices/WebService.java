@@ -38,7 +38,7 @@ public interface WebService {
             @Path("ver") String ver
     );
 
-    @GET("json/school/{id}/replacements/{date}.php")
+    @GET("json/school/{id}/replacements/{date}.json")
     Call<ReplacementsJson> getReplacements(
             @Path("id") int institutionId,
             @Path("date") String date

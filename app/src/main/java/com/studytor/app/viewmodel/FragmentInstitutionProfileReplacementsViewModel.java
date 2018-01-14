@@ -1,15 +1,19 @@
 package com.studytor.app.viewmodel;
 
 import android.app.Application;
+import android.arch.core.util.Function;
 import android.arch.lifecycle.AndroidViewModel;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.studytor.app.repositories.NewsRepository;
 import com.studytor.app.repositories.ReplacementsRepository;
@@ -28,7 +32,11 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
 
     private ReplacementsRepository replacementsRepository;
 
-    private MutableLiveData<ReplacementsJson> replacementsList = null;
+    private LiveData<ReplacementsJson> replsRepo = null;
+    private LiveData<ReplacementsJson> repls = null;
+
+    private LiveData<Boolean> isRefreshingRepo = null;
+    private LiveData<Boolean> isRefreshing = null;
 
     private int institutionId;
     private String date = "11-11-2017";
@@ -45,24 +53,30 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
 
     public void setup(int institutionId) {
         // If setup was already done, do not do it again
-        if(this.getReplacementsList() != null && this.getReplacementsList().getValue() != null)
+        if(this.observable.replacements.get() != null)
             return;
 
         this.institutionId = institutionId;
-        this.replacementsList = new MutableLiveData<>();
 
-        replacementsRepository = ReplacementsRepository.getInstance(this.getApplication());
+        replacementsRepository = ReplacementsRepository.getInstance();
 
-        replacementsRepository.getReplacementsData().observeForever(new Observer<ReplacementsJson>() {
+        replsRepo = replacementsRepository.getReplacements(institutionId, date);
+        isRefreshingRepo = replacementsRepository.isRefreshing();
+
+        repls = Transformations.map(replsRepo, new Function<ReplacementsJson, ReplacementsJson>() {
             @Override
-            public void onChanged(@Nullable ReplacementsJson replacementsJson) {
-                setReplacementsList(replacementsJson);
+            public ReplacementsJson apply(ReplacementsJson input) {
+                return input;
             }
         });
 
-        replacementsRepository.getReplacements(institutionId, date);
+        isRefreshing = Transformations.map(isRefreshingRepo, new Function<Boolean, Boolean>() {
+            @Override
+            public Boolean apply(Boolean input) {
+                return input;
+            }
+        });
 
-        //TODO Obtain repl list from repo i.e. only from web
 
 //        List<SingleReplacementJson> items = new ArrayList<>();
 //
@@ -99,19 +113,27 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
 
     }
 
-    public MutableLiveData<ReplacementsJson> getReplacementsList() {
-        return replacementsList;
+    public LiveData<ReplacementsJson> getReplacements() {
+        return repls;
     }
 
-    public void setReplacementsList(ReplacementsJson replacementsJson) {
-        this.replacementsList.setValue(replacementsJson);
-        observable.replacementsList.set(replacementsJson);
+    public void requestRepositoryUpdate(){
+        Log.i("FragInstProfReplsVM", "requestRepositoryUpdate 1");
+        replacementsRepository.forceRefreshData(institutionId, date);
+        Log.i("FragInstProfReplsVM", "requestRepositoryUpdate 2");
+    }
+
+    // DAWID --- Very huge advantage of having this variable in repo - even if we switch between screens and return to list of institutions,
+    // --------- if the refreshing is not yet ended we will see, that it is refreshing, and any change of the screen does not cause that this refreshing will not be visible! :)
+    public LiveData<Boolean> isRefreshing() {
+        return isRefreshing;
     }
 
     // Class handled by Data Binding library
     public class Observable extends BaseObservable {
 
-        public final ObservableField<ReplacementsJson> replacementsList = new ObservableField<>();
+        public final ObservableField<ReplacementsJson> replacements = new ObservableField<>();
+        public final ObservableField<Boolean> isRefreshing = new ObservableField<>();
 
     }
 

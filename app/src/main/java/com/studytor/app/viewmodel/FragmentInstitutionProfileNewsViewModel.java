@@ -80,8 +80,6 @@ public class FragmentInstitutionProfileNewsViewModel extends AndroidViewModel{
 //            }
 //        });
 
-        final int institId = institutionId;
-
         //////DIFFERENT APPROACH
 //        liveData = Transformations.switchMap(currentPageNumLiveData, new Function<Integer, LiveData<News>>() {
 //            @Override

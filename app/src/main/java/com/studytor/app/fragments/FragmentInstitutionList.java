@@ -129,9 +129,8 @@ public class FragmentInstitutionList extends Fragment {
                     ActivityOptionsCompat options = null;
                     try{
                         Pair<View, String> p1 = Pair.create((View)v.findViewById(R.id.institution_logo), "profile");
-                        Pair<View, String> p2 = Pair.create((View)v.findViewById(R.id.schoolText1), "name");
                         options = ActivityOptionsCompat.
-                                makeSceneTransitionAnimation(instance.getActivity(),p1, p2);
+                                makeSceneTransitionAnimation(instance.getActivity(),p1);
                     }catch (Exception e){
                         e.printStackTrace();
                     }finally {

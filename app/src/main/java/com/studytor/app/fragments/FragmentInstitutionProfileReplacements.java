@@ -2,6 +2,8 @@ package com.studytor.app.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,7 @@ import android.widget.RelativeLayout;
 import com.studytor.app.R;
 import com.studytor.app.adapters.ReplacementsListRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionProfileReplacementsBinding;
+import com.studytor.app.repositories.database.Replacement;
 import com.studytor.app.repositories.models.ReplacementsJson;
 import com.studytor.app.repositories.models.SingleReplacementJson;
 import com.studytor.app.viewmodel.FragmentInstitutionProfileReplacementsViewModel;
@@ -32,10 +36,6 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
     private FragmentInstitutionProfileReplacementsViewModel viewModel;
     private FragmentInstitutionProfileReplacementsBinding binding;
 
-    private RecyclerView recyclerView;
-    private RelativeLayout errorContainer;
-    private NestedScrollView nestedScroll;
-    private RecyclerView.Adapter mAdapter;
     private int institutionId;
 
     public void setup(int institutionId){
@@ -51,37 +51,46 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_institution_profile_replacements, container, false);
 
         viewModel.setup(institutionId);
+        binding.setObservable(viewModel.getObservable());
 
-        recyclerView = (RecyclerView) binding.getRoot().findViewById(R.id.recycler_view);
-        nestedScroll = (NestedScrollView) binding.getRoot().findViewById(R.id.nestedScroll);
-        errorContainer = (RelativeLayout) binding.getRoot().findViewById(R.id.error_container);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-
-        viewModel.getReplacementsList().observeForever(new Observer<ReplacementsJson>() {
-            @Override
-            public void onChanged(@Nullable ReplacementsJson replacementJsonList) {
-
-                if(replacementJsonList != null){
-                    //Display RecyclerView with replacements
-                    mAdapter = new ReplacementsListRecyclerViewAdapter(replacementJsonList);
-                    recyclerView.setAdapter(mAdapter);
-
-                    nestedScroll.scrollTo(0, 0);
-                    recyclerView.scrollTo(0, 0);
-
-                    errorContainer.setVisibility(View.GONE);
-                }
-                else
-                {
-                    errorContainer.setVisibility(View.VISIBLE);
-                }
-
-            }
-        });
+        setupObservablesForBinding();
 
         return binding.getRoot();
+    }
+
+    private void setupObservablesForBinding(){
+        viewModel.getReplacements().observe(this, new Observer<ReplacementsJson>() {
+            @Override
+            public void onChanged(@Nullable ReplacementsJson repls) {
+                Log.i("FragInstProfRepls","Observer getReplacements");
+                binding.getObservable().replacements.set(repls);
+            }
+        });
+        viewModel.isRefreshing().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                binding.getObservable().isRefreshing.set(aBoolean);
+                Log.i("FragInstProfRepls", "Observer isRefreshing");
+                if(aBoolean != null)
+                    Log.i("FragInstProfRepls", "Observer isRefreshing " + ((aBoolean)? "true" : "false"));
+            }
+        });
+    }
+
+    @BindingAdapter("setupRecyclerView")
+    public static void setupRecyclerView(RecyclerView recyclerView, final ReplacementsJson repls){
+
+        // use a linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        if(repls != null && repls.getReplacements() != null && repls.getReplacements().size() > 0){
+            List<SingleReplacementJson> items = repls.getReplacements();
+            //Display RecyclerView with institutions
+            ReplacementsListRecyclerViewAdapter a = new ReplacementsListRecyclerViewAdapter(items);
+            recyclerView.setAdapter(a);
+
+        }
     }
 
 }

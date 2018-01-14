@@ -30,7 +30,7 @@
         </activity>
         <activity
             android:name=".activities.ActivityInstitutionProfile"
-            android:label="Zespół Szkół Jakichśtam w Warszawie" />
+            android:label="Studytor School Profile" />
 
         <service
             android:name=".sync.ProfileRegister"
