@@ -18,7 +18,8 @@
             android:gravity="center"
             android:text="@{text}"
             android:textAlignment="center"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="17sp" />
 
     </FrameLayout>
 </layout>

@@ -21,7 +21,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="10dp"
-            android:textSize="14sp"/>
+            android:textSize="14.5sp"
+            android:textColor="@color/black_text_list"/>
 
         <org.apmem.tools.layouts.FlowLayout
             android:layout_width="match_parent"

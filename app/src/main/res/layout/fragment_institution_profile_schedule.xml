@@ -31,7 +31,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/gray_repl"
+                    android:background="@color/grey_divider_list"
                     android:layout_margin="0dp"
                     android:padding="0dp"/>
 
@@ -41,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:setupRecycleView="@{obj.schedule}"
-                    android:background="#d2d2d2"
+                    android:background="@color/white"
                     android:visibility="@{(obj.schedule != null &amp;&amp; obj.schedule.getLessonplans.size() &gt; 0)?View.VISIBLE:View.GONE}">
     
                 </android.support.v7.widget.RecyclerView>

@@ -14,11 +14,13 @@
 
         <TextView
             style="@style/SingleLessonplanLessonNumber"
-            android:text="@{num}" />
+            android:text="@{num}"
+            android:textColor="@color/black_text_list" />
 
         <TextView
             style="@style/SingleLessonplanHours"
-            android:text="@{hours}"/>
+            android:text="@{hours}"
+            android:textColor="@color/black_text_list"/>
 
     </LinearLayout>
 </layout>

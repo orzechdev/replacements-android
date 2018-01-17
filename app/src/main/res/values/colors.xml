@@ -15,6 +15,9 @@
     <color name="LED_blue">#092ea5</color>
     <color name="new_black_light">#4b4b4b</color>
 
+    <color name="black_text_list">#333333</color>
+    <color name="grey_text_list">#a1a1a1</color>
+    <color name="grey_divider_list">#d9d9d9</color>
     <color name="black_text_heading">#dd000000</color>
     <color name="black_text_caption">#8a000000</color>
 

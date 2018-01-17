@@ -9,13 +9,13 @@
     </data>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/school1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/school1"
-        android:foreground="?android:attr/selectableItemBackground"
+        android:background="@drawable/recycler_item_simple"
         android:clickable="false"
-        android:padding="16dp"
-        android:background="@drawable/recycler_item_simple">
+        android:foreground="?android:attr/selectableItemBackground"
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/postTitle"
@@ -25,41 +25,48 @@
             android:layout_weight="1"
             android:width="0dp"
             android:text="@{obj.title}"
-            android:textStyle="bold"
             android:textColor="@color/black_text_heading"
-            android:textSize="15sp"
+            android:textSize="15.5sp"
+            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/postImage"
+            app:layout_constraintRight_toLeftOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@+id/postImage" />
+            card_view:layout_constraintEnd_toStartOf="@+id/guideline" />
 
         <TextView
             android:id="@+id/postPreview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:width="0dp"
             android:text="@{obj.shortenedContent}"
             android:textColor="@color/black_text_caption"
-            android:textSize="14sp"
+            android:textSize="14.5sp"
             android:textStyle="italic"
-            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/postImage"
+            app:layout_constraintRight_toLeftOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/postTitle"
-            card_view:layout_constraintEnd_toStartOf="@+id/postImage" />
+            card_view:layout_constraintEnd_toStartOf="@+id/guideline" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            card_view:layout_constraintGuide_percent="0.72"/>
 
 
         <ImageView
-            android:layout_width="64dp"
-            android:layout_height="64dp"
             android:id="@+id/postImage"
-            android:background="@android:color/darker_gray"
-            app:picassoImage="@{obj.thumbURL}"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintLeft_toLeftOf="@+id/guideline"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:picassoImage="@{obj.thumbURL}" />
 
     </android.support.constraint.ConstraintLayout>
 
