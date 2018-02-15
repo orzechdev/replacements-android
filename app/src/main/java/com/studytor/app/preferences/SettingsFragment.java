@@ -101,7 +101,12 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		connManager = ((ConnectivityManager)getActivity().getBaseContext().getSystemService(Context.CONNECTIVITY_SERVICE));
-		addPreferencesFromResource(R.xml.preferences);
+		///////////////
+		///////////////DO NOT EXIST, THUS COMMENTED
+		///////////////
+		///////////////addPreferencesFromResource(R.xml.preferences);
+		///////////////
+		///////////////
 //		checkPlayServices();
 		SharedPreferences sharedPref = getActivity().getSharedPreferences("dane", 0);
 		boolean devOptionsVisible = sharedPref.getBoolean("developerOptionsVisible",false);

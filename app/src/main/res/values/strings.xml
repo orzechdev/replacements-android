@@ -31,6 +31,9 @@
     </plurals>
 
     <!-- Replacements -->
+    <string name="yesterday">Yesterday</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
     <string name="lesson">lesson</string>
 
 </resources>

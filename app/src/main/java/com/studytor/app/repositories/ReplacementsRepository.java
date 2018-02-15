@@ -31,6 +31,7 @@ public class ReplacementsRepository {
     private Map<String, ReplacementsJson> replsContainerCache = new TreeMap<>();
     private MutableLiveData<ReplacementsJson> repls = null;
     private MutableLiveData<Boolean> isRefreshing = null;
+    private MutableLiveData<String> selectedDate = null;
     private int currentInstitutId = 0;
 
     private WebService webService;
@@ -45,6 +46,8 @@ public class ReplacementsRepository {
         // DAWID --- checking whether refreshing is in progress
         isRefreshing = new MutableLiveData<>();
         isRefreshing.setValue(false);
+
+        selectedDate = new MutableLiveData<>();
     }
 
     public static ReplacementsRepository getInstance() {
@@ -61,7 +64,13 @@ public class ReplacementsRepository {
         return isRefreshing;
     }
 
+    public LiveData<String> getSelectedDate() {
+        return selectedDate;
+    }
+
     public LiveData<ReplacementsJson> getReplacements(final int institutionId, final String date) {
+        selectedDate.setValue(date);
+
         Log.i(CLASS_NAME, "getReplacements 0");
 
         // If new institution selected - clear cache and download again for new institution

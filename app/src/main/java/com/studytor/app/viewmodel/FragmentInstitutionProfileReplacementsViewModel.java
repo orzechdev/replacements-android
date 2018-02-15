@@ -4,25 +4,15 @@ import android.app.Application;
 import android.arch.core.util.Function;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 
-import com.studytor.app.repositories.NewsRepository;
 import com.studytor.app.repositories.ReplacementsRepository;
 import com.studytor.app.repositories.models.ReplacementsJson;
-import com.studytor.app.repositories.models.SingleNews;
-import com.studytor.app.repositories.models.SingleReplacementJson;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by przemek19980102 on 01.11.2017.
@@ -39,12 +29,21 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
     private LiveData<Boolean> isRefreshing = null;
 
     private int institutionId;
-    private String date = "11-11-2017";
+    private LiveData<String> selectedDateRepo = null;
+    private LiveData<String> selectedDate = null;
+    private String yesterdayDate = "10-11-2017";
+    private String todayDate = "11-11-2017";
+    private String tomorrowDate = "12-11-2017";
 
     private FragmentInstitutionProfileReplacementsViewModel.Observable observable = new FragmentInstitutionProfileReplacementsViewModel.Observable();
+    private FragmentInstitutionProfileReplacementsViewModel.Handlers handlers = new FragmentInstitutionProfileReplacementsViewModel.Handlers();
 
     public FragmentInstitutionProfileReplacementsViewModel.Observable getObservable() {
         return observable;
+    }
+
+    public FragmentInstitutionProfileReplacementsViewModel.Handlers getHandlers() {
+        return handlers;
     }
 
     public FragmentInstitutionProfileReplacementsViewModel(@NonNull Application application) {
@@ -60,7 +59,9 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
 
         replacementsRepository = ReplacementsRepository.getInstance();
 
-        replsRepo = replacementsRepository.getReplacements(institutionId, date);
+        selectedDateRepo = replacementsRepository.getSelectedDate();
+
+        replsRepo = replacementsRepository.getReplacements(institutionId, todayDate);
         isRefreshingRepo = replacementsRepository.isRefreshing();
 
         repls = Transformations.map(replsRepo, new Function<ReplacementsJson, ReplacementsJson>() {
@@ -73,6 +74,13 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
         isRefreshing = Transformations.map(isRefreshingRepo, new Function<Boolean, Boolean>() {
             @Override
             public Boolean apply(Boolean input) {
+                return input;
+            }
+        });
+
+        selectedDate = Transformations.map(selectedDateRepo, new Function<String, String>() {
+            @Override
+            public String apply(String input) {
                 return input;
             }
         });
@@ -119,8 +127,37 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
 
     public void requestRepositoryUpdate(){
         Log.i("FragInstProfReplsVM", "requestRepositoryUpdate 1");
-        replacementsRepository.forceRefreshData(institutionId, date);
+        replacementsRepository.forceRefreshData(institutionId, selectedDate.getValue());
         Log.i("FragInstProfReplsVM", "requestRepositoryUpdate 2");
+    }
+
+    public LiveData<String> getSelectedDate(){
+        return selectedDate;
+    }
+
+    private void refreshDate(){
+        yesterdayDate = "10-11-2017";
+        todayDate = "11-11-2017";
+        tomorrowDate = "12-11-2017";
+    }
+
+    public class Handlers {
+
+        public void onClickYesterday(View view) {
+            replacementsRepository.getReplacements(institutionId, yesterdayDate);
+        }
+
+        public void onClickToday(View view) {
+            replacementsRepository.getReplacements(institutionId, todayDate);
+        }
+
+        public void onClickTomorrow(View view) {
+            replacementsRepository.getReplacements(institutionId, tomorrowDate);
+        }
+
+        public void onClickDate(View view) {
+
+        }
     }
 
     // DAWID --- Very huge advantage of having this variable in repo - even if we switch between screens and return to list of institutions,
@@ -134,6 +171,7 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
 
         public final ObservableField<ReplacementsJson> replacements = new ObservableField<>();
         public final ObservableField<Boolean> isRefreshing = new ObservableField<>();
+        public final ObservableField<String> selectedDate = new ObservableField<>();
 
     }
 

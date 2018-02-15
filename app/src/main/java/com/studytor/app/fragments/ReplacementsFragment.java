@@ -369,7 +369,7 @@ public class ReplacementsFragment extends Fragment {
                     holder.rowHighlight.setVisibility(View.INVISIBLE);
                 }
                 if (replTask.getReplacement().equals("0") && newClassNumber==0 && newDefaultInteger==0){
-                    holder.rowClassRepl.setText(getString(R.string.set_no_replacements));
+                    holder.rowClassRepl.setText("set_no_replacements");
                 }else if (newClassNumber != 0) {
 //                    classDbAdapter.open();
 //                    String class_name = classDbAdapter.getClass(newClassNumber).getName();
@@ -403,7 +403,7 @@ public class ReplacementsFragment extends Fragment {
                         teacher_name = "";
                     }
                     holder.rowDefault.setVisibility(View.VISIBLE);
-                    String rowDefaultStr = getString(R.string.repl_for) + " " + teacher_name;
+                    String rowDefaultStr = "repl_for" + " " + teacher_name;
                     holder.rowDefault.setText(rowDefaultStr);
                 } else {
                     holder.rowDefault.setVisibility(View.GONE);
@@ -574,11 +574,11 @@ public class ReplacementsFragment extends Fragment {
 
         Log.i(CLASS_NAME, "7000");
         setHasOptionsMenu(true);
-        no_internet_connect = getString(R.string.no_internet_connect);
-        refreshed_no_repl = getString(R.string.refreshed_no_repl);
-        refreshed_repl = getString(R.string.refreshed_repl);
-        refreshed_error = getString(R.string.refreshed_error);
-        refreshed_error = getString(R.string.refreshed_error_part);
+        no_internet_connect = "no_internet_connect";
+        refreshed_no_repl = "refreshed_no_repl";
+        refreshed_repl = "refreshed_repl";
+        refreshed_error = "refreshed_error";
+        refreshed_error = "refreshed_error_part";
         app_name = getString(R.string.app_name);
         //Obsluga pociagniecia i odswiezenia
         mSwipeRefreshLayout = (SwipeRefreshLayout) getActivity().findViewById(R.id.swipe_container);

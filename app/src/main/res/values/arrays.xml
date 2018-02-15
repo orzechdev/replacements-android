@@ -1,30 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="drawer_list">
-        <item>@string/profile</item>
-        <item>@string/home</item>
-        <item>@string/replacements</item>
-        <item>@string/schedule</item>
-        <item>@string/settings</item>
-    </string-array>
-    <string-array name="pref_notify_repl_entries">
-        <item>@string/pref_sync_summ_profile</item>
-        <item>@string/pref_sync_summ_all</item>
-        <item>@string/pref_sync_summ_off</item>
-    </string-array>
-    <string-array name="pref_notify_repl_entryValues">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-    </string-array>
-    <string-array name="pref_notify_schedule_entries">
-        <item>@string/pref_sync_summ_on</item>
-        <item>@string/pref_sync_summ_off</item>
-    </string-array>
-    <string-array name="pref_notify_schedule_entryValues">
-        <item>1</item>
-        <item>2</item>
-    </string-array>
 
     <string-array name="months">
         <item>January</item>

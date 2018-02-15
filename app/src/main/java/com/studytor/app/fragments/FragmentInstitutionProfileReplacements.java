@@ -52,6 +52,7 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
 
         viewModel.setup(institutionId);
         binding.setObservable(viewModel.getObservable());
+        binding.setHandlers(viewModel.getHandlers());
 
         setupObservablesForBinding();
 
@@ -73,6 +74,12 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
                 Log.i("FragInstProfRepls", "Observer isRefreshing");
                 if(aBoolean != null)
                     Log.i("FragInstProfRepls", "Observer isRefreshing " + ((aBoolean)? "true" : "false"));
+            }
+        });
+        viewModel.getSelectedDate().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String sDate) {
+                binding.getObservable().selectedDate.set(sDate);
             }
         });
     }

@@ -41,11 +41,11 @@ public class FcmListenerService extends FirebaseMessagingService {
         SharedPreferences localSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if(localSharedPreferences.getBoolean("pref_notify_switch",true)) {
             Log.i(CLASS_NAME, "onMessageReceived 200");
-            new_profile = getString(R.string.new_profile);
-            new_home = getString(R.string.new_home);
-            new_replacements = getString(R.string.new_replacements);
-            new_schedule = getString(R.string.new_schedule);
-            click_to_view = getString(R.string.click_to_view);
+            new_profile = "new_profile";
+            new_home = "new_home";
+            new_replacements = "new_replacements";
+            new_schedule = "new_schedule";
+            click_to_view = "click_to_view";
 
             Map data = remoteMessage.getData();
             String message = data.get("m").toString();
