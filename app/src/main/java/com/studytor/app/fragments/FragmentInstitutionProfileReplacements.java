@@ -82,6 +82,12 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
                 binding.getObservable().selectedDate.set(sDate);
             }
         });
+        viewModel.getDaysFromToday().observe(this, new Observer<Long>() {
+            @Override
+            public void onChanged(@Nullable Long days) {
+                binding.getObservable().daysFromToday.set(days);
+            }
+        });
     }
 
     @BindingAdapter("setupRecyclerView")

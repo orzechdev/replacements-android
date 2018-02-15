@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="com.studytor.app.R" />
         <import type="android.view.View"/>
         <variable
             name="observable"
@@ -33,7 +34,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
-                    android:visibility="@{(observable.replacements != null)? View.VISIBLE:View.GONE}"
                     android:id="@+id/paginationWrapper">
 
                     <android.support.constraint.ConstraintLayout
@@ -45,7 +45,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/yesterday"
+                            android:textSize="15.5sp"
                             android:textAlignment="center"
+                            android:textColor="@{(observable.daysFromToday == -1)? @color/black : @color/gray_light}"
                             android:padding="20dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/repl_nav_today"
@@ -59,7 +61,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/today"
+                            android:textSize="15.5sp"
                             android:textAlignment="center"
+                            android:textColor="@{(observable.daysFromToday == 0)? @color/black : @color/gray_light}"
                             android:padding="20dp"
                             app:layout_constraintStart_toEndOf="@+id/repl_nav_yesterday"
                             app:layout_constraintEnd_toStartOf="@+id/repl_nav_tomorrow"
@@ -73,7 +77,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/tomorrow"
+                            android:textSize="15.5sp"
                             android:textAlignment="center"
+                            android:textColor="@{(observable.daysFromToday == 1)? @color/black : @color/gray_light}"
                             android:padding="20dp"
                             app:layout_constraintStart_toEndOf="@+id/repl_nav_today"
                             app:layout_constraintEnd_toStartOf="@+id/repl_nav_date"
@@ -87,7 +93,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@{observable.selectedDate}"
+                            android:textSize="15.5sp"
                             android:textAlignment="center"
+                            android:textColor="@{((observable.daysFromToday &lt; -1) || (observable.daysFromToday &gt; 1))? @color/black : @color/gray_light}"
                             android:padding="20dp"
                             app:layout_constraintStart_toEndOf="@+id/repl_nav_tomorrow"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +116,8 @@
                         android:id="@+id/recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:setupRecyclerView="@{observable.replacements}">
+                        app:setupRecyclerView="@{observable.replacements}"
+                        android:visibility="@{(observable.replacements != null)? View.VISIBLE:View.GONE}" >
 
                     </android.support.v7.widget.RecyclerView>
 

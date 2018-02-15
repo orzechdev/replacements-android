@@ -1,18 +1,27 @@
 package com.studytor.app.viewmodel;
 
 import android.app.Application;
+import android.app.DatePickerDialog;
 import android.arch.core.util.Function;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 
 import com.studytor.app.repositories.ReplacementsRepository;
 import com.studytor.app.repositories.models.ReplacementsJson;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by przemek19980102 on 01.11.2017.
@@ -31,6 +40,7 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
     private int institutionId;
     private LiveData<String> selectedDateRepo = null;
     private LiveData<String> selectedDate = null;
+    private MutableLiveData<Long> daysFromToday = null;
     private String yesterdayDate = "10-11-2017";
     private String todayDate = "11-11-2017";
     private String tomorrowDate = "12-11-2017";
@@ -61,6 +71,8 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
 
         selectedDateRepo = replacementsRepository.getSelectedDate();
 
+        daysFromToday = new MutableLiveData<>();
+
         replsRepo = replacementsRepository.getReplacements(institutionId, todayDate);
         isRefreshingRepo = replacementsRepository.isRefreshing();
 
@@ -81,6 +93,19 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
         selectedDate = Transformations.map(selectedDateRepo, new Function<String, String>() {
             @Override
             public String apply(String input) {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                Date dateSelected = new Date(2010,1,1);
+                Date dateToday = new Date(2010,1,1);
+                try {
+                    dateSelected = sdf.parse(input);
+                    dateToday = sdf.parse(todayDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                long diff = dateSelected.getTime() - dateToday.getTime();
+                long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                daysFromToday.setValue(days);
+
                 return input;
             }
         });
@@ -135,6 +160,10 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
         return selectedDate;
     }
 
+    public LiveData<Long> getDaysFromToday(){
+        return daysFromToday;
+    }
+
     private void refreshDate(){
         yesterdayDate = "10-11-2017";
         todayDate = "11-11-2017";
@@ -156,7 +185,23 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
         }
 
         public void onClickDate(View view) {
+            view.getContext();
 
+            DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+                @Override
+                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                    String dateStr = Integer.toString(dayOfMonth) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(year);
+                    replacementsRepository.getReplacements(institutionId, dateStr);
+                }
+
+            };
+
+            String[] dateSplit = {"01","01","2010"};
+            if(selectedDate.getValue() != null)
+                dateSplit = selectedDate.getValue().split("-");
+
+            new DatePickerDialog(view.getContext(), date, Integer.parseInt(dateSplit[2]), Integer.parseInt(dateSplit[1]) - 1, Integer.parseInt(dateSplit[0])).show();
         }
     }
 
@@ -172,6 +217,7 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
         public final ObservableField<ReplacementsJson> replacements = new ObservableField<>();
         public final ObservableField<Boolean> isRefreshing = new ObservableField<>();
         public final ObservableField<String> selectedDate = new ObservableField<>();
+        public final ObservableField<Long> daysFromToday = new ObservableField<>();
 
     }
 
