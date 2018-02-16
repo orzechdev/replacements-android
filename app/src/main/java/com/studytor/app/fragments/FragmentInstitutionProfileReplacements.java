@@ -96,6 +96,7 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
         // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
 
         if(repls != null && repls.getReplacements() != null && repls.getReplacements().size() > 0){
             List<SingleReplacementJson> items = repls.getReplacements();

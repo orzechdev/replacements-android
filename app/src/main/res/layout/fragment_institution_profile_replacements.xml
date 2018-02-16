@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.studytor.app.R" />
         <import type="android.view.View"/>
         <variable
             name="observable"
@@ -38,79 +37,90 @@
 
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="66dp">
 
                         <TextView
                             android:id="@+id/repl_nav_yesterday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/yesterday"
-                            android:textSize="15.5sp"
-                            android:textAlignment="center"
-                            android:textColor="@{(observable.daysFromToday == -1)? @color/black : @color/gray_light}"
-                            android:padding="20dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/repl_nav_today"
+                            android:layout_marginLeft="10dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
-                            android:onClick="@{handlers::onClickYesterday}" />
+                            android:onClick="@{handlers::onClickYesterday}"
+                            android:padding="10dp"
+                            android:text="@string/yesterday"
+                            android:textAlignment="center"
+                            android:textColor="@{(observable.daysFromToday == -1)? @color/black : @color/gray_light}"
+                            android:textSize="15.5sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/repl_nav_today"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/repl_nav_today"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/today"
-                            android:textSize="15.5sp"
-                            android:textAlignment="center"
-                            android:textColor="@{(observable.daysFromToday == 0)? @color/black : @color/gray_light}"
-                            android:padding="20dp"
-                            app:layout_constraintStart_toEndOf="@+id/repl_nav_yesterday"
-                            app:layout_constraintEnd_toStartOf="@+id/repl_nav_tomorrow"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
-                            android:onClick="@{handlers::onClickToday}" />
+                            android:onClick="@{handlers::onClickToday}"
+                            android:padding="10dp"
+                            android:text="@string/today"
+                            android:textAlignment="center"
+                            android:textColor="@{(observable.daysFromToday == 0)? @color/black : @color/gray_light}"
+                            android:textSize="15.5sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/repl_nav_tomorrow"
+                            app:layout_constraintStart_toEndOf="@+id/repl_nav_yesterday"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/repl_nav_tomorrow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/tomorrow"
-                            android:textSize="15.5sp"
-                            android:textAlignment="center"
-                            android:textColor="@{(observable.daysFromToday == 1)? @color/black : @color/gray_light}"
-                            android:padding="20dp"
-                            app:layout_constraintStart_toEndOf="@+id/repl_nav_today"
-                            app:layout_constraintEnd_toStartOf="@+id/repl_nav_date"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
-                            android:onClick="@{handlers::onClickTomorrow}" />
+                            android:onClick="@{handlers::onClickTomorrow}"
+                            android:padding="10dp"
+                            android:text="@string/tomorrow"
+                            android:textAlignment="center"
+                            android:textColor="@{(observable.daysFromToday == 1)? @color/black : @color/gray_light}"
+                            android:textSize="15.5sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/repl_nav_date"
+                            app:layout_constraintStart_toEndOf="@+id/repl_nav_today"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/repl_nav_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@{observable.selectedDate}"
-                            android:textSize="15.5sp"
-                            android:textAlignment="center"
-                            android:textColor="@{((observable.daysFromToday &lt; -1) || (observable.daysFromToday &gt; 1))? @color/black : @color/gray_light}"
-                            android:padding="20dp"
-                            app:layout_constraintStart_toEndOf="@+id/repl_nav_tomorrow"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            android:layout_marginRight="10dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
-                            android:onClick="@{handlers::onClickDate}" />
+                            android:onClick="@{handlers::onClickDate}"
+                            android:padding="10dp"
+                            android:text="@{observable.selectedDate}"
+                            android:textAlignment="center"
+                            android:textColor="@{((observable.daysFromToday &lt; -1) || (observable.daysFromToday &gt; 1))? @color/black : @color/gray_light}"
+                            android:textSize="15.5sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/repl_nav_tomorrow"
+                            app:layout_constraintTop_toTopOf="parent" />
 
                     </android.support.constraint.ConstraintLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/divider_item_decoration"
-                        android:layout_below="@id/row_default"/>
+                        android:layout_height="1dp"
+                        android:background="@color/grey_divider_list"
+                        android:layout_margin="0dp"
+                        android:padding="0dp"/>
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view"

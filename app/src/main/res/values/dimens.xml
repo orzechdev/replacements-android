@@ -17,4 +17,8 @@
     <dimen name="header_none_height">50dp</dimen>
 
     <dimen name="timetable_lesson_width">240dp</dimen>
+
+    <dimen name="school_prof_repl_padding_long">5dp</dimen>
+    <dimen name="school_prof_repl_padding_short">10dp</dimen>
+
 </resources>

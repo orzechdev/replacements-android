@@ -145,6 +145,7 @@ public class FragmentInstitutionProfileNews extends Fragment{
         // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
 
         if(news != null && news.getNewsList() != null && news.getNewsList().size() > 0){
             List<SingleNews> items = news.getNewsList();

@@ -85,6 +85,7 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
             // use a linear layout manager
             LinearLayoutManager layoutManager = new LinearLayoutManager(recyclerView.getContext());
             recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setNestedScrollingEnabled(false);
 
             List<ScheduleEntryRepresentation> arr = new ArrayList<>();
 

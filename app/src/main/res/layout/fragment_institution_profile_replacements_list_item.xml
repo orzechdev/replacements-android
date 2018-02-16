@@ -17,19 +17,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white">
-            <View
-                android:id="@+id/row_highlight"
-                android:layout_width="3dp"
-                android:layout_height="match_parent"
-                android:background="@color/red"
-                android:visibility="invisible"/>
+            <!-- Indicator of user's class or teacher -->
+            <!--<View-->
+                <!--android:id="@+id/row_highlight"-->
+                <!--android:layout_width="3dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:background="@color/red"-->
+                <!--android:visibility="invisible"/>-->
             <RelativeLayout
                 android:id="@+id/column_number"
                 android:orientation="horizontal"
-                android:layout_width="55dp"
+                android:layout_width="56dp"
                 android:layout_height="match_parent"
                 android:paddingLeft="12dp"
-                android:paddingTop="0dp"
+                android:paddingTop="5dp"
                 android:paddingBottom="0dp"
                 android:paddingRight="5dp"
                 android:visibility="@{(obj.number != null)? View.VISIBLE:View.GONE}">
@@ -67,9 +68,10 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="8dp"
+                            android:paddingLeft="12dp"
                             android:paddingRight="12dp"
-                            android:paddingTop="8dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="@{(obj.number != null)? @dimen/school_prof_repl_padding_long : @dimen/school_prof_repl_padding_short}"
                             android:textAppearance="?android:attr/textAppearanceLarge"
                             android:text="@{(obj.classField != null)? obj.classField + ` - ` + obj.replacement : obj.replacement}"
                             android:id="@+id/row_class_repl"
@@ -80,22 +82,23 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="8dp"
+                    android:paddingLeft="12dp"
                     android:paddingRight="12dp"
-                    android:paddingBottom="8dp"
+                    android:paddingBottom="10dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:text="@{obj.defaultField}"
                     android:id="@+id/row_default"
                     android:layout_below="@id/row_class_repl"
                     android:layout_gravity="center_vertical"
-                    android:textSize="15sp"/>
+                    android:textSize="15sp"
+                    android:visibility="@{(obj.number != null)? View.VISIBLE:View.GONE}"/>
                 <Space
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:background="@color/divider_item_decoration"
+                    android:layout_height="1dp"
+                    android:background="@color/grey_divider_list"
                     android:layout_below="@id/row_default"/>
             </RelativeLayout>
         </LinearLayout>
