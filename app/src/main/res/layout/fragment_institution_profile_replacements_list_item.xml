@@ -1,4 +1,5 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="android.view.View"/>
@@ -27,7 +28,7 @@
             <RelativeLayout
                 android:id="@+id/column_number"
                 android:orientation="horizontal"
-                android:layout_width="56dp"
+                android:layout_width="58dp"
                 android:layout_height="match_parent"
                 android:paddingLeft="12dp"
                 android:paddingTop="5dp"
@@ -51,7 +52,7 @@
                     android:id="@+id/row_lesson"
                     android:layout_below="@id/row_number"
                     android:layout_gravity="center_vertical"
-                    android:textSize="12sp"/>
+                    android:textSize="13sp"/>
             </RelativeLayout>
             <RelativeLayout
                 android:orientation="horizontal"
@@ -72,11 +73,11 @@
                             android:paddingRight="12dp"
                             android:paddingTop="10dp"
                             android:paddingBottom="@{(obj.number != null)? @dimen/school_prof_repl_padding_long : @dimen/school_prof_repl_padding_short}"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/repl_black"
                             android:text="@{(obj.classField != null)? obj.classField + ` - ` + obj.replacement : obj.replacement}"
                             android:id="@+id/row_class_repl"
                             android:layout_gravity="center_vertical"
-                            android:textSize="15sp"/>
+                            android:textSize="15.5sp"/>
                     <!--</TableRow>-->
                 <!--</TableLayout>-->
                 <TextView
@@ -85,12 +86,12 @@
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
                     android:paddingBottom="10dp"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/repl_gray"
                     android:text="@{obj.defaultField}"
                     android:id="@+id/row_default"
                     android:layout_below="@id/row_class_repl"
                     android:layout_gravity="center_vertical"
-                    android:textSize="15sp"
+                    android:textSize="15.5sp"
                     android:visibility="@{(obj.number != null)? View.VISIBLE:View.GONE}"/>
                 <Space
                     android:layout_width="match_parent"

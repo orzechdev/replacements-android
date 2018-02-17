@@ -3,22 +3,13 @@ package com.studytor.app.viewmodel;
 import android.app.Application;
 import android.support.v4.app.FragmentManager;
 import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
 
-import com.studytor.app.activities.ActivityInstitutionProfile;
-import com.studytor.app.fragments.FragmentInstitutionProfileNews;
-import com.studytor.app.fragments.FragmentInstitutionProfileReplacements;
-import com.studytor.app.fragments.FragmentInstitutionProfileSchedule;
 import com.studytor.app.repositories.InstitutionRepository;
 import com.studytor.app.repositories.models.SingleInstitution;
 

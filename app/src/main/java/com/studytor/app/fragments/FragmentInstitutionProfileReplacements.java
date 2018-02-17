@@ -2,25 +2,21 @@ package com.studytor.app.fragments;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.studytor.app.R;
 import com.studytor.app.adapters.ReplacementsListRecyclerViewAdapter;
 import com.studytor.app.databinding.FragmentInstitutionProfileReplacementsBinding;
-import com.studytor.app.repositories.database.Replacement;
 import com.studytor.app.repositories.models.ReplacementsJson;
 import com.studytor.app.repositories.models.SingleReplacementJson;
 import com.studytor.app.viewmodel.FragmentInstitutionProfileReplacementsViewModel;
@@ -106,5 +102,4 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
 
         }
     }
-
 }

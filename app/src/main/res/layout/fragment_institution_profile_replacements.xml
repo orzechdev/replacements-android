@@ -51,8 +51,8 @@
                             android:padding="10dp"
                             android:text="@string/yesterday"
                             android:textAlignment="center"
-                            android:textColor="@{(observable.daysFromToday == -1)? @color/black : @color/gray_light}"
-                            android:textSize="15.5sp"
+                            android:textColor="@{(observable.daysFromToday == -1)? @color/app_blue : @color/new_black_light}"
+                            android:textSize="@{(observable.daysFromToday == -1)? @dimen/sub_nav_text_size_selected : @dimen/sub_nav_text_size}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/repl_nav_today"
                             app:layout_constraintStart_toStartOf="parent"
@@ -69,8 +69,8 @@
                             android:padding="10dp"
                             android:text="@string/today"
                             android:textAlignment="center"
-                            android:textColor="@{(observable.daysFromToday == 0)? @color/black : @color/gray_light}"
-                            android:textSize="15.5sp"
+                            android:textColor="@{(observable.daysFromToday == 0)? @color/app_blue : @color/new_black_light}"
+                            android:textSize="@{(observable.daysFromToday == 0)? @dimen/sub_nav_text_size_selected : @dimen/sub_nav_text_size}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/repl_nav_tomorrow"
                             app:layout_constraintStart_toEndOf="@+id/repl_nav_yesterday"
@@ -87,31 +87,48 @@
                             android:padding="10dp"
                             android:text="@string/tomorrow"
                             android:textAlignment="center"
-                            android:textColor="@{(observable.daysFromToday == 1)? @color/black : @color/gray_light}"
-                            android:textSize="15.5sp"
+                            android:textColor="@{(observable.daysFromToday == 1)? @color/app_blue : @color/new_black_light}"
+                            android:textSize="@{(observable.daysFromToday == 1)? @dimen/sub_nav_text_size_selected : @dimen/sub_nav_text_size}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/repl_nav_date"
                             app:layout_constraintStart_toEndOf="@+id/repl_nav_today"
                             app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
+                        <LinearLayout
                             android:id="@+id/repl_nav_date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:background="?attr/selectableItemBackgroundBorderless"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:onClick="@{handlers::onClickDate}"
-                            android:padding="10dp"
-                            android:text="@{observable.selectedDate}"
-                            android:textAlignment="center"
-                            android:textColor="@{((observable.daysFromToday &lt; -1) || (observable.daysFromToday &gt; 1))? @color/black : @color/gray_light}"
-                            android:textSize="15.5sp"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/repl_nav_tomorrow"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:gravity="center"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:onClick="@{handlers::onClickDate}"
+                            android:paddingRight="0dp"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:layout_marginRight="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{observable.selectedDate}"
+                                android:textAlignment="center"
+                                android:textColor="@{((observable.daysFromToday &lt; -1) || (observable.daysFromToday &gt; 1))? @color/app_blue : @color/new_black_light}"
+                                android:textSize="@{((observable.daysFromToday &lt; -1) || (observable.daysFromToday &gt; 1))? @dimen/sub_nav_text_size_selected : @dimen/sub_nav_text_size}"
+                                android:gravity="center"/>
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp"
+                                android:tint="@{((observable.daysFromToday &lt; -1) || (observable.daysFromToday &gt; 1))? @color/app_blue : @color/new_black_light}"/>
+
+                        </LinearLayout>
 
                     </android.support.constraint.ConstraintLayout>
 

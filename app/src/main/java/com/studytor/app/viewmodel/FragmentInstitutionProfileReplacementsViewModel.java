@@ -19,7 +19,6 @@ import com.studytor.app.repositories.models.ReplacementsJson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -109,41 +108,6 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
                 return input;
             }
         });
-
-
-//        List<SingleReplacementJson> items = new ArrayList<>();
-//
-//        SingleReplacementJson singleRepl_1 = new SingleReplacementJson();
-//        singleRepl_1.setId("1");
-//        singleRepl_1.setDefaultField("Default 1");
-//        singleRepl_1.setNumber("1");
-//        singleRepl_1.setClassField("1a");
-//        singleRepl_1.setReplacement("Repl 1");
-//        items.add(singleRepl_1);
-//        SingleReplacementJson singleRepl_2 = new SingleReplacementJson();
-//        singleRepl_2.setId("2");
-//        singleRepl_2.setDefaultField("Default 2");
-//        singleRepl_2.setNumber("2");
-//        singleRepl_2.setClassField("2a");
-//        singleRepl_2.setReplacement("Repl 2");
-//        items.add(singleRepl_2);
-//        SingleReplacementJson singleRepl_3 = new SingleReplacementJson();
-//        singleRepl_3.setId("3");
-//        singleRepl_3.setDefaultField("Default 3");
-//        singleRepl_3.setNumber("3");
-//        singleRepl_3.setClassField("3a");
-//        singleRepl_3.setReplacement("Repl 3");
-//        items.add(singleRepl_3);
-//
-//        replacementsList.setValue(items);
-
-//        new Observer<List<SingleReplacement>>() {
-//            @Override
-//            public void onChanged(@Nullable List<SingleReplacement> replacementsList) {
-//                setReplacementsList(replacementsList);
-//            }
-//        };
-
     }
 
     public LiveData<ReplacementsJson> getReplacements() {
@@ -165,6 +129,7 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
     }
 
     private void refreshDate(){
+        //TODO Taking dates from Android API; for now it is the data for tests
         yesterdayDate = "10-11-2017";
         todayDate = "11-11-2017";
         tomorrowDate = "12-11-2017";

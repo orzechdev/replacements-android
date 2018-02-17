@@ -2,10 +2,8 @@ package com.studytor.app.activities;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
-import android.os.Build;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -14,25 +12,18 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import com.studytor.app.R;
 
 import com.squareup.picasso.Picasso;
-import com.studytor.app.adapters.NewsListRecyclerViewAdapter;
 import com.studytor.app.databinding.ActivityInstitutionProfileBinding;
 import com.studytor.app.fragments.FragmentInstitutionProfileNews;
 import com.studytor.app.fragments.FragmentInstitutionProfileReplacements;
 import com.studytor.app.fragments.FragmentInstitutionProfileSchedule;
 import com.studytor.app.interfaces.ApplicationConstants;
-import com.studytor.app.repositories.models.News;
-import com.studytor.app.repositories.models.SingleNews;
 import com.studytor.app.viewmodel.ActivityInstitutionProfileViewModel;
 
 
