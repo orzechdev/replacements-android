@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
-public class AutoFitTextView extends TextView {
+public class AutoFitTextView extends android.support.v7.widget.AppCompatTextView{
 
     public AutoFitTextView(Context context) {
         super(context);

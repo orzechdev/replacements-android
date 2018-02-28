@@ -51,6 +51,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:tint="#4d000000"
                 android:visibility="@{(institution.singleInstitution.headerUrl == null) || (institution.singleInstitution.headerUrl.equals(``) ) ? View.GONE : View.VISIBLE}"/>
             <!--android:visibility="@{(institution.singleInstitution.headerUrl == null) || (institution.singleInstitution.headerUrl.equals(``) ) ? View.GONE : View.VISIBLE }"-->
 
@@ -106,7 +107,8 @@
                     android:layout_marginEnd="8dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    app:srcCompat="@drawable/activity_institution_subscribe_star"
+                    app:srcCompat="@drawable/ic_account_circle_black_24dp"
+                    android:tint="@android:color/white"
                     android:clickable="true"
                     android:focusable="true"
                     android:foreground="@drawable/transparent_ripple"/>
@@ -123,7 +125,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/app_blue">
+                    android:background="@android:color/transparent">
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/institution_logo_title"
@@ -179,6 +181,7 @@
                         app:tabMode="fixed"
                         app:tabGravity="fill"
                         app:tabTextColor="#AFFF"
+                        app:tabTextAppearance="@style/InstitutionProfileTabStyle"
                         app:tabSelectedTextColor="#FFFF"
                         app:tabIndicatorColor="#FFFF"
                         android:layout_below="@+id/institution_logo_title"
