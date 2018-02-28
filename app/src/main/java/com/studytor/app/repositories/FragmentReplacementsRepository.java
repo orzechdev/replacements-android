@@ -23,6 +23,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+//TODO: CONSIDER DELETING THIS REPO BECAUSE IT WAS UPDATED ALMOST 4 months ago AND NOW WE ARE USNG ReplacementsRepository
 /**
  * Created by Dawid on 25.07.2017.
  */

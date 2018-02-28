@@ -64,6 +64,10 @@ public class ReplacementsRepository {
         return isRefreshing;
     }
 
+    //TODO Consider making repository free of such declarations as selected date
+    //beacuse in some cases, when user navigates fast, or changes the date while it is still downloaded
+    //repo can possibly assingn data to wrong date in cache, making a big mess!
+
     public LiveData<String> getSelectedDate() {
         return selectedDate;
     }
@@ -108,6 +112,7 @@ public class ReplacementsRepository {
         // DAWID --- 3rd do not wait until it will be taken from the web, but return live data object
         return repls;
     }
+
 
     public void forceRefreshData(final int institutionId, final String date) {
         replsContainerCache.clear();

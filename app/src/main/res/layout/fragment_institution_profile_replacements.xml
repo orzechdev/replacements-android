@@ -53,6 +53,7 @@
                             android:textAlignment="center"
                             android:textColor="@{(observable.daysFromToday == -1)? @color/app_blue : @color/new_black_light}"
                             android:textSize="@{(observable.daysFromToday == -1)? @dimen/sub_nav_text_size_selected : @dimen/sub_nav_text_size}"
+                            app:isBold="@{(observable.daysFromToday == -1)}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/repl_nav_today"
                             app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +72,7 @@
                             android:textAlignment="center"
                             android:textColor="@{(observable.daysFromToday == 0)? @color/app_blue : @color/new_black_light}"
                             android:textSize="@{(observable.daysFromToday == 0)? @dimen/sub_nav_text_size_selected : @dimen/sub_nav_text_size}"
+                            app:isBold="@{(observable.daysFromToday == 0)}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/repl_nav_tomorrow"
                             app:layout_constraintStart_toEndOf="@+id/repl_nav_yesterday"
@@ -89,6 +91,7 @@
                             android:textAlignment="center"
                             android:textColor="@{(observable.daysFromToday == 1)? @color/app_blue : @color/new_black_light}"
                             android:textSize="@{(observable.daysFromToday == 1)? @dimen/sub_nav_text_size_selected : @dimen/sub_nav_text_size}"
+                            app:isBold="@{(observable.daysFromToday == 1)}"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/repl_nav_date"
                             app:layout_constraintStart_toEndOf="@+id/repl_nav_today"
@@ -120,6 +123,7 @@
                                 android:textAlignment="center"
                                 android:textColor="@{((observable.daysFromToday &lt; -1) || (observable.daysFromToday &gt; 1))? @color/app_blue : @color/new_black_light}"
                                 android:textSize="@{((observable.daysFromToday &lt; -1) || (observable.daysFromToday &gt; 1))? @dimen/sub_nav_text_size_selected : @dimen/sub_nav_text_size}"
+                                app:isBold="@{((observable.daysFromToday &lt; -1) || (observable.daysFromToday &gt; 1))}"
                                 android:gravity="center"/>
 
                             <ImageView
@@ -154,6 +158,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/error_container"
+                    android:background="@color/white_dark"
                     android:visibility="@{(observable.replacements == null)? View.VISIBLE:View.GONE}">
 
                     <LinearLayout

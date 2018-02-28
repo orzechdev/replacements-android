@@ -24,4 +24,6 @@
     <dimen name="sub_nav_text_size">14.5sp</dimen>
     <dimen name="sub_nav_text_size_selected">17dp</dimen>
 
+    <dimen name="institution_profile_with_image">300dp</dimen>
+
 </resources>

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
+import android.graphics.Typeface;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.studytor.app.R;
 
 import com.squareup.picasso.Picasso;
@@ -23,7 +26,9 @@ import com.studytor.app.databinding.ActivityInstitutionProfileBinding;
 import com.studytor.app.fragments.FragmentInstitutionProfileNews;
 import com.studytor.app.fragments.FragmentInstitutionProfileReplacements;
 import com.studytor.app.fragments.FragmentInstitutionProfileSchedule;
+import com.studytor.app.globals.Global;
 import com.studytor.app.interfaces.ApplicationConstants;
+import com.studytor.app.interfaces.Functions;
 import com.studytor.app.viewmodel.ActivityInstitutionProfileViewModel;
 
 
@@ -153,5 +158,17 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
         layoutParams.setMargins(layoutParams.leftMargin, Math.round(topMargin),
                 layoutParams.rightMargin, layoutParams.bottomMargin);
         view.setLayoutParams(layoutParams);
+    }
+
+    @BindingAdapter("isBold")
+    public static void isBold(TextView v, boolean isBold){
+        if(isBold) v.setTypeface(null, Typeface.BOLD);
+        else v.setTypeface(null, Typeface.NORMAL);;
+    }
+
+    @BindingAdapter({ "isToolbarExpanded" })
+    public static void bindWidth(View v, boolean expanded) {
+        //You can do something by java code here
+        if(expanded) v.getLayoutParams().height = (int)Functions.convertDpToPixel(300, v.getContext());
     }
 }

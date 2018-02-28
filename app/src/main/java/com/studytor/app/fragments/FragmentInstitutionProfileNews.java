@@ -85,7 +85,6 @@ public class FragmentInstitutionProfileNews extends Fragment{
         viewModel.getNews().observe(this, new Observer<News>() {
             @Override
             public void onChanged(@Nullable News news) {
-                Log.i("Studytor","NEWS XD IN FRAGMEnt XD");
                 binding.getObservable().news.set(news);
                 binding.getObservable().scrollViewScroll.notifyChange();
             }
