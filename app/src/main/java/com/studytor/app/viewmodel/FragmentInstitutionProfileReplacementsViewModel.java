@@ -1,7 +1,8 @@
 package com.studytor.app.viewmodel;
 
+import android.app.Activity;
 import android.app.Application;
-import android.app.DatePickerDialog;
+import android.app.FragmentManager;
 import android.arch.core.util.Function;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
@@ -12,7 +13,8 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
+
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import com.studytor.app.repositories.ReplacementsRepository;
 import com.studytor.app.repositories.models.ReplacementsJson;
@@ -150,23 +152,36 @@ public class FragmentInstitutionProfileReplacementsViewModel extends AndroidView
         }
 
         public void onClickDate(View view) {
-            view.getContext();
-
             DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
                 @Override
-                public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
                     String dateStr = Integer.toString(dayOfMonth) + "-" + Integer.toString(monthOfYear + 1) + "-" + Integer.toString(year);
                     replacementsRepository.getReplacements(institutionId, dateStr);
                 }
 
             };
 
-            String[] dateSplit = {"01","01","2010"};
-            if(selectedDate.getValue() != null)
+            String[] dateSplit = {"01", "01", "2010"};
+            if (selectedDate.getValue() != null)
                 dateSplit = selectedDate.getValue().split("-");
 
-            new DatePickerDialog(view.getContext(), date, Integer.parseInt(dateSplit[2]), Integer.parseInt(dateSplit[1]) - 1, Integer.parseInt(dateSplit[0])).show();
+            new DatePickerDialog();
+            DatePickerDialog dpd = DatePickerDialog.newInstance(
+                    date,
+                    Integer.parseInt(dateSplit[2]),
+                    Integer.parseInt(dateSplit[1]) - 1,
+                    Integer.parseInt(dateSplit[0])
+            );
+            dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+            try {
+                // To get FragmentManager you'd have to make 100% sure it's an activity using reflection or try-catch
+                final Activity activity = (Activity) view.getContext();
+                FragmentManager fragemntManager = activity.getFragmentManager();
+                dpd.show(fragemntManager, "Datepickerdialog");
+            } catch (ClassCastException e) {
+                Log.d("FragmInstProfReplVM", "Handlers onClickDate > Can't get the fragment manager with this");
+            }
         }
     }
 

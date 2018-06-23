@@ -20,6 +20,7 @@ import com.studytor.app.databinding.FragmentInstitutionProfileReplacementsBindin
 import com.studytor.app.repositories.models.ReplacementsJson;
 import com.studytor.app.repositories.models.SingleReplacementJson;
 import com.studytor.app.viewmodel.FragmentInstitutionProfileReplacementsViewModel;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.List;
 
@@ -85,6 +86,12 @@ public class FragmentInstitutionProfileReplacements extends Fragment{
             }
         });
     }
+
+//    @Override
+//    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+//        String date = dayOfMonth+"-"+(monthOfYear+1)+"-"+year;
+//        binding.getObservable().selectedDate.set(date);
+//    }
 
     @BindingAdapter("setupRecyclerView")
     public static void setupRecyclerView(RecyclerView recyclerView, final ReplacementsJson repls){
