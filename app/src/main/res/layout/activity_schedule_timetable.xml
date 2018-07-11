@@ -27,7 +27,7 @@
                 android:layout_height="58dp"
                 android:background="@color/app_blue">
 
-                <com.studytor.app.AutoFitTextView
+                <com.studytor.app.views.AutoFitTextView
                     android:layout_width="240dp"
                     android:layout_height="match_parent"
                     android:text="@{observable.schedule.get().name}"

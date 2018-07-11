@@ -5,12 +5,10 @@ import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 
 import com.studytor.app.BR;
 import com.studytor.app.R;
-import com.studytor.app.RecyclerItemClickListener;
-import com.studytor.app.repositories.models.SingleInstitution;
+import com.studytor.app.views.RecyclerItemClickListener;
 import com.studytor.app.repositories.models.SingleNews;
 
 import java.util.List;

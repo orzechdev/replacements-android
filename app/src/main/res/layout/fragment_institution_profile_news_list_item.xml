@@ -1,5 +1,4 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -23,15 +22,13 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
             android:layout_weight="1"
-            android:width="0dp"
             android:text="@{obj.title}"
             android:textColor="@color/black_text_heading"
             android:textSize="15.5sp"
             android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintEnd_toStartOf="@+id/guideline" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/guideline" />
 
         <TextView
             android:id="@+id/postPreview"
@@ -40,30 +37,27 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:width="0dp"
             android:text="@{obj.shortenedContent}"
             android:textColor="@color/black_text_caption"
             android:textSize="14.5sp"
             android:textStyle="italic"
+            app:layout_constraintTop_toBottomOf="@+id/postTitle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/postTitle"
-            card_view:layout_constraintEnd_toStartOf="@+id/guideline" />
+            app:layout_constraintRight_toLeftOf="@+id/guideline"/>
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            card_view:layout_constraintGuide_percent="0.72"/>
-
-
+            app:layout_constraintGuide_percent="0.72"/>
+        
         <ImageView
             android:id="@+id/postImage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            card_view:layout_constraintLeft_toLeftOf="@+id/guideline"
+            app:layout_constraintLeft_toLeftOf="@+id/guideline"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:picassoImage="@{obj.thumbURL}" />

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.studytor.app.BR;
 import com.studytor.app.R;
-import com.studytor.app.RecyclerItemClickListener;
+import com.studytor.app.views.RecyclerItemClickListener;
 import com.studytor.app.repositories.models.SingleInstitution;
 
 import java.util.List;

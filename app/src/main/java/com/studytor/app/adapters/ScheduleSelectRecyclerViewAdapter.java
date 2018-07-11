@@ -1,6 +1,5 @@
 package com.studytor.app.adapters;
 
-import android.databinding.BaseObservable;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +8,8 @@ import android.view.ViewGroup;
 
 import com.studytor.app.BR;
 import com.studytor.app.R;
-import com.studytor.app.RecyclerItemClickListener;
+import com.studytor.app.views.RecyclerItemClickListener;
 import com.studytor.app.repositories.models.ScheduleLessonplan;
-import com.studytor.app.repositories.models.SingleInstitution;
 
 import java.util.List;
 
