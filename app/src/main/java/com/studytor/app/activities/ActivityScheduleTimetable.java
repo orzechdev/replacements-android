@@ -1,6 +1,7 @@
 package com.studytor.app.activities;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -18,13 +19,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.studytor.app.BR;
 import com.studytor.app.R;
@@ -45,6 +49,9 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
     private ActivityScheduleTimetableBinding binding;
 
     String url, name;
+
+    static final int MIN_DISTANCE = 100;
+    private static float downX, downY, upX, upY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +83,13 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
 
     public void goBack(View v){
         super.onBackPressed();
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    @BindingAdapter(value = "onTouchListener")
+    public static void setOnTouchListener(ScrollView view, ScrollView.OnTouchListener listener) {
+        view.setOnTouchListener(listener);
     }
 
     @BindingAdapter("setupNumsAndHours")
@@ -162,7 +176,7 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
 
         //Calculate left space for lesson entries
         //number + hours + padding = around 120dp
-        int leftWidth = width - (int) Functions.convertDpToPixel(56, gl.getContext());
+        int leftWidth = width - (int) Functions.convertDpToPixel(78, gl.getContext());
 
         //Let's see how much elements will fit on the screen
         int baseElementWidth = (int) Functions.convertDpToPixel(220, gl.getContext());
@@ -257,7 +271,7 @@ public class ActivityScheduleTimetable extends AppCompatActivity {
     public static void scrollX(final View v, final int scroll){
         ValueAnimator va = ValueAnimator.ofInt(v.getScrollX(), scroll);
         va.setInterpolator(new FastOutSlowInInterpolator());
-        va.setDuration(1000);
+        va.setDuration(500);
 
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override

@@ -12,6 +12,9 @@ import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ScrollView;
 
 import com.studytor.app.repositories.ScheduleRepository;
 import com.studytor.app.repositories.ScheduleTimetableRepository;
@@ -31,6 +34,9 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
 
     private String dataURL;
     private String timetableName;
+
+    static final int MIN_DISTANCE = 100;
+    private static float downX, upX;
 
     public ActivityScheduleTimetableViewModel(@NonNull Application app){
         super(app);
@@ -123,6 +129,27 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
 
     }
 
+    public boolean onTouchCheck(MotionEvent event){
+        switch(event.getAction()){
+            case MotionEvent.ACTION_DOWN: {
+                downX = event.getX();
+                // return true;
+            }
+            case MotionEvent.ACTION_UP: {
+                upX = event.getX();
+                float deltaX = downX - upX;
+                // swipe horizontal?
+                if(Math.abs(deltaX) > MIN_DISTANCE){
+                    // left or right
+                    if(deltaX > 0) { displayNext(); return true; }
+                    if(deltaX < 0) { displayPrevious(); return true; }
+                }
+                // return true;
+            }
+        }
+        return false;
+    }
+
     public class Observable extends BaseObservable {
 
         public ObservableField<ScheduleTimetable> schedule = new ObservableField<>();
@@ -144,6 +171,9 @@ public class ActivityScheduleTimetableViewModel extends AndroidViewModel {
             displayNext();
         }
 
+        public boolean onTouch(View v, MotionEvent event) {
+            return onTouchCheck(event);
+        }
     }
 
 }
