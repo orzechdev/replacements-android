@@ -143,6 +143,7 @@ public class ReplacementsRepository {
 
                     Log.i(CLASS_NAME, "refreshData onResponse SUCCESSFUL 2");
                 }else{
+                    // TODO Handle errors - if needed show on screen appropriate info
                     Log.i(CLASS_NAME, "refreshData onResponse IS NULL");
 
                     replsContainerCache.remove(date);

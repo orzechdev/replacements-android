@@ -79,9 +79,10 @@ public class ScheduleRepository {
             public void onResponse(Call<Schedule> call, final Response<Schedule> response) {
                 Log.i("Studytor","REPO SCHEDULE GET DATA FROM WEB ENQUEUED");
 
-                if(response.isSuccessful() && response.body().getLessonplans() != null){
+                Schedule schedule = response.body();
+
+                if(response.isSuccessful() && schedule != null && schedule.getLessonplans() != null){
                     Log.i("Studytor","REPO SCHEDULE GET DATA FROM WEB SUCCESSFUL");
-                    Schedule schedule = response.body();
 
                     schedule.setInstitutionId(institutionId);
                     Log.i("Studytor","SCHEDULE JAKIES_DZIWNE_INSTITUTION: " + institutionId);
@@ -90,9 +91,7 @@ public class ScheduleRepository {
                     scheduleListCache.updateOrAddNews(institutionId, schedule);
 
                 }else{
-                    if(response.body().getLessonplans() == null){
-                        Log.i("Studytor","REPO SCHEDULE GET DATA FROM WEB NO LESSONPLANS!" + response.toString());
-                    }
+                    // TODO Handle errors - if needed show on screen appropriate info
                     Log.i("Studytor","REPO SCHEDULE GET DATA FROM WEB IS NULL 1" + response.toString());
                     scheduleData.postValue(null);
                 }

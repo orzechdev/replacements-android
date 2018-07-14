@@ -128,6 +128,7 @@ public class NewsRepository {
 
                     Log.i("NewsRepository", "refreshData onResponse SUCCESSFUL 2");
                 }else{
+                    // TODO Handle errors - if needed show on screen appropriate info
                     Log.i("NewsRepository", "refreshData onResponse IS NULL");
 
                     newsListCache.remove(pageNum);

@@ -91,9 +91,10 @@ public class ScheduleTimetableRepository {
             public void onResponse(Call<ScheduleTimetable> call, Response<ScheduleTimetable> response) {
                 Log.i("Studytor","REPO TIMETABLE GET DATA FROM WEB ENQUEUED");
 
-                if(response.isSuccessful() && response.body().getDays() != null){
+                ScheduleTimetable timetable = response.body();
+
+                if(response.isSuccessful() && timetable != null && timetable.getDays() != null){
                     Log.i("Studytor","REPO TIMETABLE GET DATA FROM WEB SUCCESSFUL");
-                    ScheduleTimetable timetable = response.body();
 
                     timetable.setUrl(timetableURL);
 
@@ -102,6 +103,7 @@ public class ScheduleTimetableRepository {
                     //scheduleTimetableCache.updateOrAddTimetable(timetableURL, timetable);
 
                 }else{
+                    // TODO Handle errors - if needed show on screen appropriate info
                     Log.i("Studytor","REPO TIMETABLE GET DATA FROM WEB IS NULL 1" + response.toString());
                     scheduleData.postValue(null);
                 }

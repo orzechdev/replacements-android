@@ -108,17 +108,20 @@ public class FragmentReplacementsRepository {
                         @Override
                         public void run() {
                             Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse Thread 100");
-                            if(response.body() != null) {
-                                Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse Thread 200");
 
-                                List<UserReplacementRoomJson> repls = response.body().getReplacements();
+                            UserReplacementsJson replsResponse = response.body();
+
+                            if(replsResponse != null) {
+                                Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse Thread 200");
+                                
+                                List<UserReplacementRoomJson> repls = replsResponse.getReplacements();
 
                                 Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse Thread 300");
 
                                 for(UserReplacementRoomJson repl : repls){
                                     Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse Thread 400");
                                     repl.setInstitutId(institutionId);
-                                    repl.setVer(response.body().getVer());
+                                    repl.setVer(replsResponse.getVer());
                                 }
 
                                 Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse Thread 500");
@@ -134,6 +137,7 @@ public class FragmentReplacementsRepository {
 
                     Log.i(CLASS_NAME, "refreshReplacementsFromInternet onResponse 200");
                 } else {
+                    // TODO Handle errors - if needed show on screen appropriate info
                     // … or just log the issue like we’re doing :)
                     Log.d(CLASS_NAME, "refreshReplacementsFromInternet onResponse error message: " + response.message());
                     Log.d(CLASS_NAME, "refreshReplacementsFromInternet onResponse error code: " + response.code());

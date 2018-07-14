@@ -50,11 +50,12 @@ public class ActivityMainRepository {
                 // error case is left out for brevity
                 try {
                     //NullPointerException Fix
-                    if(response.isSuccessful() && response.body().string() != null){
+                    ResponseBody responseBody = response.body();
+                    if(response.isSuccessful() && responseBody != null && responseBody.string() != null){
                         //Log.i("Studytor",response.body().string());//convert reponse to string
-                        data.setValue(response.body().string());
+                        data.setValue(responseBody.string());
                         Log.i("ActivityMainRepository", "1");
-                        Log.i("ActivityMainRepository", response.body().string());
+                        Log.i("ActivityMainRepository", responseBody.string());
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
