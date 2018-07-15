@@ -17,6 +17,8 @@ public class ScheduleSection extends BaseObservable{
     @SerializedName("name")
     private String name;
 
+    private String visibleName;
+
     @SerializedName("schedules")
     private List<ScheduleUnit> scheduleUnits;
 
@@ -29,6 +31,14 @@ public class ScheduleSection extends BaseObservable{
     public void setName(String name) {
         this.name = name;
         notifyChange();
+    }
+
+    public String getVisibleName() {
+        return visibleName;
+    }
+
+    public void setVisibleName(String visibleName) {
+        this.visibleName = visibleName;
     }
 
     public List<ScheduleUnit> getScheduleUnits() {

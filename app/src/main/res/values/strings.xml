@@ -26,8 +26,8 @@
         <item quantity="other">"Replacements"</item>
     </plurals>
     <plurals name="institution_header">
-        <item quantity="one">"Institution"</item>
-        <item quantity="other">"Institutions"</item>
+        <item quantity="one">"School"</item>
+        <item quantity="other">"Schools"</item>
     </plurals>
 
     <!-- Replacements -->
@@ -35,5 +35,13 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="lesson">lesson</string>
+
+    <!--                                            -->
+    <!--                School Profile              -->
+    <!--                                            -->
+    <!-- List of schedules - section visible names -->
+    <string name="schedule_section_classes">Classes</string>
+    <string name="schedule_section_teachers">Teachers</string>
+    <string name="schedule_section_classrooms">Classrooms</string>
 
 </resources>

@@ -123,6 +123,9 @@ public class FragmentInstitutionProfileSchedule extends Fragment{
 
                 LayoutInflater layoutInflater = LayoutInflater.from(linearLayout.getContext());
                 ViewDataBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.view_schedule_list_item_section, linearLayout, false);
+
+
+
                 binding.setVariable(BR.section, s);
 
 

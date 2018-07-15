@@ -36,7 +36,7 @@ public class ScheduleListCache {
         cachedSchedules.postValue(list);
     }
 
-    public boolean updateOrAddNews(int institutionId, Schedule schedule){
+    public boolean updateOrAddSchedules(int institutionId, Schedule schedule){
         if(cachedSchedules != null){
             if(cachedSchedules.getValue() != null){
                 for(int i = 0; i < cachedSchedules.getValue().size(); i++){

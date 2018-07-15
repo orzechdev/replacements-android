@@ -47,31 +47,13 @@
             app:layout_constraintLeft_toRightOf="@id/institution_logo_container"
             app:layout_constraintRight_toRightOf="parent"
             android:paddingTop="16dp"
-            android:paddingRight="56dp"
+            android:paddingRight="16dp"
             android:paddingLeft="0dp"
             android:paddingBottom="16dp"
             android:layout_weight="0.3"
             android:id="@+id/schoolText1"
             android:textSize="18sp"
             android:textColor="@color/black_text_heading"/>
-
-        <RelativeLayout
-            android:id="@+id/institution_sub_star_container"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="28dp"
-            android:paddingBottom="28dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                app:srcCompat="@drawable/fragment_institution_subscribe_star" />
-
-        </RelativeLayout>
 
     </android.support.constraint.ConstraintLayout>
 

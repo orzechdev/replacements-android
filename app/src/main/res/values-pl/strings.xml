@@ -1,10 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Following strings are for new app -->
+    <plurals name="news_header">
+        <item quantity="one">"Aktualność"</item>
+        <item quantity="few">"Aktualności"</item>
+        <item quantity="many">"Aktualności"</item>
+        <item quantity="other">"Aktualności"</item>
+    </plurals>
+    <plurals name="schedule_header">
+        <item quantity="one">"Plan"</item>
+        <item quantity="few">"Plany"</item>
+        <item quantity="many">"Planów"</item>
+        <item quantity="other">"Planów"</item>
+    </plurals>
+    <plurals name="replacement_header">
+        <item quantity="one">"Zastępstwo"</item> <!-- Np. Znaleziono 1 zastępstwo. -->
+        <item quantity="few">"Zastępstwa"</item> <!-- Np. Znaleziono 2-4 zastępstwa. -->
+        <item quantity="many">"Zastępstw"</item> <!-- Np. Znaleziono 10 zastępstw. -->
+        <item quantity="other">"Zastępstw"</item> <!-- Np. Znaleziono 999... zastępstw. -->
+    </plurals>
+    <plurals name="institution_header">
+        <item quantity="one">"Szkoła"</item>
+        <item quantity="few">"Szkoły"</item>
+        <item quantity="many">"Szkół"</item>
+        <item quantity="other">"Szkół"</item>
+    </plurals>
+
     <!-- Replacements -->
     <string name="yesterday">Wczoraj</string>
     <string name="today">Dzisiaj</string>
     <string name="tomorrow">Jutro</string>
     <string name="lesson">lekcja</string>
+
+    <!--                                            -->
+    <!--                School Profile              -->
+    <!--                                            -->
+    <!-- List of schedules - section visible names -->
+    <string name="schedule_section_classes">Klasy</string>
+    <string name="schedule_section_teachers">Nauczyciele</string>
+    <string name="schedule_section_classrooms">Sale</string>
 
 </resources>
