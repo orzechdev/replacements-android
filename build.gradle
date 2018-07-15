@@ -13,6 +13,12 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
+    configurations.all {
+        resolutionStrategy {
+            // We want version 6.0 instead of version given by Android Gradle plugin
+            force 'net.sf.proguard:proguard-gradle:6.0.3'
+        }
+    }
 }
 
 allprojects {
