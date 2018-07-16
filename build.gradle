@@ -16,7 +16,7 @@ buildscript {
     configurations.all {
         resolutionStrategy {
             // We want version 6.0 instead of version given by Android Gradle plugin
-            force 'net.sf.proguard:proguard-gradle:6.0.3'
+            force 'net.sf.proguard:proguard-gradle:6.0.3' // TODO Remember to remove if gradle will have this version of dependency (or do whatever)
         }
     }
 }

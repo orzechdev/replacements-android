@@ -2,6 +2,7 @@ package com.studytor.app.activities;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +12,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -68,6 +72,11 @@ public class ActivityMain extends AppCompatActivity {
 
         int currentNavigationItem = viewModel.getCurrentNavigationItem();
         setActiveFragment(currentNavigationItem);
+
+        // Google said 'DataBinding'? NO WAY!! as always they are doing everything far from good...
+        // I lost my two hours to show just one icon in toolbar... NOT REMOVE IT
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(myToolbar);
     }
 
     @Override
@@ -88,6 +97,26 @@ public class ActivityMain extends AppCompatActivity {
         // because if observableCallback will be delete from activity, it will be still connected with binding
         // and after recreate activity the new observableCallback will be created and binding will have two the same observableCallbacks
         binding.getObservable().removeOnPropertyChangedCallback(observableCallback);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_activity_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_account_icon:
+                Log.i(CLASS_NAME,"onOptionsItemSelected action_account_icon");
+                Intent intent = new Intent(this, ActivitySettings.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
     // Set desirable fragment visible on the screen

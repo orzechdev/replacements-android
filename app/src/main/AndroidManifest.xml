@@ -64,7 +64,12 @@
         </receiver>
 
         <activity android:name=".activities.ActivitySingleNews" />
-        <activity android:name=".activities.ActivityScheduleTimetable" android:theme="@style/blueStatusBar"/>
+        <activity
+            android:name=".activities.ActivityScheduleTimetable"
+            android:theme="@style/blueStatusBar" />
+        <activity
+            android:name=".activities.ActivitySettings"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>
