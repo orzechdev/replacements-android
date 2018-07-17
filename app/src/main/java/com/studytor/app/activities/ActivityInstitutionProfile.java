@@ -2,6 +2,7 @@ package com.studytor.app.activities;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.BindingAdapter;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
@@ -133,6 +134,11 @@ public class ActivityInstitutionProfile extends AppCompatActivity {
 
     public void goBack(View v){
         onBackPressed();
+    }
+
+    public void onClickAccountIcon(View view){
+        Intent intent = new Intent(this, ActivitySettings.class);
+        startActivity(intent);
     }
 
     @BindingAdapter("picassoCircleImage")

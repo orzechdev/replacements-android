@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_account_icon"
-        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:icon="@drawable/ic_account_circle_black_30dp"
         android:title="profileee"
         app:showAsAction="always"/>
 </menu>

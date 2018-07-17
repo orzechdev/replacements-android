@@ -64,4 +64,10 @@ public class ActivityInstitutionProfileViewModel extends AndroidViewModel{
         public ObservableField<SingleInstitution> singleInstitution = new ObservableField<>();
 
     }
+
+    public class Handlers {
+        public void onClick(){
+
+        }
+    }
 }

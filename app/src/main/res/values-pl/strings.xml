@@ -41,4 +41,9 @@
     <string name="schedule_section_teachers">Nauczyciele</string>
     <string name="schedule_section_classrooms">Sale</string>
 
+    <!--                                            -->
+    <!--                   Settings                 -->
+    <!--                                            -->
+    <string name="title_activity_settings">Ustawienia konta</string>
+
 </resources>
