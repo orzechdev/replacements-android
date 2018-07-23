@@ -49,10 +49,17 @@
     <!--                                            -->
     <string name="title_activity_settings">Account settings</string>
 
-    <!-- Example General settings -->
-    <string name="pref_header_general">General</string>
+    <string name="pref_category_preferences">Preferences</string>
+    <!-- Category Preferences -->
+    <string name="pref_user_name_title">Username</string>
+    <string name="pref_user_name_value">John Smith</string>
+    <string name="pref_email_address_title">E-mail address</string>
+    <string name="pref_email_address_value">john.smith@gmail.com</string>
+    <string name="pref_change_password_title">Change password</string>
 
-    <string name="pref_title_display_name">Display name</string>
-    <string name="pref_default_display_name">John Smith</string>
+    <string name="pref_category_options">Options</string>
+    <!-- Category Options -->
+    <string name="pref_logout_title">Logout</string>
+    <string name="pref_delete_account_title">Delete account</string>
 
 </resources>

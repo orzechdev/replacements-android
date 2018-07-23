@@ -2,14 +2,45 @@
 
     <!-- NOTE: EditTextPreference accepts EditText attributes. -->
     <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-    <EditTextPreference
-        android:capitalize="words"
-        android:defaultValue="@string/pref_default_display_name"
-        android:inputType="textCapWords"
-        android:key="example_text"
-        android:maxLines="1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="@string/pref_title_display_name" />
+    <PreferenceCategory
+        android:layout="@layout/preference_divider_top"
+        android:title="@string/pref_category_preferences">
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="@string/pref_user_name_value"
+            android:inputType="textCapWords"
+            android:key="pref_user_name"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_user_name_title"
+            android:layout="@layout/preference_single_layout" />
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="@string/pref_email_address_value"
+            android:inputType="textCapWords"
+            android:key="pref_email_address"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_email_address_title"
+            android:layout="@layout/preference_single_layout" />
+        <Preference
+            android:key="pref_key_mms_delete_limit"
+            android:title="@string/pref_change_password_title"
+            android:layout="@layout/preference_single_layout"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:layout="@layout/preference_divider"
+        android:title="@string/pref_category_options">
+        <Preference
+            android:key="pref_key_mms_delete_limit"
+            android:title="@string/pref_logout_title"
+            android:layout="@layout/preference_single_layout"/>
+        <Preference
+            android:key="pref_key_mms_delete_limit"
+            android:title="@string/pref_delete_account_title"
+            android:layout="@layout/preference_single_layout"/>
+    </PreferenceCategory>
 
 </PreferenceScreen>

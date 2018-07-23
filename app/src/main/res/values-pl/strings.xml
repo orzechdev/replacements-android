@@ -46,4 +46,17 @@
     <!--                                            -->
     <string name="title_activity_settings">Ustawienia konta</string>
 
+    <string name="pref_category_preferences">Właściwości</string>
+    <!-- Category Preferences -->
+    <string name="pref_user_name_title">Nazwa użytkownika</string>
+    <string name="pref_user_name_value">John Smith</string>
+    <string name="pref_email_address_title">Adres e-mail</string>
+    <string name="pref_email_address_value">john.smith@gmail.com</string>
+    <string name="pref_change_password_title">Zmień hasło</string>
+
+    <string name="pref_category_options">Opcje</string>
+    <!-- Category Options -->
+    <string name="pref_logout_title">Wyloguj</string>
+    <string name="pref_delete_account_title">Usuń konto</string>
+
 </resources>
