@@ -50,7 +50,7 @@ public interface WebService {
             //@Path("school_id") String schoolId
     );
 
-    @GET("json/schoolList.json")
+    @GET("json/school/list")
     Call<Institutions> getAllInstitutions(
     );
 

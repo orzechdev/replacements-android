@@ -35,7 +35,7 @@ public class RetrofitClientSingleton {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
                         Request.Builder ongoing = chain.request().newBuilder();
-                        ongoing.addHeader("Accept", "application/json;versions=1");
+                        ongoing.addHeader("Accept", "application/json");
                         //if (isUserLoggedIn()) {
                             ongoing.addHeader("Authorization", authToken);
                         //}
@@ -48,7 +48,7 @@ public class RetrofitClientSingleton {
         // ####
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://studytor.com/")
+                .baseUrl("https://studytor.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(httpClient)
                 .build();

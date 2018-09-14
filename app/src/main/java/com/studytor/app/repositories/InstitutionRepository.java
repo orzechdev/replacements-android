@@ -182,6 +182,8 @@ public class InstitutionRepository {
             @Override
             public void onResponse(Call<Institutions> call, final Response<Institutions> response) {
                 Log.i("InstitutionRepository", "refreshData onResponse");
+                Log.i("InstitutionRepository", Integer.toString(response.code()));
+                Log.i("InstitutionRepository", response.message());
 
                 Institutions institutionsResponse = response.body();
 
